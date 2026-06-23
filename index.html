@@ -138,6 +138,11 @@ button{font-family:inherit;cursor:pointer}
 .price-old{font-size:13px;color:#b0b4be;text-decoration:line-through}
 .card-cta{width:100%;background:var(--brand);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
 .card-cta:hover{background:var(--brand-dark)}
+.stock.out{color:#b0440f}
+.card-cta.out{background:#eef0f3;color:#5a6072;cursor:default}
+.card-cta.out:hover{background:#eef0f3}
+.card.is-out .card-img{opacity:.5}
+.card.is-out .card-name{color:#8a909e}
 
 /* ---------- CATEGORIES SECTION ---------- */
 .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -184,6 +189,70 @@ button{font-family:inherit;cursor:pointer}
 .reveal.in{opacity:1;transform:none}
 .grid .card.reveal{transition-delay:calc(var(--i,0)*60ms)}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.wa-float{animation:none}}
+
+/* ---------- CART DRAWER ---------- */
+.overlay{position:fixed;inset:0;background:rgba(14,19,32,.55);opacity:0;visibility:hidden;transition:opacity .25s;z-index:90}
+.overlay.show{opacity:1;visibility:visible}
+.cart{position:fixed;top:0;right:0;width:400px;max-width:92vw;height:100%;background:#fff;z-index:100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s ease;box-shadow:-8px 0 30px rgba(14,19,32,.12)}
+.cart.show{transform:none}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}
+.cart-head h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:9px}
+.cart-head h3 i{color:var(--brand);font-size:21px}
+.cart-close{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:20px}
+.cart-close:hover{background:#eceef1;color:var(--ink)}
+.cart-body{flex:1;overflow-y:auto;padding:8px 22px}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.cart-empty i{font-size:54px;color:#d4d7de;display:block;margin-bottom:14px}
+.cart-empty b{display:block;color:var(--ink-soft);font-size:15px;margin-bottom:6px}
+.cart-empty span{font-size:13px}
+.ci{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ci-img{width:56px;height:56px;border-radius:9px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-img i{font-size:26px;color:#aeb6c8}
+.ci-main{flex:1;min-width:0}
+.ci-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:3px}
+.ci-cat{font-size:11px;color:var(--muted);margin-bottom:8px}
+.ci-bottom{display:flex;align-items:center;justify-content:space-between}
+.qty{display:flex;align-items:center;gap:0;border:1px solid var(--line-2);border-radius:7px;overflow:hidden}
+.qty button{width:28px;height:28px;border:none;background:#fff;color:var(--ink-soft);font-size:16px;display:flex;align-items:center;justify-content:center}
+.qty button:hover{background:var(--surface);color:var(--brand)}
+.qty span{min-width:30px;text-align:center;font-size:13px;font-weight:600}
+.ci-price{font-size:14px;font-weight:700}
+.ci-remove{background:none;border:none;color:#c0c4cc;font-size:17px;padding:4px}
+.ci-remove:hover{color:#e2452f}
+.cart-foot{border-top:1px solid var(--line);padding:18px 22px;background:#fff}
+.cart-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:8px}
+.cart-total{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 16px}
+.cart-total b{font-size:15px}
+.cart-total .amt{font-size:24px;font-weight:800;color:var(--ink)}
+.cart-send{width:100%;background:#25d366;color:#fff;border:none;border-radius:var(--radius-sm);padding:14px;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px}
+.cart-send:hover{background:#1fb855}
+.cart-send:disabled{background:#cfd3da;cursor:default}
+.cart-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
+
+/* ---------- PROFORMA MODAL ---------- */
+.modal-wrap{position:fixed;inset:0;background:rgba(14,19,32,.55);z-index:110;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .2s}
+.modal-wrap.show{opacity:1;visibility:visible}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:420px;padding:28px;transform:translateY(12px);transition:transform .2s}
+.modal-wrap.show .modal{transform:none}
+.modal h3{font-size:19px;font-weight:700;margin-bottom:6px}
+.modal p.sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.field input{width:100%;height:44px;border:1.5px solid var(--line-2);border-radius:var(--radius-sm);padding:0 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+.field input:focus{border-color:var(--brand)}
+.field input.err{border-color:#e2452f}
+.modal-actions{display:flex;gap:10px;margin-top:8px}
+.modal-actions button{flex:1;border-radius:var(--radius-sm);padding:13px;font-size:14px;font-weight:600;border:none}
+.btn-cancel{background:var(--surface);color:var(--ink-soft)}
+.btn-cancel:hover{background:#eceef1}
+.btn-confirm{background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-confirm:hover{background:#1fb855}
+@media(max-width:480px){.cart{width:100%;max-width:100%}}
+
+/* ---------- TOAST ---------- */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:13px 22px;border-radius:30px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;z-index:120;opacity:0;visibility:hidden;transition:all .25s;white-space:nowrap}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%)}
+.toast i{color:#4dd66f;font-size:17px}
 </style>
 </head>
 <body>
@@ -215,7 +284,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="nav-actions">
       <button class="nav-btn" aria-label="Mi cuenta"><i class="ti ti-user"></i></button>
       <button class="nav-btn" aria-label="Favoritos"><i class="ti ti-heart"></i></button>
-      <button class="nav-btn" aria-label="Carrito de compras"><i class="ti ti-shopping-cart"></i><span class="dot">0</span></button>
+      <button class="nav-btn" onclick="openCart()" aria-label="Carrito de compras"><i class="ti ti-shopping-cart"></i><span class="dot" id="cart-count">0</span></button>
     </div>
   </div>
 </header>
@@ -345,68 +414,339 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </footer>
 
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="cart" id="cart" aria-label="Carrito de compras">
+  <div class="cart-head">
+    <h3><i class="ti ti-shopping-cart"></i> Tu pedido</h3>
+    <button class="cart-close" onclick="closeCart()" aria-label="Cerrar carrito"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-total">
+      <b>Total</b>
+      <span class="amt" id="cart-total">$0</span>
+    </div>
+    <button class="cart-send" id="cart-send" onclick="openProforma()">
+      <i class="ti ti-brand-whatsapp" style="font-size:18px"></i> Enviar proforma por WhatsApp
+    </button>
+    <p class="cart-note">Generamos tu proforma y coordinamos el pago por transferencia o efectivo.</p>
+  </div>
+</aside>
+
+<!-- PROFORMA MODAL -->
+<div class="modal-wrap" id="modal" onclick="if(event.target===this)closeProforma()">
+  <div class="modal">
+    <h3>Completa tu proforma</h3>
+    <p class="sub">Ingresa tus datos para generar la proforma. Luego se abrirá WhatsApp con tu pedido listo para enviar.</p>
+    <div class="field">
+      <label for="f-nombre">Nombre completo</label>
+      <input type="text" id="f-nombre" placeholder="Ej. Juan Pérez" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="f-ciudad">Ciudad</label>
+      <input type="text" id="f-ciudad" placeholder="Ej. Guayaquil" autocomplete="address-level2">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeProforma()">Cancelar</button>
+      <button class="btn-confirm" onclick="sendProforma()"><i class="ti ti-brand-whatsapp" style="font-size:17px"></i> Generar y enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="ti ti-circle-check"></i> <span id="toast-msg">Agregado al carrito</span></div>
+
 <!-- WHATSAPP FLOAT -->
 <a href="https://wa.me/593999999999" target="_blank" class="wa-float" aria-label="Escríbenos por WhatsApp">
   <i class="ti ti-brand-whatsapp"></i>
 </a>
 
 <script>
-const products = [
-  {cat:'PC Armada', name:'PC Gamer Ryzen 7 5800XT · RTX 3070', price:1355, old:null, stars:5, reviews:24, badge:{t:'Más vendido',c:'hot'}, icon:'ti-device-desktop'},
-  {cat:'Refrigeración', name:'IceBurg 360mm Digital BK ARGB', price:95, old:null, stars:4, reviews:11, badge:{t:'Nuevo',c:'new'}, icon:'ti-snowflake'},
-  {cat:'Refrigeración', name:'Gamma 90 BK Blanco ARGB Cooler', price:45, old:53, stars:5, reviews:38, badge:{t:'-15%',c:'off'}, icon:'ti-wind'},
-  {cat:'Procesadores', name:'AMD Ryzen 5 5600X · 6 núcleos', price:120, old:null, stars:5, reviews:52, badge:null, icon:'ti-cpu'},
-  {cat:'Tarjetas gráficas', name:'NVIDIA RTX 4060 Ventus 2X 8GB', price:329, old:null, stars:5, reviews:19, badge:{t:'Nuevo',c:'new'}, icon:'ti-device-gamepad-2'},
-  {cat:'Memorias RAM', name:'Corsair Vengeance 32GB DDR5 6000', price:115, old:139, stars:5, reviews:41, badge:{t:'-17%',c:'off'}, icon:'ti-server-2'},
-  {cat:'Gabinetes', name:'NZXT H5 Flow ATX Mid Tower', price:99, old:null, stars:4, reviews:27, badge:null, icon:'ti-box'},
-  {cat:'Fuentes de poder', name:'EVGA 650W 80+ Gold Full Modular', price:89, old:null, stars:5, reviews:33, badge:{t:'Más vendido',c:'hot'}, icon:'ti-plug'},
-];
+/* ============================================================
+   CONFIGURACIÓN — Google Sheets como base de datos
+   ============================================================
+   Pega aquí el enlace CSV publicado de tu Google Sheet.
+   (Archivo → Compartir → Publicar en la web → CSV)
+   Si lo dejas vacío o falla, se usan los productos de respaldo.
+*/
+const SHEET_CSV_URL = ''; // ← pega aquí tu enlace CSV publicado
 
 const WHATSAPP = '593999999999';
 
-function star(n){return '★'.repeat(n)+'☆'.repeat(5-n);}
+/* Productos de respaldo: se muestran si la hoja no carga.
+   También sirven de referencia para las columnas de tu Sheet. */
+const FALLBACK = [
+  {cat:'PC Armada', name:'PC Gamer Ryzen 7 5800XT · RTX 3070', price:1355, old:'', stars:5, reviews:24, badge:'Más vendido', stock:3, icon:'ti-device-desktop'},
+  {cat:'Refrigeración', name:'IceBurg 360mm Digital BK ARGB', price:95, old:'', stars:4, reviews:11, badge:'Nuevo', stock:8, icon:'ti-snowflake'},
+  {cat:'Refrigeración', name:'Gamma 90 BK Blanco ARGB Cooler', price:45, old:53, stars:5, reviews:38, badge:'-15%', stock:12, icon:'ti-wind'},
+  {cat:'Procesadores', name:'AMD Ryzen 5 5600X · 6 núcleos', price:120, old:'', stars:5, reviews:52, badge:'', stock:5, icon:'ti-cpu'},
+  {cat:'Tarjetas gráficas', name:'NVIDIA RTX 4060 Ventus 2X 8GB', price:329, old:'', stars:5, reviews:19, badge:'Nuevo', stock:2, icon:'ti-device-gamepad-2'},
+  {cat:'Memorias RAM', name:'Corsair Vengeance 32GB DDR5 6000', price:115, old:139, stars:5, reviews:41, badge:'-17%', stock:0, icon:'ti-server-2'},
+  {cat:'Gabinetes', name:'NZXT H5 Flow ATX Mid Tower', price:99, old:'', stars:4, reviews:27, badge:'', stock:6, icon:'ti-box'},
+  {cat:'Fuentes de poder', name:'EVGA 650W 80+ Gold Full Modular', price:89, old:'', stars:5, reviews:33, badge:'Más vendido', stock:4, icon:'ti-plug'},
+];
 
-function render(){
-  const grid = document.getElementById('product-grid');
-  grid.innerHTML = products.map((p,i)=>{
-    const msg = encodeURIComponent(`Hola NetherPC 👋, me interesa: ${p.name}. ¿Está disponible?`);
-    return `
-    <article class="card reveal" style="--i:${i}">
-      ${p.badge?`<span class="badge badge-${p.badge.c}">${p.badge.t}</span>`:''}
-      <button class="card-fav" aria-label="Agregar a favoritos"><i class="ti ti-heart"></i></button>
-      <div class="card-img"><i class="ti ${p.icon}"></i></div>
-      <div class="card-body">
-        <p class="card-cat">${p.cat}</p>
-        <p class="card-name">${p.name}</p>
-        <div class="card-meta">
-          <span class="stars">${star(p.stars)}</span>
-          <span class="reviews">(${p.reviews})</span>
-          <span class="stock"><i class="ti ti-circle-check"></i> En stock</span>
-        </div>
-        <div class="price-row">
-          <span class="price">$${p.price.toLocaleString('en-US')}</span>
-          ${p.old?`<span class="price-old">$${p.old}</span>`:''}
-        </div>
-        <a href="https://wa.me/${WHATSAPP}?text=${msg}" target="_blank" class="card-cta">
-          <i class="ti ti-brand-whatsapp" style="font-size:15px"></i> Consultar
-        </a>
-      </div>
-    </article>`;
-  }).join('');
+/* Icono por defecto según categoría (si la hoja no especifica uno) */
+const CAT_ICON = {
+  'Procesadores':'ti-cpu', 'Tarjetas gráficas':'ti-device-gamepad-2',
+  'Memorias RAM':'ti-server-2', 'Placas base':'ti-circuit-board',
+  'Refrigeración':'ti-snowflake', 'Fuentes de poder':'ti-plug',
+  'Gabinetes':'ti-box', 'Laptops':'ti-device-laptop', 'PC Armada':'ti-device-desktop'
+};
+
+/* Color del badge según su texto */
+function badgeClass(t){
+  if(!t) return '';
+  const s = String(t).toLowerCase();
+  if(s.includes('vendido')) return 'hot';
+  if(s.includes('nuevo')) return 'new';
+  if(s.includes('%') || s.includes('oferta')) return 'off';
+  return 'new';
 }
-render();
 
-// Scroll reveal — aparición suave al entrar en pantalla (sin React, vanilla JS)
+function star(n){ n=Math.round(n)||0; return '★'.repeat(n)+'☆'.repeat(5-n); }
+
+/* Parser CSV sencillo (soporta comas dentro de comillas) */
+function parseCSV(text){
+  const rows = [];
+  const lines = text.trim().split(/\r?\n/);
+  const headers = splitCSVLine(lines[0]).map(h=>h.trim().toLowerCase());
+  for(let i=1;i<lines.length;i++){
+    if(!lines[i].trim()) continue;
+    const cells = splitCSVLine(lines[i]);
+    const obj = {};
+    headers.forEach((h,j)=> obj[h] = (cells[j]||'').trim());
+    rows.push(obj);
+  }
+  return rows;
+}
+function splitCSVLine(line){
+  const out=[]; let cur=''; let q=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){ if(q && line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+    else if(c===',' && !q){ out.push(cur); cur=''; }
+    else cur+=c;
+  }
+  out.push(cur);
+  return out;
+}
+
+/* Normaliza una fila de la hoja al formato que usa la web */
+function normalize(row){
+  return {
+    cat: row.categoria || row['categoría'] || row.cat || '',
+    name: row.nombre || row.name || '',
+    price: parseFloat(row.precio || row.price || 0) || 0,
+    old: row.precio_anterior || row['precio anterior'] || row.old || '',
+    stars: parseFloat(row.estrellas || row.stars || 5) || 5,
+    reviews: parseInt(row.resenas || row['reseñas'] || row.reviews || 0) || 0,
+    badge: row.etiqueta || row.badge || '',
+    stock: parseInt(row.stock || row.existencia || 0) || 0,
+    icon: row.icono || row.icon || ''
+  };
+}
+
+function cardHTML(p,i){
+  const icon = p.icon || CAT_ICON[p.cat] || 'ti-box';
+  const agotado = Number(p.stock) <= 0;
+  const bc = badgeClass(p.badge);
+  const stockHTML = agotado
+    ? `<span class="stock out"><i class="ti ti-circle-x"></i> Agotado</span>`
+    : `<span class="stock"><i class="ti ti-circle-check"></i> En stock</span>`;
+  const cta = agotado
+    ? `<button class="card-cta out" disabled><i class="ti ti-bell" style="font-size:15px"></i> Agotado</button>`
+    : `<button class="card-cta" onclick="addToCart(${i})"><i class="ti ti-shopping-cart" style="font-size:15px"></i> Agregar</button>`;
+  return `
+  <article class="card reveal${agotado?' is-out':''}" style="--i:${i}">
+    ${p.badge?`<span class="badge badge-${bc}">${p.badge}</span>`:''}
+    <button class="card-fav" aria-label="Agregar a favoritos"><i class="ti ti-heart"></i></button>
+    <div class="card-img"><i class="ti ${icon}"></i></div>
+    <div class="card-body">
+      <p class="card-cat">${p.cat}</p>
+      <p class="card-name">${p.name}</p>
+      <div class="card-meta">
+        <span class="stars">${star(p.stars)}</span>
+        <span class="reviews">(${p.reviews})</span>
+        ${stockHTML}
+      </div>
+      <div class="price-row">
+        <span class="price">$${Number(p.price).toLocaleString('en-US')}</span>
+        ${p.old?`<span class="price-old">$${p.old}</span>`:''}
+      </div>
+      ${cta}
+    </div>
+  </article>`;
+}
+
+let CATALOG = [];
+
+function render(list){
+  CATALOG = list;
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML = list.map((p,i)=>cardHTML(p,i)).join('');
+  observeReveal();
+}
+
+async function loadProducts(){
+  if(!SHEET_CSV_URL){ render(FALLBACK); return; }
+  try{
+    const res = await fetch(SHEET_CSV_URL, {cache:'no-store'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const csv = await res.text();
+    const rows = parseCSV(csv).map(normalize).filter(p=>p.name);
+    render(rows.length ? rows : FALLBACK);
+  }catch(err){
+    console.warn('No se pudo cargar la hoja, usando respaldo:', err);
+    render(FALLBACK);
+  }
+}
+
+/* Scroll reveal — aparición suave (vanilla JS, sin React) */
 const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-  });
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 },{threshold:.12, rootMargin:'0px 0px -40px 0px'});
 
-document.querySelectorAll('.trust, .cat-card, .build, .section-head, .card').forEach(el=>{
-  el.classList.add('reveal');
-  io.observe(el);
-});
+function observeReveal(){
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+}
+
+document.querySelectorAll('.trust, .cat-card, .build, .section-head').forEach(el=>el.classList.add('reveal'));
+observeReveal();
+loadProducts();
+
+/* ============================================================
+   CARRITO Y PROFORMA
+   ============================================================ */
+let CART = []; // {name, cat, price, icon, qty}
+
+function findIcon(p){ return p.icon || CAT_ICON[p.cat] || 'ti-box'; }
+
+function addToCart(i){
+  const p = CATALOG[i];
+  if(!p) return;
+  const existing = CART.find(x=>x.name===p.name);
+  if(existing){ existing.qty++; }
+  else { CART.push({name:p.name, cat:p.cat, price:Number(p.price), icon:findIcon(p), qty:1}); }
+  updateCart();
+  showToast(`${p.name} agregado`);
+}
+
+function changeQty(idx, delta){
+  CART[idx].qty += delta;
+  if(CART[idx].qty <= 0) CART.splice(idx,1);
+  updateCart();
+}
+
+function removeItem(idx){ CART.splice(idx,1); updateCart(); }
+
+function cartTotal(){ return CART.reduce((s,x)=>s + x.price*x.qty, 0); }
+function cartCount(){ return CART.reduce((s,x)=>s + x.qty, 0); }
+
+function updateCart(){
+  document.getElementById('cart-count').textContent = cartCount();
+  const body = document.getElementById('cart-body');
+  const foot = document.getElementById('cart-foot');
+  if(CART.length === 0){
+    body.innerHTML = `<div class="cart-empty"><i class="ti ti-shopping-cart-off"></i><b>Tu carrito está vacío</b><span>Agrega productos para armar tu pedido.</span></div>`;
+    foot.style.display = 'none';
+    return;
+  }
+  body.innerHTML = CART.map((x,idx)=>`
+    <div class="ci">
+      <div class="ci-img"><i class="ti ${x.icon}"></i></div>
+      <div class="ci-main">
+        <p class="ci-name">${x.name}</p>
+        <p class="ci-cat">${x.cat}</p>
+        <div class="ci-bottom">
+          <div class="qty">
+            <button onclick="changeQty(${idx},-1)" aria-label="Restar">−</button>
+            <span>${x.qty}</span>
+            <button onclick="changeQty(${idx},1)" aria-label="Sumar">+</button>
+          </div>
+          <span class="ci-price">$${(x.price*x.qty).toLocaleString('en-US')}</span>
+        </div>
+      </div>
+      <button class="ci-remove" onclick="removeItem(${idx})" aria-label="Quitar"><i class="ti ti-trash"></i></button>
+    </div>
+  `).join('');
+  document.getElementById('cart-total').textContent = '$' + cartTotal().toLocaleString('en-US');
+  foot.style.display = 'block';
+}
+
+function openCart(){ document.getElementById('cart').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
+function closeCart(){ document.getElementById('cart').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); }
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ---------- PROFORMA ---------- */
+function openProforma(){
+  if(CART.length===0) return;
+  document.getElementById('modal').classList.add('show');
+  setTimeout(()=>document.getElementById('f-nombre').focus(), 100);
+}
+function closeProforma(){
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('f-nombre').classList.remove('err');
+  document.getElementById('f-ciudad').classList.remove('err');
+}
+
+/* Número de proforma: PRO-AAMMDD-XXX */
+function proformaNumber(){
+  const d = new Date();
+  const y = String(d.getFullYear()).slice(2);
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  const rnd = Math.floor(100 + Math.random()*900);
+  return `PRO-${y}${m}${day}-${rnd}`;
+}
+function fechaHoy(){
+  const d = new Date();
+  return d.toLocaleDateString('es-EC', {day:'2-digit', month:'long', year:'numeric'});
+}
+
+function sendProforma(){
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const ciudad = document.getElementById('f-ciudad').value.trim();
+  let ok = true;
+  document.getElementById('f-nombre').classList.toggle('err', !nombre);
+  document.getElementById('f-ciudad').classList.toggle('err', !ciudad);
+  if(!nombre || !ciudad) return;
+
+  const num = proformaNumber();
+  const fecha = fechaHoy();
+  let msg = `*PROFORMA NETHERPC EC*\n`;
+  msg += `N°: ${num}\n`;
+  msg += `Fecha: ${fecha}\n`;
+  msg += `─────────────────\n`;
+  msg += `Cliente: ${nombre}\n`;
+  msg += `Ciudad: ${ciudad}\n`;
+  msg += `─────────────────\n`;
+  msg += `*DETALLE DEL PEDIDO:*\n\n`;
+  CART.forEach((x,i)=>{
+    msg += `${i+1}. ${x.name}\n`;
+    msg += `   ${x.qty} x $${x.price.toLocaleString('en-US')} = $${(x.price*x.qty).toLocaleString('en-US')}\n`;
+  });
+  msg += `\n─────────────────\n`;
+  msg += `*TOTAL: $${cartTotal().toLocaleString('en-US')}*\n`;
+  msg += `─────────────────\n\n`;
+  msg += `Pago: transferencia o efectivo.\n`;
+  msg += `Quedo atento para coordinar. ¡Gracias!`;
+
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  closeProforma();
+  closeCart();
+}
+
+updateCart();
 </script>
 
 </body>
