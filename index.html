@@ -272,17 +272,21 @@ button{font-family:inherit;cursor:pointer}
 .btn-confirm:hover{background:#1fb855}
 @media(max-width:480px){.cart{width:100%;max-width:100%}}
 
-/* ---------- RESEÑAS ---------- */
-.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media(max-width:900px){.reviews-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.reviews-grid{grid-template-columns:1fr}}
-.review{border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;gap:14px;background:#fff;transition:all .18s}
+/* ---------- RESEÑAS (masonry intercalado) ---------- */
+.reviews-masonry{columns:3;column-gap:18px}
+@media(max-width:900px){.reviews-masonry{columns:2}}
+@media(max-width:600px){.reviews-masonry{columns:1}}
+.review{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:#fff;transition:all .18s;break-inside:avoid;margin-bottom:18px;display:inline-block;width:100%}
 .review:hover{border-color:#cdd3dc;box-shadow:var(--shadow)}
-.review-stars{color:#ffb400;font-size:15px;letter-spacing:1px}
-.review-text{font-size:14px;color:var(--ink-soft);line-height:1.6;flex:1}
+.review-stars{color:#ffb400;font-size:15px;letter-spacing:1px;margin-bottom:12px}
+.review-photo-box{width:100%;border-radius:10px;background:var(--surface);margin-bottom:14px;display:flex;align-items:center;justify-content:center;color:#c0c4cc;overflow:hidden;border:1px dashed #d4d7de}
+.review-photo-box img{width:100%;height:100%;object-fit:cover;display:block}
+.review-photo-box .ph{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px 0;font-size:12px}
+.review-photo-box .ph i{font-size:32px}
+.review-text{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px}
 .review-user{display:flex;align-items:center;gap:12px}
-.review-photo{width:46px;height:46px;border-radius:50%;object-fit:cover;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#aeb6c8;font-size:22px;overflow:hidden}
-.review-photo img{width:100%;height:100%;object-fit:cover}
+.review-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#aeb6c8;font-size:20px;overflow:hidden}
+.review-avatar img{width:100%;height:100%;object-fit:cover}
 .review-name{font-size:14px;font-weight:600;color:var(--ink)}
 .review-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
 .review-meta i{font-size:13px;color:var(--ok)}
@@ -350,21 +354,6 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </header>
 
-<!-- CATEGORY BAR -->
-<nav class="catbar">
-  <div class="container">
-    <a href="#armar" class="cat feat"><i class="ti ti-tool"></i> Arma tu PC</a>
-    <a href="#" class="cat"><i class="ti ti-cpu"></i> Procesadores</a>
-    <a href="#" class="cat"><i class="ti ti-device-desktop"></i> Tarjetas gráficas</a>
-    <a href="#" class="cat"><i class="ti ti-server"></i> Memorias RAM</a>
-    <a href="#" class="cat"><i class="ti ti-cpu-2"></i> Placas base</a>
-    <a href="#" class="cat"><i class="ti ti-wind"></i> Refrigeración</a>
-    <a href="#" class="cat"><i class="ti ti-plug"></i> Fuentes de poder</a>
-    <a href="#" class="cat"><i class="ti ti-box"></i> Gabinetes</a>
-    <a href="#" class="cat"><i class="ti ti-device-laptop"></i> Laptops</a>
-  </div>
-</nav>
-
 <main class="container">
 
   <!-- HERO -->
@@ -422,43 +411,95 @@ button{font-family:inherit;cursor:pointer}
   <!-- RESEÑAS -->
   <section class="section">
     <div class="section-head"><h2>Lo que dicen nuestros clientes</h2></div>
-    <div class="reviews-grid">
+    <div class="reviews-masonry">
+
+      <!-- Con foto (vertical) -->
       <div class="review">
+        <div class="review-photo-box" style="aspect-ratio:3/4">
+          <img src="img/resena-1.jpg" alt="" onerror="this.parentElement.innerHTML='<div class=\'ph\'><i class=\'ti ti-photo\'></i>Foto del cliente</div>'">
+        </div>
         <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Me armaron mi PC gamer completa y quedó increíble. La asesoría por WhatsApp fue rapidísima y me ayudaron a elegir las piezas según mi presupuesto. 100% recomendados."</p>
+        <p class="review-text">"Me armaron mi PC gamer completa y quedó increíble. La asesoría por WhatsApp fue rapidísima y me ayudaron a elegir las piezas según mi presupuesto."</p>
         <div class="review-user">
-          <!-- Reemplaza por foto: img/resena-1.jpg -->
-          <div class="review-photo"><img src="img/resena-1.jpg" alt="" onerror="this.parentElement.innerHTML='<i class=\'ti ti-user\'></i>'"></div>
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
           <div>
             <div class="review-name">Carlos Mendoza</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Compra verificada · Guayaquil</div>
+            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Guayaquil</div>
           </div>
         </div>
       </div>
 
+      <!-- Sin foto -->
       <div class="review">
         <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Excelente atención y precios justos. Pedí una tarjeta gráfica y llegó al día siguiente en perfecto estado. Sin duda volveré a comprar aquí mis próximos componentes."</p>
+        <p class="review-text">"Excelente atención y precios justos. Pedí una tarjeta gráfica y llegó al día siguiente en perfecto estado. Volveré a comprar aquí mis próximos componentes."</p>
         <div class="review-user">
-          <div class="review-photo"><img src="img/resena-2.jpg" alt="" onerror="this.parentElement.innerHTML='<i class=\'ti ti-user\'></i>'"></div>
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
           <div>
             <div class="review-name">Andrea Vera</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Compra verificada · Milagro</div>
+            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Milagro</div>
           </div>
         </div>
       </div>
 
+      <!-- Con foto (horizontal) -->
       <div class="review">
+        <div class="review-photo-box" style="aspect-ratio:16/10">
+          <img src="img/resena-2.jpg" alt="" onerror="this.parentElement.innerHTML='<div class=\'ph\'><i class=\'ti ti-photo\'></i>Foto del cliente</div>'">
+        </div>
         <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Lo mejor es que te explican todo sin complicaciones. Soy nuevo en esto del hardware y me asesoraron con paciencia. Mi setup quedó espectacular y dentro del presupuesto."</p>
+        <p class="review-text">"Mi setup quedó espectacular. Me explicaron todo sin complicaciones y dentro del presupuesto que tenía."</p>
         <div class="review-user">
-          <div class="review-photo"><img src="img/resena-3.jpg" alt="" onerror="this.parentElement.innerHTML='<i class=\'ti ti-user\'></i>'"></div>
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
           <div>
             <div class="review-name">Joel Paredes</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Compra verificada · Durán</div>
+            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Durán</div>
           </div>
         </div>
       </div>
+
+      <!-- Sin foto -->
+      <div class="review">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Muy buena experiencia. Tenían el procesador que buscaba a mejor precio que en otras tiendas de Guayaquil. Recomendados."</p>
+        <div class="review-user">
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
+          <div>
+            <div class="review-name">Steven Cabrera</div>
+            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Samborondón</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Con foto (cuadrada) -->
+      <div class="review">
+        <div class="review-photo-box" style="aspect-ratio:1/1">
+          <img src="img/resena-3.jpg" alt="" onerror="this.parentElement.innerHTML='<div class=\'ph\'><i class=\'ti ti-photo\'></i>Foto del cliente</div>'">
+        </div>
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Compré un combo de refrigeración líquida y gabinete. Todo original, con garantía y me ayudaron con la instalación."</p>
+        <div class="review-user">
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
+          <div>
+            <div class="review-name">Doménica Ruiz</div>
+            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Guayaquil</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin foto -->
+      <div class="review">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"La mejor tienda de hardware de la zona. Atención personalizada de gente que de verdad sabe. Mi PC vuela."</p>
+        <div class="review-user">
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
+          <div>
+            <div class="review-name">Mateo Salazar</div>
+            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Naranjito</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -541,22 +582,22 @@ button{font-family:inherit;cursor:pointer}
 
   <div class="drawer-section">
     <a href="#armar" class="drawer-link" onclick="closeDrawer()"><i class="ti ti-tool"></i> Arma tu PC</a>
-    <a href="#" class="drawer-link"><i class="ti ti-device-laptop"></i> Laptops Gamer</a>
-    <a href="#" class="drawer-link"><i class="ti ti-news"></i> Blog</a>
-    <a href="#" class="drawer-link promo"><i class="ti ti-discount"></i> Promos y descuentos</a>
+    <a href="catalogo.html?cat=Laptops" class="drawer-link"><i class="ti ti-device-laptop"></i> Laptops Gamer</a>
+    <a href="catalogo.html" class="drawer-link"><i class="ti ti-apps"></i> Ver todo el catálogo</a>
+    <a href="catalogo.html?promo=1" class="drawer-link promo"><i class="ti ti-discount"></i> Promos y descuentos</a>
   </div>
 
   <div class="drawer-section">
     <p class="drawer-label">Nuestros productos</p>
-    <a href="#" class="drawer-link"><i class="ti ti-cpu"></i> Procesadores</a>
-    <a href="#" class="drawer-link"><i class="ti ti-device-gamepad-2"></i> Tarjetas gráficas</a>
-    <a href="#" class="drawer-link"><i class="ti ti-server-2"></i> Memorias RAM</a>
-    <a href="#" class="drawer-link"><i class="ti ti-cpu-2"></i> Placas base</a>
-    <a href="#" class="drawer-link"><i class="ti ti-snowflake"></i> Refrigeración</a>
-    <a href="#" class="drawer-link"><i class="ti ti-plug"></i> Fuentes de poder</a>
-    <a href="#" class="drawer-link"><i class="ti ti-box"></i> Gabinetes</a>
-    <a href="#" class="drawer-link"><i class="ti ti-device-desktop"></i> Monitores</a>
-    <a href="#" class="drawer-link"><i class="ti ti-keyboard"></i> Teclados y mouse</a>
+    <a href="catalogo.html?cat=Procesadores" class="drawer-link"><i class="ti ti-cpu"></i> Procesadores</a>
+    <a href="catalogo.html?cat=Tarjetas%20gráficas" class="drawer-link"><i class="ti ti-device-gamepad-2"></i> Tarjetas gráficas</a>
+    <a href="catalogo.html?cat=Memorias%20RAM" class="drawer-link"><i class="ti ti-server-2"></i> Memorias RAM</a>
+    <a href="catalogo.html?cat=Placas%20base" class="drawer-link"><i class="ti ti-cpu-2"></i> Placas base</a>
+    <a href="catalogo.html?cat=Refrigeración" class="drawer-link"><i class="ti ti-snowflake"></i> Refrigeración</a>
+    <a href="catalogo.html?cat=Fuentes%20de%20poder" class="drawer-link"><i class="ti ti-plug"></i> Fuentes de poder</a>
+    <a href="catalogo.html?cat=Gabinetes" class="drawer-link"><i class="ti ti-box"></i> Gabinetes</a>
+    <a href="catalogo.html?cat=Monitores" class="drawer-link"><i class="ti ti-device-desktop"></i> Monitores</a>
+    <a href="catalogo.html?cat=Teclados" class="drawer-link"><i class="ti ti-keyboard"></i> Teclados y mouse</a>
   </div>
 
   <div class="drawer-section">
@@ -814,6 +855,19 @@ rail.addEventListener('mousemove', e=>{
 });
 /* Evitar que un arrastre dispare el click de "Agregar" */
 rail.addEventListener('click', e=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+
+/* Scroll horizontal con la rueda del mouse */
+rail.addEventListener('wheel', e=>{
+  if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+    const atStart = rail.scrollLeft <= 0;
+    const atEnd = rail.scrollLeft >= rail.scrollWidth - rail.clientWidth - 1;
+    // Solo capturar el scroll si hay a dónde moverse en esa dirección
+    if((e.deltaY < 0 && !atStart) || (e.deltaY > 0 && !atEnd)){
+      e.preventDefault();
+      rail.scrollLeft += e.deltaY;
+    }
+  }
+}, {passive:false});
 
 /* ============================================================
    CARRITO Y PROFORMA
