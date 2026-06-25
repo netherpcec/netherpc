@@ -704,18 +704,26 @@ function splitCSVLine(line){
 }
 
 /* Normaliza una fila de la hoja al formato que usa la web */
+/* Limpia precios con $ , espacios y comas: "$1,380.00" -> 1380.00 */
+function num(v){
+  if(v===null || v===undefined) return 0;
+  const s = String(v).replace(/[^0-9.,-]/g,'').replace(/,/g,'');
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
 function normalize(row){
   return {
-    cat: row.categoria || row['categoría'] || row.cat || '',
-    name: row.nombre || row.name || '',
-    price: parseFloat(row.precio || row.price || 0) || 0,
-    old: row.precio_anterior || row['precio anterior'] || row.old || '',
-    stars: parseFloat(row.estrellas || row.stars || 5) || 5,
+    cat: (row.categoria || row['categoría'] || row.cat || '').trim(),
+    name: (row.nombre || row.name || '').trim(),
+    price: num(row.precio || row['precio público'] || row['precio publico'] || row.price),
+    old: (row.precio_anterior || row['precio anterior'] || row.old) ? num(row.precio_anterior || row['precio anterior'] || row.old) : '',
+    stars: num(row.estrellas || row.stars) || 5,
     reviews: parseInt(row.resenas || row['reseñas'] || row.reviews || 0) || 0,
-    badge: row.etiqueta || row.badge || '',
-    stock: parseInt(row.stock || row.existencia || 0) || 0,
-    icon: row.icono || row.icon || '',
-    img: row.imagen || row.img || row.foto || ''
+    badge: (row.etiqueta || row.badge || '').trim(),
+    stock: parseInt(num(row.stock || row.existencia)) || 0,
+    icon: (row.icono || row.icon || '').trim(),
+    img: (row.imagen || row.img || row.foto || '').trim()
   };
 }
 
