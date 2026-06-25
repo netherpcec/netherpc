@@ -671,13 +671,11 @@ button{font-family:inherit;cursor:pointer}
 
 <script>
 /* ============================================================
-   CONFIGURACIÓN — Google Sheets como base de datos
-   ============================================================
-   Pega aquí el enlace CSV publicado de tu Google Sheet.
-   (Archivo → Compartir → Publicar en la web → CSV)
-   Si lo dejas vacío o falla, se usan los productos de respaldo.
-*/
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSseC4UROA-OYfzs5JS4FMHza7moz4YUCyUtM7xCGR3bnvu3snMQGEtJjSkyOn71micH4vIA5AX8TUI/pub?gid=329014186&single=true&output=csv'; // Google Sheet publicada
+   CONFIGURACIÓN — Supabase como base de datos
+   ============================================================ */
+const SUPABASE_URL = 'https://nbvbjulnqczwweuqgebk.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bodORUr420PZJCi0l5VxTQ_kUa-Xi-I';
+const SUPABASE_TABLE = 'productos';
 
 const WHATSAPP = '593978602972';
 
@@ -851,14 +849,23 @@ function writeCache(data){
 }
 
 async function fetchSheet(){
-  const res = await fetch(SHEET_CSV_URL);
+  // Lee los productos desde Supabase (REST API)
+  const url = SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE +
+              '?select=*&order=creado_en.asc';
+  const res = await fetch(url, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY
+    }
+  });
   if(!res.ok) throw new Error('HTTP '+res.status);
-  const rows = parseCSV(await res.text()).map(normalize).filter(p=>p.name);
+  const data = await res.json();
+  const rows = data.map(normalize).filter(p=>p.name);
   return rows.length ? rows : FALLBACK;
 }
 
 async function loadProducts(){
-  if(!SHEET_CSV_URL){ render(FALLBACK); return; }
+  if(!SUPABASE_URL){ render(FALLBACK); return; }
 
   const cached = readCache();
   // 1. Si hay caché, mostrarla YA (instantáneo)
