@@ -870,17 +870,18 @@ async function loadProducts(){
   // 1. Si hay caché, mostrarla YA (instantáneo)
   if(cached){
     render(cached.data);
-    // 2. Si la caché es reciente (< 30 min), no molestamos a Google
-    if(Date.now() - cached.ts < CACHE_MAX_AGE) return;
   } else {
     showSkeletons(); // primera vez: esqueletos mientras carga
   }
 
-  // 3. Buscar datos frescos (primera vez, o caché vencida)
+  // 2. SIEMPRE revalida con la hoja por detrás (tiempo real)
   try{
     const fresh = await fetchSheet();
-    writeCache(fresh);
-    render(fresh); // actualiza en silencio
+    // Solo re-renderiza si los datos cambiaron (evita parpadeo)
+    if(!cached || JSON.stringify(fresh) !== JSON.stringify(cached.data)){
+      writeCache(fresh);
+      render(fresh);
+    }
   }catch(err){
     if(!cached) render(FALLBACK); // sin caché y sin red → respaldo
   }
