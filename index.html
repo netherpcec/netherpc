@@ -412,11 +412,15 @@ button{font-family:inherit;cursor:pointer}
       <a href="catalogo.html?cat=Procesadores" class="cat-card"><div class="ico"><i class="ti ti-cpu"></i></div><div><b>Procesadores</b><br><span>AMD · Intel</span></div></a>
       <a href="catalogo.html?cat=Tarjetas%20gráficas" class="cat-card"><div class="ico"><i class="ti ti-device-gamepad-2"></i></div><div><b>Tarjetas gráficas</b><br><span>NVIDIA · Radeon</span></div></a>
       <a href="catalogo.html?cat=Memorias%20RAM" class="cat-card"><div class="ico"><i class="ti ti-server-2"></i></div><div><b>Memorias RAM</b><br><span>DDR4 · DDR5</span></div></a>
-      <a href="catalogo.html?cat=Refrigeración" class="cat-card"><div class="ico"><i class="ti ti-snowflake"></i></div><div><b>Refrigeración</b><br><span>Aire · Líquida</span></div></a>
+      <a href="catalogo.html?cat=Almacenamiento" class="cat-card"><div class="ico"><i class="ti ti-database"></i></div><div><b>Almacenamiento</b><br><span>SSD · HDD · M.2</span></div></a>
       <a href="catalogo.html?cat=Placas%20base" class="cat-card"><div class="ico"><i class="ti ti-cpu-2"></i></div><div><b>Placas base</b><br><span>ATX · mATX</span></div></a>
+      <a href="catalogo.html?cat=Refrigeración" class="cat-card"><div class="ico"><i class="ti ti-snowflake"></i></div><div><b>Refrigeración</b><br><span>Aire · Líquida</span></div></a>
       <a href="catalogo.html?cat=Fuentes%20de%20poder" class="cat-card"><div class="ico"><i class="ti ti-plug"></i></div><div><b>Fuentes de poder</b><br><span>80+ Bronze a Gold</span></div></a>
       <a href="catalogo.html?cat=Gabinetes" class="cat-card"><div class="ico"><i class="ti ti-box"></i></div><div><b>Gabinetes</b><br><span>Mid · Full Tower</span></div></a>
+      <a href="catalogo.html?cat=Periféricos" class="cat-card"><div class="ico"><i class="ti ti-mouse"></i></div><div><b>Periféricos</b><br><span>Mouse · Teclados</span></div></a>
+      <a href="catalogo.html?cat=Sillas%20Gamer" class="cat-card"><div class="ico"><i class="ti ti-armchair"></i></div><div><b>Sillas Gamer</b><br><span>Ergonómicas</span></div></a>
       <a href="catalogo.html?cat=Laptops" class="cat-card"><div class="ico"><i class="ti ti-device-laptop"></i></div><div><b>Laptops Gamer</b><br><span>Portátiles</span></div></a>
+      <a href="catalogo.html" class="cat-card"><div class="ico"><i class="ti ti-apps"></i></div><div><b>Ver todo</b><br><span>Catálogo completo</span></div></a>
     </div>
   </section>
 
@@ -608,6 +612,9 @@ button{font-family:inherit;cursor:pointer}
     <a href="catalogo.html?cat=Refrigeración" class="drawer-link"><i class="ti ti-snowflake"></i> Refrigeración</a>
     <a href="catalogo.html?cat=Fuentes%20de%20poder" class="drawer-link"><i class="ti ti-plug"></i> Fuentes de poder</a>
     <a href="catalogo.html?cat=Gabinetes" class="drawer-link"><i class="ti ti-box"></i> Gabinetes</a>
+    <a href="catalogo.html?cat=Almacenamiento" class="drawer-link"><i class="ti ti-database"></i> Almacenamiento</a>
+    <a href="catalogo.html?cat=Periféricos" class="drawer-link"><i class="ti ti-mouse"></i> Periféricos</a>
+    <a href="catalogo.html?cat=Sillas%20Gamer" class="drawer-link"><i class="ti ti-armchair"></i> Sillas Gamer</a>
     <a href="catalogo.html?cat=Monitores" class="drawer-link"><i class="ti ti-device-desktop"></i> Monitores</a>
     <a href="catalogo.html?cat=Teclados" class="drawer-link"><i class="ti ti-keyboard"></i> Teclados y mouse</a>
   </div>
@@ -674,21 +681,44 @@ button{font-family:inherit;cursor:pointer}
    (Archivo → Compartir → Publicar en la web → CSV)
    Si lo dejas vacío o falla, se usan los productos de respaldo.
 */
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSxmgtzkgRTNSP8UKQlWwOY6UVrudn3KaiHtcT1Z7vuqu2ZoGCkiTqwzO2yyH_KPUVwIZfLYOh773Ct/pub?gid=1471016159&single=true&output=csv'; // Google Sheet publicada
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSseC4UROA-OYfzs5JS4FMHza7moz4YUCyUtM7xCGR3bnvu3snMQGEtJjSkyOn71micH4vIA5AX8TUI/pub?gid=329014186&single=true&output=csv'; // Google Sheet publicada
 
 const WHATSAPP = '593999999999';
 
 /* Productos de respaldo: se muestran si la hoja no carga.
    También sirven de referencia para las columnas de tu Sheet. */
 const FALLBACK = [
-  {cat:'PC Armada', name:'PC Gamer Ryzen 7 5800XT · RTX 3070', price:1355, old:'', stars:5, reviews:24, badge:'Más vendido', stock:3, icon:'ti-device-desktop'},
-  {cat:'Refrigeración', name:'IceBurg 360mm Digital BK ARGB', price:95, old:'', stars:4, reviews:11, badge:'Nuevo', stock:8, icon:'ti-snowflake'},
-  {cat:'Refrigeración', name:'Gamma 90 BK Blanco ARGB Cooler', price:45, old:53, stars:5, reviews:38, badge:'-15%', stock:12, icon:'ti-wind'},
-  {cat:'Procesadores', name:'AMD Ryzen 5 5600X · 6 núcleos', price:120, old:'', stars:5, reviews:52, badge:'', stock:5, icon:'ti-cpu'},
-  {cat:'Tarjetas gráficas', name:'NVIDIA RTX 4060 Ventus 2X 8GB', price:329, old:'', stars:5, reviews:19, badge:'Nuevo', stock:2, icon:'ti-device-gamepad-2'},
-  {cat:'Memorias RAM', name:'Corsair Vengeance 32GB DDR5 6000', price:115, old:139, stars:5, reviews:41, badge:'-17%', stock:0, icon:'ti-server-2'},
-  {cat:'Gabinetes', name:'NZXT H5 Flow ATX Mid Tower', price:99, old:'', stars:4, reviews:27, badge:'', stock:6, icon:'ti-box'},
-  {cat:'Fuentes de poder', name:'EVGA 650W 80+ Gold Full Modular', price:89, old:'', stars:5, reviews:33, badge:'Más vendido', stock:4, icon:'ti-plug'},
+  {cat:'Periféricos', name:'Mause Ajazz AJ179/Apex Sensor Paw 3950 blanco', price:63, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Periféricos', name:'Ajazz Nk61 Teclado/switch red', price:32, old:'', stars:5, reviews:0, badge:'', stock:4, icon:''},
+  {cat:'Periféricos', name:'Mause Ajazz AJ179/ Pro Sensor Paw 3395 negro', price:58, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Periféricos', name:'MG MAD 60HE Amber Pro Switch rgb', price:69, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Periféricos', name:'MG MAD 60HE Amber Switch Yellow', price:46, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Tarjetas gráficas', name:'RTX EVGA 2070Super 8gb', price:284, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Almacenamiento', name:'SSD 120 Ymetion', price:34, old:'', stars:5, reviews:0, badge:'', stock:16, icon:''},
+  {cat:'Almacenamiento', name:'HDD 2TB WESTER DIGITAL PURPLE(NUEVO)', price:77, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Almacenamiento', name:'HDD 1tb Varios WesterDIGITAL (USADOS)', price:40, old:'', stars:5, reviews:0, badge:'', stock:4, icon:''},
+  {cat:'Almacenamiento', name:'HDD 2TB WESTER DIGITAL PURPLE(USADO)', price:52, old:'', stars:5, reviews:0, badge:'', stock:5, icon:''},
+  {cat:'Almacenamiento', name:'SSD M.2 512GB Varios (USADOS)', price:122, old:'', stars:5, reviews:0, badge:'', stock:3, icon:''},
+  {cat:'Memorias RAM', name:'32GB RAM GSKILL ROYAL 3000MTS 4X8GB', price:121, old:'', stars:5, reviews:0, badge:'', stock:4, icon:''},
+  {cat:'Memorias RAM', name:'16gb Ram Thermaltake 4000mts 2x8gb', price:81, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Gabinetes', name:'Case Gamer Azza Neptune AZ-491', price:81, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Refrigeración', name:'AIO COOLER 240MM DEPCOOL (USADA)', price:64, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Fuentes de poder', name:'Corsair Cx650w ATX 80 BRONZE', price:77, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Memorias RAM', name:'Corsair Vengeance 16gb DDR5 5200mts', price:145, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Placas base', name:'Asus Prime A620M-K', price:102, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Almacenamiento', name:'SSD WESTER DIGITAL GREEN 500GB', price:112, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Procesadores', name:'Ryzen 5 8500g', price:192, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Sillas Gamer', name:'xtech silla ghost spider', price:140, old:'', stars:5, reviews:0, badge:'', stock:0, icon:''},
+  {cat:'Periféricos', name:'Logitech G203 NEGRO Y BLANCO', price:26, old:'', stars:5, reviews:0, badge:'', stock:6, icon:''},
+  {cat:'Periféricos', name:'Logitech G305 NEGRO Y BLANCO', price:49, old:'', stars:5, reviews:0, badge:'', stock:6, icon:''},
+  {cat:'Tarjetas gráficas', name:'RTX 5060 TI MSI GAMING TRIO WHITE 8GB', price:696, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Procesadores', name:'RYZEN 5 7600X', price:219, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Placas base', name:'Asus ROG Strix b650E-i wifi 6', price:204, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Memorias RAM', name:'Vulkanz red ddr5 16gb 6000mts', price:236, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Tarjetas gráficas', name:'Asus ROG Strix RTX 4070 TI SUPER 16GB (DETALLE)', price:825, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Tarjetas gráficas', name:'ASUS DUAL 3070 8GB', price:355, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Laptops', name:'Asus Rog Strix G16 I9 14400HX RTX 4070 16GB 1TB', price:1380, old:'', stars:5, reviews:0, badge:'', stock:0, icon:''},
+  {cat:'Fuentes de poder', name:'CV750 CORSAIR', price:60, old:'', stars:5, reviews:0, badge:'', stock:0, icon:''},
 ];
 
 /* Icono por defecto según categoría (si la hoja no especifica uno) */
@@ -696,7 +726,9 @@ const CAT_ICON = {
   'Procesadores':'ti-cpu', 'Tarjetas gráficas':'ti-device-gamepad-2',
   'Memorias RAM':'ti-server-2', 'Placas base':'ti-cpu-2',
   'Refrigeración':'ti-snowflake', 'Fuentes de poder':'ti-plug',
-  'Gabinetes':'ti-box', 'Laptops':'ti-device-laptop', 'PC Armada':'ti-device-desktop'
+  'Gabinetes':'ti-box', 'Laptops':'ti-device-laptop', 'PC Armada':'ti-device-desktop',
+  'Almacenamiento':'ti-database', 'Periféricos':'ti-mouse', 'Sillas Gamer':'ti-armchair',
+  'Monitores':'ti-device-desktop', 'Teclados':'ti-keyboard'
 };
 
 /* Color del badge según su texto */
