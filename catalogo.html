@@ -161,11 +161,7 @@ button{font-family:inherit;cursor:pointer}
 .price-old{font-size:13px;color:#b0b4be;text-decoration:line-through}
 .card-cta{width:100%;background:var(--brand);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
 .card-cta:hover{background:var(--brand-dark)}
-.stock.out{color:#b0440f}
-.card-cta.out{background:#eef0f3;color:#5a6072;cursor:default}
-.card-cta.out:hover{background:#eef0f3}
-.card.is-out .card-img{opacity:.5}
-.card.is-out .card-name{color:#8a909e}
+.stock.pedido{color:#c77700}
 
 /* ---------- CATEGORIES SECTION ---------- */
 .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
@@ -729,19 +725,17 @@ function normalize(row){
 
 function cardHTML(p,i){
   const icon = p.icon || CAT_ICON[p.cat] || 'ti-box';
-  const agotado = Number(p.stock) <= 0;
+  const bajoPedido = Number(p.stock) <= 0;
   const bc = badgeClass(p.badge);
-  const stockHTML = agotado
-    ? `<span class="stock out"><i class="ti ti-circle-x"></i> Agotado</span>`
+  const stockHTML = bajoPedido
+    ? `<span class="stock pedido"><i class="ti ti-clock-hour-4"></i> Bajo pedido</span>`
     : `<span class="stock"><i class="ti ti-circle-check"></i> En stock</span>`;
-  const cta = agotado
-    ? `<button class="card-cta out" disabled><i class="ti ti-bell" style="font-size:15px"></i> Agotado</button>`
-    : `<button class="card-cta" onclick="addToCart(${i})"><i class="ti ti-shopping-cart" style="font-size:15px"></i> Agregar</button>`;
+  const cta = `<button class="card-cta" onclick="addToCart(${i})"><i class="ti ti-shopping-cart" style="font-size:15px"></i> Agregar</button>`;
   const imgHTML = p.img
     ? `<img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='&lt;i class=\\'ti ${icon}\\'&gt;&lt;/i&gt;'">`
     : `<i class="ti ${icon}"></i>`;
   return `
-  <article class="card reveal${agotado?' is-out':''}" style="--i:${i}">
+  <article class="card reveal" style="--i:${i}">
     ${p.badge?`<span class="badge badge-${bc}">${p.badge}</span>`:''}
     <button class="card-fav" aria-label="Agregar a favoritos"><i class="ti ti-heart"></i></button>
     <div class="card-img">${imgHTML}</div>
