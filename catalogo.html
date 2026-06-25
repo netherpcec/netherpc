@@ -908,15 +908,18 @@ async function loadCatalog(){
   const cached = readCache();
   if(cached){
     showCatalog(cached.data);                       // instantáneo
-    if(Date.now() - cached.ts < CACHE_MAX_AGE) return;
   } else {
     showSkeletons();                                // primera vez: esqueletos
   }
 
+  // SIEMPRE revalida con la hoja por detrás (tiempo real)
   try{
     const fresh = await fetchSheet();
-    writeCache(fresh);
-    showCatalog(fresh);
+    // Solo actualiza si cambió, preservando los filtros activos del usuario
+    if(!cached || JSON.stringify(fresh) !== JSON.stringify(cached.data)){
+      writeCache(fresh);
+      showCatalog(fresh);
+    }
   }catch(e){
     if(!cached) showCatalog(FALLBACK);
   }
