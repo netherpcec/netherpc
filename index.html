@@ -120,6 +120,18 @@ button{font-family:inherit;cursor:pointer}
 @media(max-width:680px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
 
 /* Carrusel horizontal de destacados */
+/* Esqueletos de carga (shimmer) */
+.skeleton{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;flex:0 0 250px;width:250px}
+.sk-img{height:160px;background:#eef0f3}
+.sk-body{padding:14px 16px 16px}
+.sk-line{height:12px;border-radius:6px;background:#eef0f3;margin-bottom:10px}
+.sk-line.w60{width:60%}.sk-line.w40{width:40%}.sk-line.w80{width:80%}
+.sk-btn{height:38px;border-radius:8px;background:#eef0f3;margin-top:6px}
+.sk-img,.sk-line,.sk-btn{position:relative;overflow:hidden}
+.sk-img::after,.sk-line::after,.sk-btn::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:shimmer 1.3s infinite}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.sk-img::after,.sk-line::after,.sk-btn::after{animation:none}}
+
 .rail-wrap{position:relative}
 .rail{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px 16px;scrollbar-width:thin;scrollbar-color:#cdd3dc transparent;cursor:grab}
 .rail.dragging{cursor:grabbing;scroll-behavior:auto}
@@ -786,18 +798,61 @@ function render(list){
   if(typeof updateRailButtons === 'function') setTimeout(updateRailButtons, 50);
 }
 
+/* ===== CARGA CON CACHÉ (stale-while-revalidate) =====
+   Muestra al instante lo guardado y refresca por detrás cada 30 min. */
+const CACHE_KEY = 'netherpc_products';
+const CACHE_MAX_AGE = 30 * 60 * 1000; // 30 minutos
+
+function readCache(){
+  try{
+    const raw = localStorage.getItem(CACHE_KEY);
+    if(!raw) return null;
+    const obj = JSON.parse(raw);
+    if(!obj || !Array.isArray(obj.data)) return null;
+    return obj; // {data, ts}
+  }catch(e){ return null; }
+}
+function writeCache(data){
+  try{ localStorage.setItem(CACHE_KEY, JSON.stringify({data, ts:Date.now()})); }catch(e){}
+}
+
+async function fetchSheet(){
+  const res = await fetch(SHEET_CSV_URL);
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  const rows = parseCSV(await res.text()).map(normalize).filter(p=>p.name);
+  return rows.length ? rows : FALLBACK;
+}
+
 async function loadProducts(){
   if(!SHEET_CSV_URL){ render(FALLBACK); return; }
-  try{
-    const res = await fetch(SHEET_CSV_URL, {cache:'no-store'});
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const csv = await res.text();
-    const rows = parseCSV(csv).map(normalize).filter(p=>p.name);
-    render(rows.length ? rows : FALLBACK);
-  }catch(err){
-    console.warn('No se pudo cargar la hoja, usando respaldo:', err);
-    render(FALLBACK);
+
+  const cached = readCache();
+  // 1. Si hay caché, mostrarla YA (instantáneo)
+  if(cached){
+    render(cached.data);
+    // 2. Si la caché es reciente (< 30 min), no molestamos a Google
+    if(Date.now() - cached.ts < CACHE_MAX_AGE) return;
+  } else {
+    showSkeletons(); // primera vez: esqueletos mientras carga
   }
+
+  // 3. Buscar datos frescos (primera vez, o caché vencida)
+  try{
+    const fresh = await fetchSheet();
+    writeCache(fresh);
+    render(fresh); // actualiza en silencio
+  }catch(err){
+    if(!cached) render(FALLBACK); // sin caché y sin red → respaldo
+  }
+}
+
+function showSkeletons(n=6){
+  const grid = document.getElementById('product-grid');
+  let html = '';
+  for(let i=0;i<n;i++){
+    html += `<div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line w40"></div><div class="sk-line w80"></div><div class="sk-line w60"></div><div class="sk-btn"></div></div></div>`;
+  }
+  grid.innerHTML = html;
 }
 
 /* Scroll reveal — aparición suave (vanilla JS, sin React) */
