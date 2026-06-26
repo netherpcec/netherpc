@@ -157,9 +157,14 @@ button{font-family:inherit;cursor:pointer}
 .badge-off{background:#e9fbe9;color:#1f9e3d}
 .card-fav{position:absolute;top:9px;right:9px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted)}
 .card-fav:hover{color:#e2452f;border-color:#f3c4bc}
-.card-img{height:160px;background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card-img{height:160px;background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
 .card-img i{font-size:64px;color:#aeb6c8}
 .card-img img{width:100%;height:100%;object-fit:contain;padding:12px}
+.img-swap{position:relative;width:100%;height:100%}
+.img-swap img{position:absolute;inset:0;transition:opacity .35s ease}
+.img-swap .img-hover{opacity:0}
+.card:hover .img-swap .img-hover{opacity:1}
+.card:hover .img-swap .img-main{opacity:0}
 .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
 .card-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:6px}
 .card-name{font-size:14px;font-weight:500;color:#2a2e3a;line-height:1.35;margin-bottom:10px;min-height:38px}
@@ -783,7 +788,8 @@ function normalize(row){
     badge: (row.etiqueta || row.badge || '').trim(),
     stock: parseInt(num(row.stock || row.existencia)) || 0,
     icon: (row.icono || row.icon || '').trim(),
-    img: (row.imagen || row.img || row.foto || '').trim()
+    img: (row.imagen || row.img || row.foto || '').trim(),
+    img2: (row.imagen2 || row.imagen_hover || row.img2 || '').trim()
   };
 }
 
@@ -795,9 +801,17 @@ function cardHTML(p,i){
     ? `<span class="stock pedido"><i class="ti ti-clock-hour-4"></i> Bajo pedido</span>`
     : `<span class="stock"><i class="ti ti-circle-check"></i> En stock</span>`;
   const cta = `<button class="card-cta" onclick="addToCart(${i})"><i class="ti ti-shopping-cart" style="font-size:15px"></i> Agregar</button>`;
-  const imgHTML = p.img
-    ? `<img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='&lt;i class=\\'ti ${icon}\\'&gt;&lt;/i&gt;'">`
-    : `<i class="ti ${icon}"></i>`;
+  let imgHTML;
+  if(p.img && p.img2){
+    imgHTML = `<div class="img-swap">
+      <img class="img-main" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.closest('.card-img').innerHTML='&lt;i class=\\'ti ${icon}\\'&gt;&lt;/i&gt;'">
+      <img class="img-hover" src="${p.img2}" alt="${p.name}" loading="lazy" onerror="this.remove()">
+    </div>`;
+  } else if(p.img){
+    imgHTML = `<img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='&lt;i class=\\'ti ${icon}\\'&gt;&lt;/i&gt;'">`;
+  } else {
+    imgHTML = `<i class="ti ${icon}"></i>`;
+  }
   return `
   <article class="card reveal" style="--i:${i}">
     ${p.badge?`<span class="badge badge-${bc}">${p.badge}</span>`:''}
