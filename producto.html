@@ -389,8 +389,10 @@ a.card-name:hover{color:var(--brand)}
 .prod-trust i{font-size:20px;color:var(--brand)}
 
 /* Descripción y specs */
-.prod-detail-sections{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:36px 0;border-top:1px solid var(--line)}
+.prod-detail-sections{display:grid;grid-template-columns:1fr;gap:40px;padding:36px 0;border-top:1px solid var(--line)}
 @media(max-width:760px){.prod-detail-sections{grid-template-columns:1fr;gap:28px}}
+.prod-desc-inline{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+.prod-desc-inline h2{font-size:17px}
 .prod-section h2{font-size:19px;font-weight:700;margin-bottom:16px}
 .prod-section p{font-size:15px;color:var(--ink-soft);line-height:1.7;white-space:pre-line}
 .specs-table{width:100%;border-collapse:collapse}
@@ -494,15 +496,16 @@ a.card-name:hover{color:var(--brand)}
           <div><i class="ti ti-shield-check"></i> Garantía incluida</div>
           <div><i class="ti ti-tool"></i> Asesoría e instalación</div>
         </div>
+
+        <div class="prod-section prod-desc-inline" id="sec-desc">
+          <h2>Descripción</h2>
+          <p id="prod-desc"></p>
+        </div>
       </div>
     </div>
 
-    <!-- DESCRIPCIÓN Y SPECS -->
+    <!-- ESPECIFICACIONES (ancho completo) -->
     <div class="prod-detail-sections">
-      <div class="prod-section" id="sec-desc">
-        <h2>Descripción</h2>
-        <p id="prod-desc"></p>
-      </div>
       <div class="prod-section" id="sec-specs">
         <h2>Especificaciones</h2>
         <table class="specs-table" id="prod-specs"></table>
@@ -958,8 +961,8 @@ function renderProducto(p){
   } else specsSec.style.display='none';
 
   // Si no hay ni desc ni specs, ocultar la sección entera
-  if(!p.desc && !p.specs) document.querySelector('.prod-detail-sections').style.display='none';
-  else document.querySelector('.prod-detail-sections').style.display='grid';
+  // El contenedor de especificaciones se oculta si no hay specs
+  document.querySelector('.prod-detail-sections').style.display = p.specs ? 'grid' : 'none';
 
   renderRelacionados(p);
   window.scrollTo(0,0);
