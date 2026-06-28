@@ -764,6 +764,12 @@ function num(v){
   return isNaN(n) ? 0 : n;
 }
 
+function parseImgs(v){
+  if(!v) return [];
+  // Separa por salto de línea o coma, limpia espacios y vacíos
+  return String(v).split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+}
+
 function normalize(row){
   return {
     cat: (row.categoria || row['categoría'] || row.cat || '').trim(),
@@ -775,8 +781,9 @@ function normalize(row){
     badge: (row.etiqueta || row.badge || '').trim(),
     stock: parseInt(num(row.stock || row.existencia)) || 0,
     icon: (row.icono || row.icon || '').trim(),
-    img: (row.imagen || row.img || row.foto || '').trim(),
-    img2: (row.imagen2 || row.imagen_hover || row.img2 || '').trim(),
+    imgs: parseImgs(row.imagenes || row.images || ''),
+    img: (parseImgs(row.imagenes || row.images || '')[0] || row.imagen || row.img || row.foto || '').trim(),
+    img2: (parseImgs(row.imagenes || row.images || '')[1] || row.imagen2 || row.imagen_hover || row.img2 || '').trim(),
     desc: (row.descripcion || row.descripción || row.desc || '').trim(),
     specs: (row.especificaciones || row.specs || '').trim(),
     marca: (row.marca || row.brand || '').trim()
@@ -931,7 +938,7 @@ function renderProducto(p){
   marcaEl.innerHTML = p.marca ? 'Marca: <b>' + p.marca + '</b>' : '';
 
   // Galería
-  GALLERY = [p.img, p.img2].filter(Boolean);
+  GALLERY = (p.imgs && p.imgs.length) ? p.imgs.slice() : [p.img, p.img2].filter(Boolean);
   GALLERY_IDX = 0;
   renderGallery(icon);
 
