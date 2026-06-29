@@ -375,6 +375,22 @@ a.card-name:hover{color:var(--brand)}
 .prod-price-old{font-size:18px;color:#b0b4be;text-decoration:line-through}
 .prod-marca{font-size:14px;color:var(--ink-soft);margin-bottom:24px}
 .prod-marca b{color:var(--ink)}
+/* Variantes */
+.var-group{margin-bottom:20px}
+.var-label{font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:10px}
+.var-label b{color:var(--ink);font-weight:600}
+.var-options{display:flex;flex-wrap:wrap;gap:10px}
+.var-pill{padding:9px 18px;border:1.5px solid var(--line-2);border-radius:9px;font-size:14px;font-weight:500;color:var(--ink-soft);cursor:pointer;background:#fff;transition:all .15s;user-select:none}
+.var-pill:hover{border-color:#aeb6c8}
+.var-pill.active{border-color:var(--brand);color:var(--brand);background:rgba(0,180,216,.06);font-weight:600}
+.var-pill.sin-stock{opacity:.45;text-decoration:line-through}
+.var-swatch{width:38px;height:38px;border-radius:50%;cursor:pointer;border:2px solid var(--line);position:relative;transition:transform .15s;box-shadow:inset 0 0 0 2px #fff}
+.var-swatch:hover{transform:scale(1.08)}
+.var-swatch.active{border-color:var(--brand);transform:scale(1.08)}
+.var-swatch.active::after{content:'';position:absolute;inset:-6px;border:1.5px solid var(--brand);border-radius:50%}
+.var-swatch.sin-stock{opacity:.4}
+.var-swatch-wrap{display:flex;flex-direction:column;align-items:center;gap:5px}
+.var-swatch-name{font-size:11px;color:var(--muted)}
 .prod-actions{display:flex;gap:12px;margin-bottom:12px}
 .qty-selector{display:flex;align-items:center;border:1.5px solid var(--line-2);border-radius:10px;overflow:hidden}
 .qty-selector button{width:44px;height:50px;border:none;background:#fff;font-size:20px;color:var(--ink-soft)}
@@ -480,6 +496,8 @@ a.card-name:hover{color:var(--brand)}
           <span class="prod-price-old" id="prod-price-old"></span>
         </div>
         <p class="prod-marca" id="prod-marca"></p>
+
+        <div id="prod-variantes"></div>
 
         <div class="prod-actions">
           <div class="qty-selector">
@@ -896,6 +914,136 @@ function tryShow(id){
   if(!prod){ showError(); return; }
   PROD = prod;
   renderProducto(prod);
+  loadVariantes(prod._id);  // cargar variantes en paralelo
+}
+
+/* ===== Variantes ===== */
+let VARIANTES = [];       // variantes del producto actual
+let VAR_SELECCION = {};   // { tipo: valor } seleccionado
+
+async function loadVariantes(productoId){
+  const cont = document.getElementById('prod-variantes');
+  cont.innerHTML = '';
+  VARIANTES = []; VAR_SELECCION = {};
+  if(productoId == null) return;
+  try{
+    const url = SUPABASE_URL + '/rest/v1/variantes?select=*&producto_id=eq.' +
+                encodeURIComponent(productoId) + '&order=orden.asc,id.asc';
+    const res = await fetch(url, { headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY } });
+    if(!res.ok) return;
+    const data = await res.json();
+    if(!data || !data.length) return;
+    VARIANTES = data;
+    renderVariantes();
+  }catch(e){ /* sin variantes, no pasa nada */ }
+}
+
+// Mapa de colores comunes para mostrar círculos
+const COLOR_MAP = {
+  'blanco':'#ffffff','negro':'#1a1a1a','rojo':'#e23b3b','azul':'#2b6cff','verde':'#28a745',
+  'amarillo':'#ffd000','naranja':'#ff7a00','morado':'#7d3cff','rosa':'#ff5fa2','gris':'#9aa0aa',
+  'plata':'#c8ccd2','plateado':'#c8ccd2','dorado':'#d4af37','celeste':'#5bc8ff','rgb':'linear-gradient(135deg,#ff0040,#00d4ff,#7d3cff)'
+};
+
+function renderVariantes(){
+  const cont = document.getElementById('prod-variantes');
+  // Agrupar por tipo
+  const tipos = {};
+  VARIANTES.forEach(v=>{ (tipos[v.tipo] = tipos[v.tipo] || []).push(v); });
+
+  cont.innerHTML = '';
+  Object.keys(tipos).forEach(tipo=>{
+    const opciones = tipos[tipo];
+    const primera = opciones.find(o => varStock(o) > 0) || opciones[0];
+    VAR_SELECCION[tipo] = primera.valor;
+
+    const esColor = tipo.toLowerCase().includes('color');
+
+    const group = document.createElement('div');
+    group.className = 'var-group';
+
+    const label = document.createElement('div');
+    label.className = 'var-label';
+    label.innerHTML = tipo + ': <b>' + primera.valor + '</b>';
+    group.appendChild(label);
+
+    const optsWrap = document.createElement('div');
+    optsWrap.className = 'var-options';
+
+    opciones.forEach(o=>{
+      const sinStock = varStock(o) <= 0;
+      const activo = (o.valor === primera.valor);
+      let el;
+      if(esColor && COLOR_MAP[o.valor.toLowerCase()]){
+        const wrap = document.createElement('div');
+        wrap.className = 'var-swatch-wrap';
+        el = document.createElement('div');
+        el.className = 'var-swatch' + (activo?' active':'') + (sinStock?' sin-stock':'');
+        el.style.background = COLOR_MAP[o.valor.toLowerCase()];
+        el.title = o.valor;
+        const nm = document.createElement('span');
+        nm.className = 'var-swatch-name'; nm.textContent = o.valor;
+        wrap.appendChild(el); wrap.appendChild(nm);
+        optsWrap.appendChild(wrap);
+      } else {
+        el = document.createElement('div');
+        el.className = 'var-pill' + (activo?' active':'') + (sinStock?' sin-stock':'');
+        el.textContent = o.valor;
+        optsWrap.appendChild(el);
+      }
+      el.addEventListener('click', ()=>selectVar(tipo, o.valor, label));
+    });
+
+    group.appendChild(optsWrap);
+    cont.appendChild(group);
+  });
+  applyVarSelection();
+}
+
+function cssId(s){ return s.replace(/[^a-zA-Z0-9]/g,'_'); }
+function varStock(v){ return (v.stock != null) ? Number(v.stock) : Number(PROD.stock); }
+function varPrecio(v){ return (v.precio != null) ? Number(v.precio) : Number(PROD.price); }
+
+function selectVar(tipo, valor, labelEl){
+  VAR_SELECCION[tipo] = valor;
+  // Actualizar el label del grupo
+  if(labelEl) labelEl.innerHTML = tipo + ': <b>' + valor + '</b>';
+  // Actualizar clases activas del grupo
+  const group = labelEl ? labelEl.closest('.var-group') : null;
+  if(group){
+    group.querySelectorAll('.var-pill, .var-swatch').forEach(el=>{
+      const elVal = el.classList.contains('var-swatch') ? el.getAttribute('title') : el.textContent.trim();
+      el.classList.toggle('active', elVal === valor);
+    });
+  }
+  applyVarSelection();
+}
+
+function applyVarSelection(){
+  const tipoActivo = Object.keys(VAR_SELECCION)[0];
+  if(!tipoActivo) return;
+  const valor = VAR_SELECCION[tipoActivo];
+  const v = VARIANTES.find(x => x.tipo === tipoActivo && x.valor === valor);
+  if(!v) return;
+
+  // Precio
+  document.getElementById('prod-price').textContent = '$' + varPrecio(v).toLocaleString('en-US');
+
+  // Stock
+  const st = varStock(v);
+  const stockEl = document.getElementById('prod-stock');
+  const bajoPedido = st <= 0;
+  stockEl.className = bajoPedido ? 'stock pedido' : 'stock';
+  stockEl.innerHTML = bajoPedido
+    ? '<i class="ti ti-clock-hour-4"></i> Bajo pedido'
+    : '<i class="ti ti-circle-check"></i> En stock';
+
+  // Imágenes propias de la variante (si tiene)
+  if(v.imagenes){
+    GALLERY = parseImgs(v.imagenes);
+    GALLERY_IDX = 0;
+    renderGallery(PROD.icon || CAT_ICON[PROD.cat] || 'ti-box');
+  }
 }
 
 function showError(){
@@ -944,9 +1092,13 @@ function renderProducto(p){
 
   // Botón agregar
   document.getElementById('prod-add').onclick = ()=>addProdToCart();
-  // WhatsApp
-  const msg = encodeURIComponent('Hola NetherPC 👋, me interesa: ' + p.name + '. ¿Está disponible?');
-  document.getElementById('prod-wa').href = 'https://wa.me/' + WHATSAPP + '?text=' + msg;
+  // WhatsApp (dinámico según variante)
+  document.getElementById('prod-wa').onclick = function(e){
+    const sel = getVarianteSeleccionada();
+    const nombre = sel ? (p.name + ' (' + sel.tipo + ': ' + sel.valor + ')') : p.name;
+    const msg = encodeURIComponent('Hola NetherPC 👋, me interesa: ' + nombre + '. ¿Está disponible?');
+    this.href = 'https://wa.me/' + WHATSAPP + '?text=' + msg;
+  };
 
   // Descripción
   const descSec = document.getElementById('sec-desc');
@@ -999,13 +1151,25 @@ function prodQty(d){
   document.getElementById('prod-qty').textContent = PROD_QTY;
 }
 
+function getVarianteSeleccionada(){
+  const tipo = Object.keys(VAR_SELECCION)[0];
+  if(!tipo) return null;
+  const valor = VAR_SELECCION[tipo];
+  const v = VARIANTES.find(x => x.tipo === tipo && x.valor === valor);
+  return v ? {tipo, valor, v} : null;
+}
+
 function addProdToCart(){
   if(!PROD) return;
-  const existing = CART.find(x=>x.name===PROD.name);
+  const sel = getVarianteSeleccionada();
+  // Nombre y precio según variante
+  const nombre = sel ? (PROD.name + ' · ' + sel.valor) : PROD.name;
+  const precio = sel ? varPrecio(sel.v) : Number(PROD.price);
+  const existing = CART.find(x=>x.name===nombre);
   if(existing){ existing.qty += PROD_QTY; }
-  else { CART.push({name:PROD.name, cat:PROD.cat, price:Number(PROD.price), icon:findIcon(PROD), qty:PROD_QTY}); }
+  else { CART.push({name:nombre, cat:PROD.cat, price:precio, icon:findIcon(PROD), qty:PROD_QTY}); }
   updateCart();
-  showToast(PROD.name + ' agregado (' + PROD_QTY + ')');
+  showToast(nombre + ' agregado (' + PROD_QTY + ')');
   PROD_QTY = 1; document.getElementById('prod-qty').textContent = 1;
 }
 
