@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arma tu PC · NetherPC EC</title>
+<meta name="description" content="Componentes de PC, tarjetas gráficas, procesadores y PCs gamer armadas. Envíos a todo Ecuador con garantía y asesoría experta por WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/3.31.0/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#11151f;
+  --ink-soft:#4a5160;
+  --muted:#8a909e;
+  --line:#ececf0;
+  --line-2:#e4e4ea;
+  --surface:#f7f8fa;
+  --brand:#00b4d8;
+  --brand-dark:#009dbd;
+  --brand-deep:#06222e;
+  --dark:#0e1320;
+  --dark-2:#182236;
+  --ok:#1f9e3d;
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow:0 6px 22px rgba(20,30,60,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer}
+.container{max-width:1600px;margin:0 auto;padding:0 32px}
+
+/* ---------- TOPBAR ---------- */
+.topbar{background:var(--dark);color:#aeb6c8;font-size:12px}
+.topbar .container{display:flex;justify-content:space-between;align-items:center;height:38px}
+.topbar-left{display:flex;gap:22px}
+.topbar-item{display:flex;align-items:center;gap:6px}
+.topbar-item i{font-size:14px;color:var(--brand)}
+@media(max-width:760px){.topbar-left .topbar-item:nth-child(2){display:none}}
+
+/* ---------- HEADER ---------- */
+.header{border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:50}
+.header .container{display:flex;align-items:center;gap:22px;height:70px}
+.logo{height:42px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s}
+.logo:hover{transform:translateY(-1px)}
+.logo-img{height:42px;width:auto;object-fit:contain}
+.hide{display:none!important}
+.search{flex:1;max-width:520px;position:relative}
+.search input{width:100%;height:44px;border:1.5px solid var(--line-2);border-radius:var(--radius-sm);padding:0 16px 0 42px;font-size:14px;color:var(--ink);outline:none;transition:border-color .15s}
+.search input:focus{border-color:var(--brand)}
+.search input::placeholder{color:#a0a4b0}
+.search>i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#a0a4b0;font-size:19px}
+.nav-actions{display:flex;gap:6px;margin-left:auto}
+.nav-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink-soft);border-radius:50%;position:relative;transition:all .15s}
+.nav-btn:hover{background:var(--surface);color:var(--brand)}
+.nav-btn i{font-size:22px}
+.nav-btn .dot{position:absolute;top:2px;right:2px;background:var(--brand);color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid #fff}
+@media(max-width:640px){.search{max-width:none}}
+
+/* ---------- CATEGORY BAR ---------- */
+.catbar{border-bottom:1px solid var(--line);background:#fafbfc}
+.catbar .container{display:flex;gap:4px;height:48px;align-items:center;overflow-x:auto;scrollbar-width:none}
+.catbar .container::-webkit-scrollbar{display:none}
+.cat{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--ink-soft);padding:8px 15px;border-radius:8px;white-space:nowrap;transition:all .15s}
+.cat:hover{background:#fff;color:var(--brand)}
+.cat i{font-size:16px}
+.cat.feat{color:var(--brand);font-weight:600}
+
+/* ---------- HERO ---------- */
+.hero{margin:24px 0}
+.hero-inner{border-radius:16px;background:linear-gradient(105deg,#0e1320 0%,#182236 55%,#0d2235 100%);padding:48px 52px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;min-height:230px}
+.hero-glow{position:absolute;right:-60px;top:-60px;width:340px;height:340px;background:radial-gradient(circle,rgba(0,180,216,.20) 0%,transparent 65%)}
+.hero-content{position:relative;z-index:2;max-width:560px}
+.hero h1{color:#fff;font-size:38px;font-weight:800;line-height:1.12;margin-bottom:14px;letter-spacing:-.5px}
+.hero h1 span{color:var(--brand)}
+.hero p{color:#9aa4ba;font-size:15px;margin-bottom:24px;line-height:1.55;max-width:440px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:none;border-radius:var(--radius-sm);padding:13px 26px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;transition:all .15s}
+.btn-primary{background:var(--brand);color:var(--brand-deep)}
+.btn-primary:hover{background:var(--brand-dark);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.hero-side{position:relative;z-index:2;line-height:1}
+.hero-side i{font-size:130px;color:var(--brand);opacity:.9}
+@media(max-width:820px){.hero-inner{padding:34px}.hero h1{font-size:28px}.hero-side{display:none}}
+
+/* ---------- TRUST ROW ---------- */
+.trustrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px}
+.trust{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .15s}
+.trust:hover{border-color:#cdd3dc}
+.trust i{font-size:26px;color:var(--brand);flex-shrink:0}
+.trust b{font-size:13px;font-weight:600;display:block}
+.trust span{font-size:12px;color:var(--muted)}
+@media(max-width:760px){.trustrow{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:44px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-head h2{font-size:22px;font-weight:700;letter-spacing:-.3px}
+.section-head a{font-size:13px;color:var(--brand);font-weight:600;display:flex;align-items:center;gap:5px}
+.section-head a:hover{gap:8px}
+
+/* ---------- PRODUCT GRID ---------- */
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+@media(max-width:1300px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:960px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+
+/* Carrusel horizontal de destacados */
+/* Esqueletos de carga (shimmer) */
+.skeleton{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;flex:0 0 250px;width:250px}
+.sk-img{height:160px;background:#eef0f3}
+.sk-body{padding:14px 16px 16px}
+.sk-line{height:12px;border-radius:6px;background:#eef0f3;margin-bottom:10px}
+.sk-line.w60{width:60%}.sk-line.w40{width:40%}.sk-line.w80{width:80%}
+.sk-btn{height:38px;border-radius:8px;background:#eef0f3;margin-top:6px}
+.sk-img,.sk-line,.sk-btn{position:relative;overflow:hidden}
+.sk-img::after,.sk-line::after,.sk-btn::after{content:'';position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:shimmer 1.3s infinite}
+@keyframes shimmer{100%{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.sk-img::after,.sk-line::after,.sk-btn::after{animation:none}}
+
+.rail-wrap{position:relative}
+.rail{display:flex;gap:16px;overflow-x:auto;scroll-behavior:smooth;padding:4px 2px 16px;scrollbar-width:thin;scrollbar-color:#cdd3dc transparent;cursor:grab}
+.rail.dragging{cursor:grabbing;scroll-behavior:auto}
+.rail.dragging *{pointer-events:none}
+.rail::-webkit-scrollbar{height:8px}
+.rail::-webkit-scrollbar-track{background:transparent}
+.rail::-webkit-scrollbar-thumb{background:#cdd3dc;border-radius:4px}
+.rail::-webkit-scrollbar-thumb:hover{background:#aeb6c8}
+.rail .card{flex:0 0 250px;width:250px}
+@media(max-width:680px){.rail .card{flex:0 0 200px;width:200px}}
+.rail-btn{position:absolute;top:38%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(20,30,60,.12);display:flex;align-items:center;justify-content:center;color:var(--ink);z-index:5;transition:all .15s}
+.rail-btn:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+.rail-btn i{font-size:22px}
+.rail-btn.prev{left:-14px}
+.rail-btn.next{right:-14px}
+.rail-btn.hide-btn{opacity:0;visibility:hidden}
+@media(max-width:680px){.rail-btn{display:none}}
+.card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;transition:all .18s;position:relative;display:flex;flex-direction:column}
+.card:hover{border-color:#cdd3dc;box-shadow:var(--shadow);transform:translateY(-3px)}
+.badge{position:absolute;top:11px;left:11px;z-index:2;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:4px 9px;border-radius:6px}
+.badge-hot{background:#ffe9e6;color:#e2452f}
+.badge-new{background:#e0f7fc;color:#0089a8}
+.badge-off{background:#e9fbe9;color:#1f9e3d}
+.card-fav{position:absolute;top:9px;right:9px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.card-fav:hover{color:#e2452f;border-color:#f3c4bc}
+.card-img{height:160px;background:var(--surface);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.card-img i{font-size:64px;color:#aeb6c8}
+.card-img img{width:100%;height:100%;object-fit:contain;padding:12px}
+.img-swap{position:relative;width:100%;height:100%}
+.img-swap img{position:absolute;inset:0;transition:opacity .35s ease}
+.img-swap .img-hover{opacity:0}
+.card:hover .img-swap .img-hover{opacity:1}
+.card:hover .img-swap .img-main{opacity:0}
+.card-body{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
+.card-cat{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:6px}
+.card-name{font-size:14px;font-weight:500;color:#2a2e3a;line-height:1.35;margin-bottom:10px;min-height:38px}
+.card-name{display:block;text-decoration:none;transition:color .15s}
+a.card-name:hover{color:var(--brand)}
+.card-img-link{display:block}
+.card-meta{display:flex;align-items:center;gap:6px;margin-bottom:12px}
+.stars{color:#ffb400;font-size:12px;letter-spacing:-1px}
+.reviews{font-size:11px;color:var(--muted)}
+.stock{font-size:11px;color:var(--ok);font-weight:600;display:flex;align-items:center;gap:3px;margin-left:auto}
+.stock i{font-size:12px}
+.price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;margin-top:auto}
+.price{font-size:22px;font-weight:700;color:var(--ink)}
+.price-old{font-size:13px;color:#b0b4be;text-decoration:line-through}
+.card-cta{width:100%;background:var(--brand);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .15s}
+.card-cta:hover{background:var(--brand-dark)}
+.stock.pedido{color:#c77700}
+
+/* ---------- CATEGORIES SECTION ---------- */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:680px){.cat-grid{grid-template-columns:repeat(2,1fr)}}
+.cat-card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:14px;transition:all .18s;background:#fff}
+.cat-card:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-2px)}
+.cat-card .ico{width:50px;height:50px;border-radius:12px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--brand)}
+.cat-card .ico i{font-size:26px}
+.cat-card b{font-size:15px;font-weight:600}
+.cat-card span{font-size:12px;color:var(--muted)}
+
+/* ---------- BUILD CTA BANNER ---------- */
+.build{border-radius:16px;background:linear-gradient(100deg,#0d2235,#0e1320);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;position:relative;overflow:hidden}
+.build-glow{position:absolute;left:30%;top:-50%;width:300px;height:300px;background:radial-gradient(circle,rgba(0,180,216,.15),transparent 65%)}
+.build-txt{position:relative;z-index:2}
+.build h3{color:#fff;font-size:24px;font-weight:700;margin-bottom:8px}
+.build p{color:#9aa4ba;font-size:14px;max-width:440px}
+.build .btn{position:relative;z-index:2}
+
+/* ---------- FOOTER ---------- */
+.footer{background:var(--dark);color:#9aa4ba;margin-top:56px;padding:48px 0 0}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:36px;padding-bottom:36px}
+.footer-brand .logo{margin-bottom:16px}
+.footer-brand p{font-size:13px;line-height:1.7;max-width:300px}
+.footer-social{display:flex;gap:10px;margin-top:18px}
+.footer-social a{width:38px;height:38px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:#aeb6c8;font-size:18px;transition:all .15s}
+.footer-social a:hover{background:var(--brand);color:var(--brand-deep)}
+.footer-col h4{color:#fff;font-size:13px;font-weight:600;margin-bottom:16px;text-transform:uppercase;letter-spacing:.5px}
+.footer-col a{display:block;font-size:13px;margin-bottom:11px;transition:color .15s}
+.footer-col a:hover{color:var(--brand)}
+.footer-contact div{display:flex;align-items:flex-start;gap:10px;font-size:13px;margin-bottom:13px;line-height:1.5}
+.footer-contact i{font-size:17px;color:var(--brand);flex-shrink:0;margin-top:1px}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding:20px 0;display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:10px}
+@media(max-width:820px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr}}
+
+/* ---------- WHATSAPP FLOAT ---------- */
+.wa-float{position:fixed;bottom:22px;right:22px;width:58px;height:58px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;box-shadow:0 6px 20px rgba(37,211,102,.4);z-index:60;transition:transform .15s;animation:wa-pop .4s ease-out .6s both}
+.wa-float:hover{transform:scale(1.06)}
+@keyframes wa-pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ---------- SCROLL REVEAL ---------- */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+.grid .card.reveal{transition-delay:calc(var(--i,0)*60ms)}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.wa-float{animation:none}}
+
+/* ---------- CART DRAWER ---------- */
+.overlay{position:fixed;inset:0;background:rgba(14,19,32,.55);opacity:0;visibility:hidden;transition:opacity .25s;z-index:90}
+.overlay.show{opacity:1;visibility:visible}
+.cart{position:fixed;top:0;right:0;width:400px;max-width:92vw;height:100%;background:#fff;z-index:100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s ease;box-shadow:-8px 0 30px rgba(14,19,32,.12)}
+.cart.show{transform:none}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}
+.cart-head h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:9px}
+.cart-head h3 i{color:var(--brand);font-size:21px}
+.cart-close{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:20px}
+.cart-close:hover{background:#eceef1;color:var(--ink)}
+.cart-body{flex:1;overflow-y:auto;padding:8px 22px}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.cart-empty i{font-size:54px;color:#d4d7de;display:block;margin-bottom:14px}
+.cart-empty b{display:block;color:var(--ink-soft);font-size:15px;margin-bottom:6px}
+.cart-empty span{font-size:13px}
+.ci{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ci-img{width:56px;height:56px;border-radius:9px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-img i{font-size:26px;color:#aeb6c8}
+.ci-main{flex:1;min-width:0}
+.ci-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:3px}
+.ci-cat{font-size:11px;color:var(--muted);margin-bottom:8px}
+.ci-bottom{display:flex;align-items:center;justify-content:space-between}
+.qty{display:flex;align-items:center;gap:0;border:1px solid var(--line-2);border-radius:7px;overflow:hidden}
+.qty button{width:28px;height:28px;border:none;background:#fff;color:var(--ink-soft);font-size:16px;display:flex;align-items:center;justify-content:center}
+.qty button:hover{background:var(--surface);color:var(--brand)}
+.qty span{min-width:30px;text-align:center;font-size:13px;font-weight:600}
+.ci-price{font-size:14px;font-weight:700}
+.ci-remove{background:none;border:none;color:#c0c4cc;font-size:17px;padding:4px}
+.ci-remove:hover{color:#e2452f}
+.cart-foot{border-top:1px solid var(--line);padding:18px 22px;background:#fff}
+.cart-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:8px}
+.cart-total{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 16px}
+.cart-total b{font-size:15px}
+.cart-total .amt{font-size:24px;font-weight:800;color:var(--ink)}
+.cart-send{width:100%;background:#25d366;color:#fff;border:none;border-radius:var(--radius-sm);padding:14px;font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px}
+.cart-send:hover{background:#1fb855}
+.cart-send:disabled{background:#cfd3da;cursor:default}
+.cart-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
+
+/* ---------- PROFORMA MODAL ---------- */
+.modal-wrap{position:fixed;inset:0;background:rgba(14,19,32,.55);z-index:110;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .2s}
+.modal-wrap.show{opacity:1;visibility:visible}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:420px;padding:28px;transform:translateY(12px);transition:transform .2s}
+.modal-wrap.show .modal{transform:none}
+.modal h3{font-size:19px;font-weight:700;margin-bottom:6px}
+.modal p.sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:6px}
+.field input{width:100%;height:44px;border:1.5px solid var(--line-2);border-radius:var(--radius-sm);padding:0 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+.field input:focus{border-color:var(--brand)}
+.field input.err{border-color:#e2452f}
+.modal-actions{display:flex;gap:10px;margin-top:8px}
+.modal-actions button{flex:1;border-radius:var(--radius-sm);padding:13px;font-size:14px;font-weight:600;border:none}
+.btn-cancel{background:var(--surface);color:var(--ink-soft)}
+.btn-cancel:hover{background:#eceef1}
+.btn-confirm{background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-confirm:hover{background:#1fb855}
+@media(max-width:480px){.cart{width:100%;max-width:100%}}
+
+/* ---------- RESEÑAS (masonry intercalado) ---------- */
+.reviews-masonry{columns:3;column-gap:18px}
+@media(max-width:900px){.reviews-masonry{columns:2}}
+@media(max-width:600px){.reviews-masonry{columns:1}}
+.review{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:#fff;transition:all .18s;break-inside:avoid;margin-bottom:18px;display:inline-block;width:100%}
+.review:hover{border-color:#cdd3dc;box-shadow:var(--shadow)}
+.review-stars{color:#ffb400;font-size:15px;letter-spacing:1px;margin-bottom:12px}
+.review-photo-box{width:100%;border-radius:10px;background:var(--surface);margin-bottom:14px;display:flex;align-items:center;justify-content:center;color:#c0c4cc;overflow:hidden;border:1px dashed #d4d7de}
+.review-photo-box img{width:100%;height:100%;object-fit:cover;display:block}
+.review-photo-box .ph{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px 0;font-size:12px}
+.review-photo-box .ph i{font-size:32px}
+.review-text{font-size:14px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px}
+.review-user{display:flex;align-items:center;gap:12px}
+.review-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#aeb6c8;font-size:20px;overflow:hidden}
+.review-avatar img{width:100%;height:100%;object-fit:cover}
+.review-name{font-size:14px;font-weight:600;color:var(--ink)}
+.review-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.review-meta i{font-size:13px;color:var(--ok)}
+
+/* ---------- TOAST ---------- */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:13px 22px;border-radius:30px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:9px;z-index:120;opacity:0;visibility:hidden;transition:all .25s;white-space:nowrap}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%)}
+.toast i{color:#4dd66f;font-size:17px}
+
+/* ---------- MENU HAMBURGUESA + DRAWER IZQUIERDO ---------- */
+.menu-btn{width:42px;height:42px;border:none;background:none;color:var(--ink);display:flex;align-items:center;justify-content:center;border-radius:9px;flex-shrink:0;transition:background .15s}
+.menu-btn:hover{background:var(--surface)}
+.menu-btn i{font-size:24px}
+.drawer{position:fixed;top:0;left:0;width:330px;max-width:88vw;height:100%;background:#fff;z-index:100;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s ease;box-shadow:8px 0 30px rgba(14,19,32,.12);overflow-y:auto}
+.drawer.show{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line)}
+.drawer-logo{height:80px;display:flex;align-items:center;overflow:hidden}
+.drawer-logo img{height:80px;width:auto;object-fit:contain}
+.drawer-close{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.drawer-close:hover{background:#eceef1;color:var(--ink)}
+.drawer-section{padding:14px 0;border-bottom:1px solid var(--line)}
+.drawer-section:last-child{border-bottom:none}
+.drawer-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:6px 22px 10px}
+.drawer-link{display:flex;align-items:center;gap:13px;padding:12px 22px;font-size:14px;font-weight:500;color:var(--ink);transition:background .12s}
+.drawer-link:hover{background:var(--surface);color:var(--brand)}
+.drawer-link i{font-size:20px;color:var(--ink-soft);width:22px;text-align:center}
+.drawer-link:hover i{color:var(--brand)}
+.drawer-link.promo{color:#e2452f;font-weight:600}
+.drawer-link.promo:hover{color:#c0341f}
+/* ===== ARMA TU PC ===== */
+.armar-header{padding:26px 0 22px}
+.breadcrumb{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;margin-bottom:12px}
+.breadcrumb a{color:var(--ink-soft)}
+.breadcrumb a:hover{color:var(--brand)}
+.breadcrumb i{font-size:14px}
+.breadcrumb .current{color:var(--ink);font-weight:500}
+.armar-header h1{font-size:30px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.armar-sub{font-size:15px;color:var(--muted);max-width:600px}
+
+.armar-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;padding-bottom:50px;align-items:start}
+@media(max-width:920px){.armar-layout{grid-template-columns:1fr}}
+
+/* Imagen con hotspots */
+.armar-visual{position:sticky;top:90px}
+@media(max-width:920px){.armar-visual{position:static}}
+.case-wrap{position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.case-wrap img{width:100%;display:block}
+.case-hint{text-align:center;font-size:13px;color:var(--muted);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+.case-hint i{font-size:17px;color:var(--brand)}
+
+.hotspot{position:absolute;width:34px;height:34px;border-radius:50%;background:var(--brand);border:3px solid #fff;box-shadow:0 2px 12px rgba(0,180,216,.5);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;transform:translate(-50%,-50%);transition:transform .15s;z-index:3}
+.hotspot:hover{transform:translate(-50%,-50%) scale(1.18)}
+.hotspot::after{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(0,180,216,.45);animation:hs-pulse 2s ease-out infinite}
+@keyframes hs-pulse{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.25);opacity:0}}
+.hotspot.done{background:#18b26b;box-shadow:0 2px 12px rgba(24,178,107,.5)}
+.hotspot.done::after{border-color:rgba(24,178,107,.45)}
+.hotspot.locked{background:#9aa4ba;box-shadow:none;cursor:not-allowed}
+.hotspot.locked::after{display:none}
+
+/* Panel de piezas */
+.pieza{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px;background:#fff;cursor:pointer;transition:all .15s}
+.pieza:hover{border-color:var(--brand);box-shadow:var(--shadow)}
+.pieza-ico{width:44px;height:44px;border-radius:10px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:22px;flex-shrink:0}
+.pieza.done .pieza-ico{background:rgba(24,178,107,.1);color:#18b26b}
+.pieza-info{flex:1;min-width:0}
+.pieza-tipo{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.pieza-nombre{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pieza-nombre.empty{color:#aeb6c8;font-weight:500}
+.pieza-precio{font-size:15px;font-weight:700;color:var(--ink);flex-shrink:0}
+.pieza-accion{color:var(--brand);font-size:20px;flex-shrink:0}
+.pieza.locked{opacity:.55;cursor:not-allowed;background:var(--surface)}
+.pieza.locked:hover{border-color:var(--line);box-shadow:none}
+.pieza-lock-note{font-size:11px;color:#c77700;display:flex;align-items:center;gap:4px;margin-top:2px}
+.pieza-lock-note i{font-size:13px}
+.pieza-lock-note a{color:var(--brand);text-decoration:underline;cursor:pointer}
+
+/* Total */
+.armar-total{border:1px solid var(--line);border-radius:12px;padding:20px;background:#fff;margin-top:20px}
+.total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.total-row span{font-size:15px;color:var(--ink-soft)}
+.total-row b{font-size:28px;font-weight:800}
+.total-note{font-size:13px;color:var(--muted);margin-bottom:16px}
+.armar-total .btn-cart{width:100%;margin-bottom:10px}
+.armar-total .btn-cart:disabled{background:#dfe3ea;color:#9aa4ba;cursor:not-allowed}
+.armar-total .btn-wa{width:100%;margin-bottom:0}
+
+/* Modal de selección */
+.sel-overlay{position:fixed;inset:0;background:rgba(14,19,32,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.sel-overlay.show{display:flex}
+.sel-modal{background:#fff;border-radius:16px;width:100%;max-width:680px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;animation:selIn .25s ease-out}
+@keyframes selIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.sel-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+.sel-head h3{font-size:18px;font-weight:700}
+.sel-close{width:38px;height:38px;border-radius:10px;border:none;background:var(--surface);color:var(--ink-soft);font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sel-close:hover{background:#e8ebf0}
+.sel-body{padding:20px 22px;overflow-y:auto}
+.sel-reco-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:2px 0 12px}
+.sel-item{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:12px;padding:13px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;position:relative}
+.sel-item:hover{border-color:var(--brand)}
+.sel-item.selected{border-color:var(--brand);background:rgba(0,180,216,.05)}
+.sel-item-img{width:52px;height:52px;border-radius:9px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:#aeb6c8;font-size:24px;flex-shrink:0;overflow:hidden}
+.sel-item-img img{width:100%;height:100%;object-fit:contain;padding:5px}
+.sel-item-info{flex:1;min-width:0}
+.sel-item-name{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3}
+.sel-item-meta{font-size:12px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:8px}
+.sel-item-price{font-size:16px;font-weight:800;flex-shrink:0}
+.sel-badge{position:absolute;top:-9px;left:14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:3px 9px;border-radius:20px;color:#fff}
+.sel-badge.alta{background:#7d3cff}
+.sel-badge.media{background:var(--brand)}
+.sel-badge.accesible{background:#18b26b}
+.sel-vertodos{width:100%;padding:13px;border:1.5px dashed var(--line-2);border-radius:12px;background:none;color:var(--brand);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;margin-top:4px}
+.sel-vertodos:hover{border-color:var(--brand);background:rgba(0,180,216,.04)}
+.sel-quitar{width:100%;padding:11px;border:none;border-radius:10px;background:var(--surface);color:#b0440f;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:10px}
+.sel-quitar:hover{background:#fdeee6}
+.sel-empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:14px}
+.sel-unlock{border:1px solid #f0d9b5;background:#fff8ec;border-radius:12px;padding:16px;text-align:center}
+.sel-unlock i{font-size:30px;color:#c77700;display:block;margin-bottom:8px}
+.sel-unlock p{font-size:13.5px;color:var(--ink-soft);line-height:1.55;margin-bottom:14px}
+.sel-unlock button{padding:11px 20px;border:none;border-radius:10px;background:#c77700;color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.sel-unlock button:hover{background:#a86400}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-left">
+      <span class="topbar-item"><i class="ti ti-truck-delivery"></i> Envíos a todo Ecuador</span>
+      <span class="topbar-item"><i class="ti ti-shield-check"></i> Garantía en todos los productos</span>
+    </div>
+    <a class="topbar-item" href="https://wa.me/593978602972" target="_blank"><i class="ti ti-brand-whatsapp"></i> Asesoría: +593 97 860 2972</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <button class="menu-btn" onclick="openDrawer()" aria-label="Abrir menú"><i class="ti ti-menu-2"></i></button>
+    <a href="#" class="logo" aria-label="NetherPC inicio">
+      <img src="img/iso.png" alt="NetherPC" class="logo-img" onerror="this.classList.add('hide');this.nextElementSibling.classList.remove('hide')">
+      <svg class="logo-svg hide" width="24" height="24" viewBox="0 0 22 22" fill="none">
+        <path d="M11 2.5L4 6.5V15.5L11 19.5L18 15.5V6.5L11 2.5Z" stroke="#00b4d8" stroke-width="1.6" fill="rgba(0,180,216,.12)"/>
+        <path d="M11 7L7.5 9V13L11 15L14.5 13V9L11 7Z" fill="#00b4d8"/>
+      </svg>
+    </a>
+    <div class="search">
+      <i class="ti ti-search"></i>
+      <input type="text" placeholder="Busca procesadores, tarjetas gráficas, RAM, gabinetes...">
+    </div>
+    <div class="nav-actions">
+      <button class="nav-btn" aria-label="Mi cuenta"><i class="ti ti-user"></i></button>
+      <button class="nav-btn" aria-label="Favoritos"><i class="ti ti-heart"></i></button>
+      <button class="nav-btn" onclick="openCart()" aria-label="Carrito de compras"><i class="ti ti-shopping-cart"></i><span class="dot" id="cart-count">0</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="armar-header">
+    <nav class="breadcrumb"><a href="index.html">Inicio</a> <i class="ti ti-chevron-right"></i> <span class="current">Arma tu PC</span></nav>
+    <h1>Arma la PC de tus sueños</h1>
+    <p class="armar-sub">Toca cada punto del gabinete (o la lista) y elige tus piezas. Te recomendamos opciones según tu presupuesto.</p>
+  </div>
+
+  <div class="armar-layout">
+    <!-- IZQUIERDA: imagen con hotspots -->
+    <div class="armar-visual">
+      <div class="case-wrap" id="case-wrap">
+        <img src="img/armar-case.jpg" alt="Gabinete PC" id="case-img">
+        <!-- Los hotspots se generan por JS -->
+      </div>
+      <p class="case-hint"><i class="ti ti-hand-click"></i> Toca los puntos para elegir cada pieza</p>
+    </div>
+
+    <!-- DERECHA: lista de piezas + resumen -->
+    <div class="armar-panel">
+      <div id="piezas-lista"></div>
+
+      <div class="armar-total">
+        <div class="total-row">
+          <span>Total del armado</span>
+          <b id="armar-total">$0</b>
+        </div>
+        <p class="total-note" id="total-note">0 de 8 piezas seleccionadas</p>
+        <button class="btn-cart" id="armar-add" disabled><i class="ti ti-shopping-cart"></i> Agregar armado al carrito</button>
+        <a href="#" target="_blank" class="btn-wa" id="armar-wa"><i class="ti ti-brand-whatsapp"></i> Pedir asesoría por WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE SELECCIÓN -->
+  <div class="sel-overlay" id="sel-overlay">
+    <div class="sel-modal">
+      <div class="sel-head">
+        <h3 id="sel-title">Elige tu pieza</h3>
+        <button class="sel-close" onclick="closeSel()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="sel-body" id="sel-body"></div>
+    </div>
+  </div>
+</main>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <svg width="24" height="24" viewBox="0 0 22 22" fill="none">
+            <path d="M11 2.5L4 6.5V15.5L11 19.5L18 15.5V6.5L11 2.5Z" stroke="#00b4d8" stroke-width="1.6" fill="rgba(0,180,216,.12)"/>
+            <path d="M11 7L7.5 9V13L11 15L14.5 13V9L11 7Z" fill="#00b4d8"/>
+          </svg>
+        </div>
+        <p>Tu tienda de componentes y PCs gamer en Ecuador. Hardware original, precios justos y asesoría real de gente que ama el fierro.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/netherpc_ec" target="_blank" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+          <a href="#" aria-label="Facebook"><i class="ti ti-brand-facebook"></i></a>
+          <a href="#" aria-label="TikTok"><i class="ti ti-brand-tiktok"></i></a>
+          <a href="https://wa.me/593978602972" aria-label="WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Categorías</h4>
+        <a href="#">Procesadores</a>
+        <a href="#">Tarjetas gráficas</a>
+        <a href="#">Memorias RAM</a>
+        <a href="#">Placas base</a>
+        <a href="#">Gabinetes</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <a href="#">Envíos y entregas</a>
+        <a href="#">Garantía</a>
+        <a href="#">Métodos de pago</a>
+        <a href="#">Arma tu PC</a>
+        <a href="#">Contáctanos</a>
+      </div>
+      <div class="footer-col footer-contact">
+        <h4>Contacto</h4>
+        <div><i class="ti ti-map-pin"></i> Milagro, Guayas · Ecuador</div>
+        <div><i class="ti ti-brand-whatsapp"></i> +593 97 860 2972</div>
+        <div><i class="ti ti-mail"></i> ventas@netherpc.ec</div>
+        <div><i class="ti ti-clock"></i> Lun-Sáb · 9:00 - 19:00</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 NetherPC EC · Todos los derechos reservados</span>
+      <span>Hecho en Ecuador</span>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- MENU DRAWER (IZQUIERDA) -->
+<aside class="drawer" id="drawer" aria-label="Menú de navegación">
+  <div class="drawer-head">
+    <div class="drawer-logo">
+      <!-- Reemplaza por tu logo: pon el archivo en img/logo.png -->
+      <img src="img/logo.png" alt="NetherPC EC" onerror="this.outerHTML='&lt;span style=&quot;font-weight:800;font-size:19px;letter-spacing:.5px&quot;&gt;NETHER&lt;span style=&quot;color:var(--brand)&quot;&gt;PC&lt;/span&gt;&lt;/span&gt;'">
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()" aria-label="Cerrar menú"><i class="ti ti-x"></i></button>
+  </div>
+
+  <div class="drawer-section">
+    <a href="armar.html" class="drawer-link"><i class="ti ti-tool"></i> Arma tu PC</a>
+    <a href="catalogo.html?cat=Laptops" class="drawer-link"><i class="ti ti-device-laptop"></i> Laptops Gamer</a>
+    <a href="catalogo.html" class="drawer-link"><i class="ti ti-apps"></i> Ver todo el catálogo</a>
+    <a href="catalogo.html?promo=1" class="drawer-link promo"><i class="ti ti-discount"></i> Promos y descuentos</a>
+  </div>
+
+  <div class="drawer-section">
+    <p class="drawer-label">Nuestros productos</p>
+    <a href="catalogo.html?cat=Procesadores" class="drawer-link"><i class="ti ti-cpu"></i> Procesadores</a>
+    <a href="catalogo.html?cat=Tarjetas%20gráficas" class="drawer-link"><i class="ti ti-device-gamepad-2"></i> Tarjetas gráficas</a>
+    <a href="catalogo.html?cat=Memorias%20RAM" class="drawer-link"><i class="ti ti-server-2"></i> Memorias RAM</a>
+    <a href="catalogo.html?cat=Placas%20base" class="drawer-link"><i class="ti ti-cpu-2"></i> Placas base</a>
+    <a href="catalogo.html?cat=Refrigeración" class="drawer-link"><i class="ti ti-snowflake"></i> Refrigeración</a>
+    <a href="catalogo.html?cat=Fuentes%20de%20poder" class="drawer-link"><i class="ti ti-plug"></i> Fuentes de poder</a>
+    <a href="catalogo.html?cat=Gabinetes" class="drawer-link"><i class="ti ti-box"></i> Gabinetes</a>
+    <a href="catalogo.html?cat=Almacenamiento" class="drawer-link"><i class="ti ti-database"></i> Almacenamiento</a>
+    <a href="catalogo.html?cat=Periféricos" class="drawer-link"><i class="ti ti-mouse"></i> Periféricos</a>
+    <a href="catalogo.html?cat=Sillas%20Gamer" class="drawer-link"><i class="ti ti-armchair"></i> Sillas Gamer</a>
+    <a href="catalogo.html?cat=Monitores" class="drawer-link"><i class="ti ti-device-desktop"></i> Monitores</a>
+    <a href="catalogo.html?cat=Teclados" class="drawer-link"><i class="ti ti-keyboard"></i> Teclados y mouse</a>
+  </div>
+
+  <div class="drawer-section">
+    <p class="drawer-label">Ayuda</p>
+    <a href="#" class="drawer-link"><i class="ti ti-truck-delivery"></i> Envíos y entregas</a>
+    <a href="#" class="drawer-link"><i class="ti ti-shield-check"></i> Garantía</a>
+    <a href="https://wa.me/593978602972" target="_blank" class="drawer-link"><i class="ti ti-brand-whatsapp"></i> Contáctanos</a>
+  </div>
+</aside>
+
+<aside class="cart" id="cart" aria-label="Carrito de compras">
+  <div class="cart-head">
+    <h3><i class="ti ti-shopping-cart"></i> Tu pedido</h3>
+    <button class="cart-close" onclick="closeCart()" aria-label="Cerrar carrito"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-total">
+      <b>Total</b>
+      <span class="amt" id="cart-total">$0</span>
+    </div>
+    <button class="cart-send" id="cart-send" onclick="openProforma()">
+      <i class="ti ti-brand-whatsapp" style="font-size:18px"></i> Enviar proforma por WhatsApp
+    </button>
+    <p class="cart-note">Generamos tu proforma y coordinamos el pago por transferencia o efectivo.</p>
+  </div>
+</aside>
+
+<!-- PROFORMA MODAL -->
+<div class="modal-wrap" id="modal" onclick="if(event.target===this)closeProforma()">
+  <div class="modal">
+    <h3>Completa tu proforma</h3>
+    <p class="sub">Ingresa tus datos para generar la proforma. Luego se abrirá WhatsApp con tu pedido listo para enviar.</p>
+    <div class="field">
+      <label for="f-nombre">Nombre completo</label>
+      <input type="text" id="f-nombre" placeholder="Ej. Juan Pérez" autocomplete="name">
+    </div>
+    <div class="field">
+      <label for="f-ciudad">Ciudad</label>
+      <input type="text" id="f-ciudad" placeholder="Ej. Guayaquil" autocomplete="address-level2">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeProforma()">Cancelar</button>
+      <button class="btn-confirm" onclick="sendProforma()"><i class="ti ti-brand-whatsapp" style="font-size:17px"></i> Generar y enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="ti ti-circle-check"></i> <span id="toast-msg">Agregado al carrito</span></div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/593978602972" target="_blank" class="wa-float" aria-label="Escríbenos por WhatsApp">
+  <i class="ti ti-brand-whatsapp"></i>
+</a>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN — Supabase como base de datos
+   ============================================================ */
+const SUPABASE_URL = 'https://nbvbjulnqczwweuqgebk.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bodORUr420PZJCi0l5VxTQ_kUa-Xi-I';
+const SUPABASE_TABLE = 'productos';
+
+const WHATSAPP = '593978602972';
+
+/* Productos de respaldo: se muestran si la hoja no carga.
+   También sirven de referencia para las columnas de tu Sheet. */
+const FALLBACK = [
+  {cat:'Periféricos', name:'Mause Ajazz AJ179/Apex Sensor Paw 3950 blanco', price:63, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Periféricos', name:'Ajazz Nk61 Teclado/switch red', price:32, old:'', stars:5, reviews:0, badge:'', stock:4, icon:''},
+  {cat:'Periféricos', name:'Mause Ajazz AJ179/ Pro Sensor Paw 3395 negro', price:58, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Periféricos', name:'MG MAD 60HE Amber Pro Switch rgb', price:69, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Periféricos', name:'MG MAD 60HE Amber Switch Yellow', price:46, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Tarjetas gráficas', name:'RTX EVGA 2070Super 8gb', price:284, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Almacenamiento', name:'SSD 120 Ymetion', price:34, old:'', stars:5, reviews:0, badge:'', stock:16, icon:''},
+  {cat:'Almacenamiento', name:'HDD 2TB WESTER DIGITAL PURPLE(NUEVO)', price:77, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Almacenamiento', name:'HDD 1tb Varios WesterDIGITAL (USADOS)', price:40, old:'', stars:5, reviews:0, badge:'', stock:4, icon:''},
+  {cat:'Almacenamiento', name:'HDD 2TB WESTER DIGITAL PURPLE(USADO)', price:52, old:'', stars:5, reviews:0, badge:'', stock:5, icon:''},
+  {cat:'Almacenamiento', name:'SSD M.2 512GB Varios (USADOS)', price:122, old:'', stars:5, reviews:0, badge:'', stock:3, icon:''},
+  {cat:'Memorias RAM', name:'32GB RAM GSKILL ROYAL 3000MTS 4X8GB', price:121, old:'', stars:5, reviews:0, badge:'', stock:4, icon:''},
+  {cat:'Memorias RAM', name:'16gb Ram Thermaltake 4000mts 2x8gb', price:81, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Gabinetes', name:'Case Gamer Azza Neptune AZ-491', price:81, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Refrigeración', name:'AIO COOLER 240MM DEPCOOL (USADA)', price:64, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Fuentes de poder', name:'Corsair Cx650w ATX 80 BRONZE', price:77, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Memorias RAM', name:'Corsair Vengeance 16gb DDR5 5200mts', price:145, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Placas base', name:'Asus Prime A620M-K', price:102, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Almacenamiento', name:'SSD WESTER DIGITAL GREEN 500GB', price:112, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Procesadores', name:'Ryzen 5 8500g', price:192, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Sillas Gamer', name:'xtech silla ghost spider', price:140, old:'', stars:5, reviews:0, badge:'', stock:0, icon:''},
+  {cat:'Periféricos', name:'Logitech G203 NEGRO Y BLANCO', price:26, old:'', stars:5, reviews:0, badge:'', stock:6, icon:''},
+  {cat:'Periféricos', name:'Logitech G305 NEGRO Y BLANCO', price:49, old:'', stars:5, reviews:0, badge:'', stock:6, icon:''},
+  {cat:'Tarjetas gráficas', name:'RTX 5060 TI MSI GAMING TRIO WHITE 8GB', price:696, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Procesadores', name:'RYZEN 5 7600X', price:219, old:'', stars:5, reviews:0, badge:'', stock:2, icon:''},
+  {cat:'Placas base', name:'Asus ROG Strix b650E-i wifi 6', price:204, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Memorias RAM', name:'Vulkanz red ddr5 16gb 6000mts', price:236, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Tarjetas gráficas', name:'Asus ROG Strix RTX 4070 TI SUPER 16GB (DETALLE)', price:825, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Tarjetas gráficas', name:'ASUS DUAL 3070 8GB', price:355, old:'', stars:5, reviews:0, badge:'', stock:1, icon:''},
+  {cat:'Laptops', name:'Asus Rog Strix G16 I9 14400HX RTX 4070 16GB 1TB', price:1380, old:'', stars:5, reviews:0, badge:'', stock:0, icon:''},
+  {cat:'Fuentes de poder', name:'CV750 CORSAIR', price:60, old:'', stars:5, reviews:0, badge:'', stock:0, icon:''},
+];
+
+/* Icono por defecto según categoría (si la hoja no especifica uno) */
+const CAT_ICON = {
+  'Procesadores':'ti-cpu', 'Tarjetas gráficas':'ti-device-gamepad-2',
+  'Memorias RAM':'ti-server-2', 'Placas base':'ti-cpu-2',
+  'Refrigeración':'ti-snowflake', 'Fuentes de poder':'ti-plug',
+  'Gabinetes':'ti-box', 'Laptops':'ti-device-laptop', 'PC Armada':'ti-device-desktop',
+  'Almacenamiento':'ti-database', 'Periféricos':'ti-mouse', 'Sillas Gamer':'ti-armchair',
+  'Monitores':'ti-device-desktop', 'Teclados':'ti-keyboard'
+};
+
+/* Color del badge según su texto */
+function badgeClass(t){
+  if(!t) return '';
+  const s = String(t).toLowerCase();
+  if(s.includes('vendido')) return 'hot';
+  if(s.includes('nuevo')) return 'new';
+  if(s.includes('%') || s.includes('oferta')) return 'off';
+  return 'new';
+}
+
+function star(n){ n=Math.round(n)||0; return '★'.repeat(n)+'☆'.repeat(5-n); }
+
+/* Parser CSV sencillo (soporta comas dentro de comillas) */
+function parseCSV(text){
+  const rows = [];
+  const lines = text.trim().split(/\r?\n/);
+  const headers = splitCSVLine(lines[0]).map(h=>h.trim().toLowerCase());
+  for(let i=1;i<lines.length;i++){
+    if(!lines[i].trim()) continue;
+    const cells = splitCSVLine(lines[i]);
+    const obj = {};
+    headers.forEach((h,j)=> obj[h] = (cells[j]||'').trim());
+    rows.push(obj);
+  }
+  return rows;
+}
+function splitCSVLine(line){
+  const out=[]; let cur=''; let q=false;
+  for(let i=0;i<line.length;i++){
+    const c=line[i];
+    if(c==='"'){ if(q && line[i+1]==='"'){cur+='"';i++;} else q=!q; }
+    else if(c===',' && !q){ out.push(cur); cur=''; }
+    else cur+=c;
+  }
+  out.push(cur);
+  return out;
+}
+
+/* Normaliza una fila de la hoja al formato que usa la web */
+/* Limpia precios con $ , espacios y comas: "$1,380.00" -> 1380.00 */
+function num(v){
+  if(v===null || v===undefined) return 0;
+  const s = String(v).replace(/[^0-9.,-]/g,'').replace(/,/g,'');
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
+function parseImgs(v){
+  if(!v) return [];
+  // Separa por salto de línea o coma, limpia espacios y vacíos
+  return String(v).split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+}
+
+function normalize(row){
+  return {
+    cat: (row.categoria || row['categoría'] || row.cat || '').trim(),
+    name: (row.nombre || row.name || '').trim(),
+    price: num(row.precio || row['precio público'] || row['precio publico'] || row.price),
+    old: (row.precio_anterior || row['precio anterior'] || row.old) ? num(row.precio_anterior || row['precio anterior'] || row.old) : '',
+    stars: num(row.estrellas || row.stars) || 5,
+    reviews: parseInt(row.resenas || row['reseñas'] || row.reviews || 0) || 0,
+    badge: (row.etiqueta || row.badge || '').trim(),
+    stock: parseInt(num(row.stock || row.existencia)) || 0,
+    icon: (row.icono || row.icon || '').trim(),
+    imgs: parseImgs(row.imagenes || row.images || ''),
+    img: (parseImgs(row.imagenes || row.images || '')[0] || row.imagen || row.img || row.foto || '').trim(),
+    img2: (parseImgs(row.imagenes || row.images || '')[1] || row.imagen2 || row.imagen_hover || row.img2 || '').trim()
+  };
+}
+
+function cardHTML(p,i){
+  const icon = p.icon || CAT_ICON[p.cat] || 'ti-box';
+  const bajoPedido = Number(p.stock) <= 0;
+  const bc = badgeClass(p.badge);
+  const stockHTML = bajoPedido
+    ? `<span class="stock pedido"><i class="ti ti-clock-hour-4"></i> Bajo pedido</span>`
+    : `<span class="stock"><i class="ti ti-circle-check"></i> En stock</span>`;
+  const cta = `<button class="card-cta" onclick="addToCart(${i})"><i class="ti ti-shopping-cart" style="font-size:15px"></i> Agregar</button>`;
+  let imgHTML;
+  if(p.img && p.img2){
+    imgHTML = `<div class="img-swap">
+      <img class="img-main" src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.closest('.card-img').innerHTML='&lt;i class=\\'ti ${icon}\\'&gt;&lt;/i&gt;'">
+      <img class="img-hover" src="${p.img2}" alt="${p.name}" loading="lazy" onerror="this.remove()">
+    </div>`;
+  } else if(p.img){
+    imgHTML = `<img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.outerHTML='&lt;i class=\\'ti ${icon}\\'&gt;&lt;/i&gt;'">`;
+  } else {
+    imgHTML = `<i class="ti ${icon}"></i>`;
+  }
+  return `
+  <article class="card reveal" style="--i:${i}">
+    ${p.badge?`<span class="badge badge-${bc}">${p.badge}</span>`:''}
+    <button class="card-fav" aria-label="Agregar a favoritos"><i class="ti ti-heart"></i></button>
+    <a href="producto.html?id=${p._id != null ? p._id : i}" class="card-img-link"><div class="card-img">${imgHTML}</div></a>
+    <div class="card-body">
+      <p class="card-cat">${p.cat}</p>
+      <a href="producto.html?id=${p._id != null ? p._id : i}" class="card-name">${p.name}</a>
+      <div class="card-meta">
+        <span class="stars">${star(p.stars)}</span>
+        <span class="reviews">(${p.reviews})</span>
+        ${stockHTML}
+      </div>
+      <div class="price-row">
+        <span class="price">$${Number(p.price).toLocaleString('en-US')}</span>
+        ${p.old?`<span class="price-old">$${p.old}</span>`:''}
+      </div>
+      ${cta}
+    </div>
+  </article>`;
+}
+
+let ALL = [];       // todos los productos
+let CATALOG = [];   // requerido por cardHTML/addToCart del chrome
+
+const CACHE_KEY = 'netherpc_products';
+const BUILD_KEY = 'netherpc_build';
+
+function readCache(){
+  try{
+    const raw = localStorage.getItem(CACHE_KEY);
+    if(!raw) return null;
+    const obj = JSON.parse(raw);
+    if(!obj || !Array.isArray(obj.data)) return null;
+    return obj;
+  }catch(e){ return null; }
+}
+function writeCache(data){
+  try{ localStorage.setItem(CACHE_KEY, JSON.stringify({data, ts:Date.now()})); }catch(e){}
+}
+async function fetchSheet(){
+  const url = SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE + '?select=*&order=creado_en.asc';
+  const res = await fetch(url, { headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY } });
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  const data = await res.json();
+  return data.map((r,i)=>{ const n=normalize(r); n._id = r.id != null ? r.id : i; return n; }).filter(p=>p.name);
+}
+
+/* Scroll reveal (requerido por el chrome) */
+const io = new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:0});
+function observeReveal(){
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+  clearTimeout(window._revealT);
+  window._revealT = setTimeout(()=>{document.querySelectorAll('.reveal:not(.in)').forEach(el=>el.classList.add('in'));},1200);
+}
+
+/* ============================================================
+   ARMA TU PC — configuración de piezas
+   Ajusta aquí las posiciones de los puntos (en % sobre la imagen)
+   cuando cambies la foto del gabinete (img/armar-case.jpg).
+   ============================================================ */
+const PIEZAS = [
+  {key:'cpu',     tipo:'Procesador',      cat:'Procesadores',      icon:'ti-cpu',              x:46, y:30},
+  {key:'placa',   tipo:'Placa base',      cat:'Placas base',       icon:'ti-cpu-2',            x:42, y:48},
+  {key:'ram',     tipo:'Memoria RAM',     cat:'Memorias RAM',      icon:'ti-server-2',         x:53, y:40},
+  {key:'gpu',     tipo:'Tarjeta gráfica', cat:'Tarjetas gráficas', icon:'ti-device-gamepad-2', x:28, y:62},
+  {key:'alm',     tipo:'Almacenamiento',  cat:'Almacenamiento',    icon:'ti-database',         x:58, y:56},
+  {key:'refri',   tipo:'Refrigeración',   cat:'Refrigeración',     icon:'ti-snowflake',        x:14, y:37},
+  {key:'gabinete',tipo:'Gabinete',        cat:'Gabinetes',         icon:'ti-box',              x:78, y:31},
+  {key:'fuente',  tipo:'Fuente de poder', cat:'Fuentes de poder',  icon:'ti-plug',             x:13, y:85, lockeable:true}
+];
+
+let BUILD = {};           // {key: producto}
+let FUENTE_UNLOCKED = false;
+let SEL_ACTUAL = null;    // pieza abierta en el modal
+
+function loadBuild(){
+  try{ const b = JSON.parse(localStorage.getItem(BUILD_KEY)); if(b && typeof b==='object'){ BUILD = b.sel||{}; FUENTE_UNLOCKED = !!b.unlocked; } }catch(e){}
+}
+function saveBuild(){
+  try{ localStorage.setItem(BUILD_KEY, JSON.stringify({sel:BUILD, unlocked:FUENTE_UNLOCKED})); }catch(e){}
+}
+
+async function initArmador(){
+  loadBuild();
+  const cached = readCache();
+  if(cached){ ALL = cached.data; renderArmador(); }
+  try{
+    const fresh = await fetchSheet();
+    writeCache(fresh);
+    ALL = fresh;
+    renderArmador();
+  }catch(e){ if(!cached) renderArmador(); }
+}
+
+function fuenteBloqueada(){
+  if(FUENTE_UNLOCKED) return false;
+  // Bloqueada hasta que las otras 7 estén elegidas
+  return PIEZAS.filter(p=>!p.lockeable).some(p=>!BUILD[p.key]);
+}
+
+function renderArmador(){
+  renderHotspots();
+  renderLista();
+  renderTotal();
+}
+
+function renderHotspots(){
+  const wrap = document.getElementById('case-wrap');
+  wrap.querySelectorAll('.hotspot').forEach(h=>h.remove());
+  PIEZAS.forEach(p=>{
+    const locked = p.lockeable && fuenteBloqueada();
+    const el = document.createElement('div');
+    el.className = 'hotspot' + (BUILD[p.key]?' done':'') + (locked?' locked':'');
+    el.style.left = p.x + '%';
+    el.style.top = p.y + '%';
+    el.title = p.tipo + (locked ? ' (elige el resto primero)' : '');
+    el.innerHTML = '<i class="ti ' + (BUILD[p.key] ? 'ti-check' : p.icon) + '"></i>';
+    el.addEventListener('click', ()=>openSel(p.key));
+    wrap.appendChild(el);
+  });
+}
+
+function renderLista(){
+  const cont = document.getElementById('piezas-lista');
+  cont.innerHTML = '';
+  PIEZAS.forEach(p=>{
+    const sel = BUILD[p.key];
+    const locked = p.lockeable && fuenteBloqueada();
+    const div = document.createElement('div');
+    div.className = 'pieza' + (sel?' done':'') + (locked?' locked':'');
+    let lockNote = '';
+    if(locked){
+      lockNote = '<div class="pieza-lock-note"><i class="ti ti-lock"></i> Se habilita al elegir el resto · <a data-unlock>desbloquear</a></div>';
+    }
+    div.innerHTML =
+      '<div class="pieza-ico"><i class="ti ' + p.icon + '"></i></div>' +
+      '<div class="pieza-info">' +
+        '<div class="pieza-tipo">' + p.tipo + '</div>' +
+        (sel
+          ? '<div class="pieza-nombre">' + sel.name + '</div>'
+          : '<div class="pieza-nombre empty">Elegir ' + p.tipo.toLowerCase() + '...</div>') +
+        lockNote +
+      '</div>' +
+      (sel ? '<div class="pieza-precio">$' + Number(sel.price).toLocaleString('en-US') + '</div>' : '') +
+      '<div class="pieza-accion"><i class="ti ' + (sel ? 'ti-pencil' : 'ti-chevron-right') + '"></i></div>';
+    div.addEventListener('click', (e)=>{
+      if(e.target.hasAttribute && e.target.hasAttribute('data-unlock')){ e.stopPropagation(); openUnlock(); return; }
+      openSel(p.key);
+    });
+    cont.appendChild(div);
+  });
+}
+
+function renderTotal(){
+  const elegidas = PIEZAS.filter(p=>BUILD[p.key]);
+  const total = elegidas.reduce((s,p)=>s + Number(BUILD[p.key].price), 0);
+  document.getElementById('armar-total').textContent = '$' + total.toLocaleString('en-US', {maximumFractionDigits:2});
+  document.getElementById('total-note').textContent = elegidas.length + ' de ' + PIEZAS.length + ' piezas seleccionadas';
+  document.getElementById('armar-add').disabled = elegidas.length === 0;
+
+  // WhatsApp con resumen
+  let msg = 'Hola NetherPC 👋, estoy armando una PC en su web:%0A';
+  PIEZAS.forEach(p=>{ if(BUILD[p.key]) msg += '• ' + p.tipo + ': ' + BUILD[p.key].name + ' ($' + BUILD[p.key].price + ')%0A'; });
+  msg += '%0ATotal parcial: $' + total.toLocaleString('en-US') + '%0A¿Me pueden asesorar?';
+  document.getElementById('armar-wa').href = 'https://wa.me/' + WHATSAPP + '?text=' + msg;
+}
+
+/* ===== Modal de selección ===== */
+function openSel(key){
+  const p = PIEZAS.find(x=>x.key===key);
+  if(!p) return;
+  if(p.lockeable && fuenteBloqueada()){ openUnlock(); return; }
+  SEL_ACTUAL = key;
+  document.getElementById('sel-title').textContent = 'Elige tu ' + p.tipo.toLowerCase();
+  renderSelBody(p, false);
+  document.getElementById('sel-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSel(){
+  document.getElementById('sel-overlay').classList.remove('show');
+  document.body.style.overflow = '';
+  SEL_ACTUAL = null;
+}
+
+function productosDe(cat){
+  return ALL.filter(x=>x.cat === cat);
+}
+
+/* 3 recomendaciones: alta, media, accesible (prioriza con stock) */
+function recomendar(cat){
+  let list = productosDe(cat);
+  if(!list.length) return [];
+  const conStock = list.filter(x=>Number(x.stock)>0);
+  const base = (conStock.length >= 3 ? conStock : list).slice().sort((a,b)=>b.price-a.price);
+  if(base.length <= 3) return base.map((x,i)=>({prod:x, tag:['alta','media','accesible'][i]||'media'}));
+  return [
+    {prod: base[0], tag:'alta'},
+    {prod: base[Math.floor(base.length/2)], tag:'media'},
+    {prod: base[base.length-1], tag:'accesible'}
+  ];
+}
+
+function selItemHTML(prod, tag){
+  const icon = prod.icon || CAT_ICON[prod.cat] || 'ti-box';
+  const img = prod.img
+    ? '<img src="' + prod.img + '" alt="" onerror="this.outerHTML=\'<i class=&quot;ti ' + icon + '&quot;></i>\'">'
+    : '<i class="ti ' + icon + '"></i>';
+  const stock = Number(prod.stock)>0
+    ? '<span style="color:var(--ok)"><i class="ti ti-circle-check"></i> En stock</span>'
+    : '<span style="color:#c77700"><i class="ti ti-clock-hour-4"></i> Bajo pedido</span>';
+  const badge = tag ? '<span class="sel-badge ' + tag + '">' + (tag==='alta'?'Gama alta':tag==='media'?'Equilibrado':'Accesible') + '</span>' : '';
+  const selCls = (SEL_ACTUAL && BUILD[SEL_ACTUAL] && BUILD[SEL_ACTUAL]._id === prod._id) ? ' selected' : '';
+  return '<div class="sel-item' + selCls + '" data-id="' + prod._id + '">' + badge +
+    '<div class="sel-item-img">' + img + '</div>' +
+    '<div class="sel-item-info">' +
+      '<div class="sel-item-name">' + prod.name + '</div>' +
+      '<div class="sel-item-meta">' + stock + '</div>' +
+    '</div>' +
+    '<div class="sel-item-price">$' + Number(prod.price).toLocaleString('en-US') + '</div>' +
+  '</div>';
+}
+
+function renderSelBody(p, verTodos){
+  const body = document.getElementById('sel-body');
+  const list = productosDe(p.cat);
+  if(!list.length){
+    body.innerHTML = '<div class="sel-empty">No hay productos de esta categoría por ahora.<br>Consúltanos por WhatsApp y te conseguimos opciones.</div>';
+    return;
+  }
+  let html = '';
+  if(!verTodos){
+    const recos = recomendar(p.cat);
+    html += '<p class="sel-reco-label">Recomendados para ti</p>';
+    recos.forEach(r=>{ html += selItemHTML(r.prod, r.tag); });
+    if(list.length > recos.length){
+      html += '<button class="sel-vertodos" data-vertodos><i class="ti ti-list"></i> Ver todos los ' + p.tipo.toLowerCase() + ' (' + list.length + ')</button>';
+    }
+  } else {
+    html += '<p class="sel-reco-label">Todos los ' + p.tipo.toLowerCase() + ' (' + list.length + ')</p>';
+    list.slice().sort((a,b)=>a.price-b.price).forEach(prod=>{ html += selItemHTML(prod, null); });
+  }
+  if(BUILD[p.key]){
+    html += '<button class="sel-quitar" data-quitar><i class="ti ti-trash"></i> Quitar esta pieza del armado</button>';
+  }
+  body.innerHTML = html;
+
+  // Listeners
+  body.querySelectorAll('.sel-item').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const prod = ALL.find(x=>String(x._id)===String(el.getAttribute('data-id')));
+      if(!prod) return;
+      BUILD[p.key] = prod;
+      saveBuild();
+      renderArmador();
+      closeSel();
+      showToast(p.tipo + ' elegido: ' + prod.name);
+    });
+  });
+  const vt = body.querySelector('[data-vertodos]');
+  if(vt) vt.addEventListener('click', ()=>renderSelBody(p, true));
+  const qt = body.querySelector('[data-quitar]');
+  if(qt) qt.addEventListener('click', ()=>{
+    delete BUILD[p.key];
+    saveBuild();
+    renderArmador();
+    closeSel();
+  });
+}
+
+/* ===== Desbloqueo de la fuente ===== */
+function openUnlock(){
+  SEL_ACTUAL = null;
+  document.getElementById('sel-title').textContent = 'Fuente de poder';
+  document.getElementById('sel-body').innerHTML =
+    '<div class="sel-unlock">' +
+      '<i class="ti ti-alert-triangle"></i>' +
+      '<p>La fuente de poder depende del consumo total de tus piezas. Te recomendamos elegirla <b>al final</b>, cuando el armado esté completo, para no quedarte corto de potencia.<br><br>Si sabes lo que haces, puedes desbloquearla ahora <b>bajo tu responsabilidad</b>.</p>' +
+      '<button data-confirm-unlock><i class="ti ti-lock-open"></i> Desbloquear bajo mi responsabilidad</button>' +
+    '</div>';
+  document.getElementById('sel-overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('[data-confirm-unlock]').addEventListener('click', ()=>{
+    FUENTE_UNLOCKED = true;
+    saveBuild();
+    renderArmador();
+    openSel('fuente');
+  });
+}
+
+/* ===== Agregar armado al carrito ===== */
+document.getElementById('armar-add').addEventListener('click', ()=>{
+  const elegidas = PIEZAS.filter(p=>BUILD[p.key]);
+  if(!elegidas.length) return;
+  elegidas.forEach(p=>{
+    const prod = BUILD[p.key];
+    const existing = CART.find(x=>x.name===prod.name);
+    if(existing) existing.qty += 1;
+    else CART.push({name:prod.name, cat:prod.cat, price:Number(prod.price), icon:findIcon(prod), qty:1});
+  });
+  updateCart();
+  showToast('Armado agregado al carrito (' + elegidas.length + ' piezas)');
+});
+
+/* Cerrar modal al hacer click fuera */
+document.getElementById('sel-overlay').addEventListener('click', (e)=>{
+  if(e.target === document.getElementById('sel-overlay')) closeSel();
+});
+
+initArmador();
+
+/* ============================================================
+   CARRITO Y PROFORMA
+   ============================================================ */
+let CART = []; // {name, cat, price, icon, qty}
+
+function findIcon(p){ return p.icon || CAT_ICON[p.cat] || 'ti-box'; }
+
+function addToCart(i){
+  const p = CATALOG[i];
+  if(!p) return;
+  const existing = CART.find(x=>x.name===p.name);
+  if(existing){ existing.qty++; }
+  else { CART.push({name:p.name, cat:p.cat, price:Number(p.price), icon:findIcon(p), qty:1}); }
+  updateCart();
+  showToast(`${p.name} agregado`);
+}
+
+function changeQty(idx, delta){
+  CART[idx].qty += delta;
+  if(CART[idx].qty <= 0) CART.splice(idx,1);
+  updateCart();
+}
+
+function removeItem(idx){ CART.splice(idx,1); updateCart(); }
+
+function cartTotal(){ return CART.reduce((s,x)=>s + x.price*x.qty, 0); }
+function cartCount(){ return CART.reduce((s,x)=>s + x.qty, 0); }
+
+function updateCart(){
+  document.getElementById('cart-count').textContent = cartCount();
+  const body = document.getElementById('cart-body');
+  const foot = document.getElementById('cart-foot');
+  if(CART.length === 0){
+    body.innerHTML = `<div class="cart-empty"><i class="ti ti-shopping-cart-off"></i><b>Tu carrito está vacío</b><span>Agrega productos para armar tu pedido.</span></div>`;
+    foot.style.display = 'none';
+    return;
+  }
+  body.innerHTML = CART.map((x,idx)=>`
+    <div class="ci">
+      <div class="ci-img"><i class="ti ${x.icon}"></i></div>
+      <div class="ci-main">
+        <p class="ci-name">${x.name}</p>
+        <p class="ci-cat">${x.cat}</p>
+        <div class="ci-bottom">
+          <div class="qty">
+            <button onclick="changeQty(${idx},-1)" aria-label="Restar">−</button>
+            <span>${x.qty}</span>
+            <button onclick="changeQty(${idx},1)" aria-label="Sumar">+</button>
+          </div>
+          <span class="ci-price">$${(x.price*x.qty).toLocaleString('en-US')}</span>
+        </div>
+      </div>
+      <button class="ci-remove" onclick="removeItem(${idx})" aria-label="Quitar"><i class="ti ti-trash"></i></button>
+    </div>
+  `).join('');
+  document.getElementById('cart-total').textContent = '$' + cartTotal().toLocaleString('en-US');
+  foot.style.display = 'block';
+}
+
+function openCart(){ closeDrawer(); document.getElementById('cart').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
+function closeCart(){ document.getElementById('cart').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); }
+
+function openDrawer(){ closeCart(); document.getElementById('drawer').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
+function closeDrawer(){ document.getElementById('drawer').classList.remove('show'); document.getElementById('overlay').classList.remove('show'); }
+
+function closeAll(){ closeCart(); closeDrawer(); }
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastT);
+  window._toastT = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ---------- PROFORMA ---------- */
+function openProforma(){
+  if(CART.length===0) return;
+  document.getElementById('modal').classList.add('show');
+  setTimeout(()=>document.getElementById('f-nombre').focus(), 100);
+}
+function closeProforma(){
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('f-nombre').classList.remove('err');
+  document.getElementById('f-ciudad').classList.remove('err');
+}
+
+/* Número de proforma: PRO-AAMMDD-XXX */
+function proformaNumber(){
+  const d = new Date();
+  const y = String(d.getFullYear()).slice(2);
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  const rnd = Math.floor(100 + Math.random()*900);
+  return `PRO-${y}${m}${day}-${rnd}`;
+}
+function fechaHoy(){
+  const d = new Date();
+  return d.toLocaleDateString('es-EC', {day:'2-digit', month:'long', year:'numeric'});
+}
+
+function sendProforma(){
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const ciudad = document.getElementById('f-ciudad').value.trim();
+  let ok = true;
+  document.getElementById('f-nombre').classList.toggle('err', !nombre);
+  document.getElementById('f-ciudad').classList.toggle('err', !ciudad);
+  if(!nombre || !ciudad) return;
+
+  const num = proformaNumber();
+  const fecha = fechaHoy();
+  let msg = `*PROFORMA NETHERPC EC*\n`;
+  msg += `N°: ${num}\n`;
+  msg += `Fecha: ${fecha}\n`;
+  msg += `─────────────────\n`;
+  msg += `Cliente: ${nombre}\n`;
+  msg += `Ciudad: ${ciudad}\n`;
+  msg += `─────────────────\n`;
+  msg += `*DETALLE DEL PEDIDO:*\n\n`;
+  CART.forEach((x,i)=>{
+    msg += `${i+1}. ${x.name}\n`;
+    msg += `   ${x.qty} x $${x.price.toLocaleString('en-US')} = $${(x.price*x.qty).toLocaleString('en-US')}\n`;
+  });
+  msg += `\n─────────────────\n`;
+  msg += `*TOTAL: $${cartTotal().toLocaleString('en-US')}*\n`;
+  msg += `─────────────────\n\n`;
+  msg += `Pago: transferencia o efectivo.\n`;
+  msg += `Quedo atento para coordinar. ¡Gracias!`;
+
+  const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+  closeProforma();
+  closeCart();
+}
+
+updateCart();
+</script>
+
+</body>
+</html>
