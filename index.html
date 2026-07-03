@@ -257,6 +257,15 @@ a.card-name:hover{color:var(--brand)}
 .qty span{min-width:30px;text-align:center;font-size:13px;font-weight:600}
 .ci-price{font-size:14px;font-weight:700}
 .ci-remove{background:none;border:none;color:#c0c4cc;font-size:17px;padding:4px}
+.ci-toggle{background:none;border:none;color:var(--brand);font-size:12px;font-weight:600;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:4px;font-family:inherit}
+.ci-toggle i{font-size:15px}
+.ci-detalle{margin:6px 0 4px;padding:8px 10px;background:var(--surface);border-radius:8px}
+.ci-pz{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:baseline;padding:4px 0;font-size:12px;border-bottom:1px solid var(--line)}
+.ci-pz:last-child{border-bottom:none}
+.ci-pz-tipo{color:var(--muted);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.ci-pz-name{color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ci-pz-price{color:var(--ink);font-weight:600;white-space:nowrap}
+.ci-armado .ci-img{background:rgba(0,180,216,.1);color:var(--brand)}
 .ci-remove:hover{color:#e2452f}
 .cart-foot{border-top:1px solid var(--line);padding:18px 22px;background:#fff}
 .cart-row{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:8px}
@@ -1027,7 +1036,32 @@ function updateCart(){
     foot.style.display = 'none';
     return;
   }
-  body.innerHTML = CART.map((x,idx)=>`
+  body.innerHTML = CART.map((x,idx)=>{
+    if(x.esArmado){
+      const detalle = (x.piezas||[]).map(pz=>
+        `<div class="ci-pz"><span class="ci-pz-tipo">${pz.tipo}</span><span class="ci-pz-name">${pz.name}</span><span class="ci-pz-price">$${Number(pz.price).toLocaleString('en-US')}</span></div>`
+      ).join('');
+      return `
+      <div class="ci ci-armado">
+        <div class="ci-img"><i class="ti ${x.icon}"></i></div>
+        <div class="ci-main">
+          <p class="ci-name">${x.name}</p>
+          <p class="ci-cat">${x.cat}</p>
+          <button class="ci-toggle" onclick="toggleArmado(${idx})"><i class="ti ti-chevron-down" id="ci-chev-${idx}"></i> Ver piezas</button>
+          <div class="ci-detalle" id="ci-det-${idx}" style="display:none">${detalle}</div>
+          <div class="ci-bottom">
+            <div class="qty">
+              <button onclick="changeQty(${idx},-1)" aria-label="Restar">−</button>
+              <span>${x.qty}</span>
+              <button onclick="changeQty(${idx},1)" aria-label="Sumar">+</button>
+            </div>
+            <span class="ci-price">$${(x.price*x.qty).toLocaleString('en-US')}</span>
+          </div>
+        </div>
+        <button class="ci-remove" onclick="removeItem(${idx})" aria-label="Quitar"><i class="ti ti-trash"></i></button>
+      </div>`;
+    }
+    return `
     <div class="ci">
       <div class="ci-img"><i class="ti ${x.icon}"></i></div>
       <div class="ci-main">
@@ -1043,10 +1077,19 @@ function updateCart(){
         </div>
       </div>
       <button class="ci-remove" onclick="removeItem(${idx})" aria-label="Quitar"><i class="ti ti-trash"></i></button>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
   document.getElementById('cart-total').textContent = '$' + cartTotal().toLocaleString('en-US');
   foot.style.display = 'block';
+}
+
+function toggleArmado(idx){
+  const det = document.getElementById('ci-det-'+idx);
+  const chev = document.getElementById('ci-chev-'+idx);
+  if(!det) return;
+  const abierto = det.style.display !== 'none';
+  det.style.display = abierto ? 'none' : 'block';
+  if(chev) chev.className = abierto ? 'ti ti-chevron-down' : 'ti ti-chevron-up';
 }
 
 function openCart(){ closeDrawer(); document.getElementById('cart').classList.add('show'); document.getElementById('overlay').classList.add('show'); }
@@ -1112,6 +1155,9 @@ function sendProforma(){
   CART.forEach((x,i)=>{
     msg += `${i+1}. ${x.name}\n`;
     msg += `   ${x.qty} x $${x.price.toLocaleString('en-US')} = $${(x.price*x.qty).toLocaleString('en-US')}\n`;
+    if(x.esArmado && x.piezas){
+      x.piezas.forEach(pz=>{ msg += `      - ${pz.tipo}: ${pz.name} ($${Number(pz.price).toLocaleString('en-US')})\n`; });
+    }
   });
   msg += `\n─────────────────\n`;
   msg += `*TOTAL: $${cartTotal().toLocaleString('en-US')}*\n`;
