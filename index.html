@@ -438,98 +438,9 @@ a.card-name:hover{color:var(--brand)}
   </section>
 
   <!-- RESEÑAS -->
-  <section class="section">
+  <section class="section" id="resenas-sec">
     <div class="section-head"><h2>Lo que dicen nuestros clientes</h2></div>
-    <div class="reviews-masonry">
-
-      <!-- Con foto (vertical) -->
-      <div class="review">
-        <div class="review-photo-box" style="aspect-ratio:3/4">
-          <img src="img/resena-1.jpg" alt="" onerror="this.parentElement.innerHTML='<div class=\'ph\'><i class=\'ti ti-photo\'></i>Foto del cliente</div>'">
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Me armaron mi PC gamer completa y quedó increíble. La asesoría por WhatsApp fue rapidísima y me ayudaron a elegir las piezas según mi presupuesto."</p>
-        <div class="review-user">
-          <div class="review-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="review-name">Carlos Mendoza</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Guayaquil</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sin foto -->
-      <div class="review">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Excelente atención y precios justos. Pedí una tarjeta gráfica y llegó al día siguiente en perfecto estado. Volveré a comprar aquí mis próximos componentes."</p>
-        <div class="review-user">
-          <div class="review-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="review-name">Andrea Vera</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Milagro</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Con foto (horizontal) -->
-      <div class="review">
-        <div class="review-photo-box" style="aspect-ratio:16/10">
-          <img src="img/resena-2.jpg" alt="" onerror="this.parentElement.innerHTML='<div class=\'ph\'><i class=\'ti ti-photo\'></i>Foto del cliente</div>'">
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Mi setup quedó espectacular. Me explicaron todo sin complicaciones y dentro del presupuesto que tenía."</p>
-        <div class="review-user">
-          <div class="review-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="review-name">Joel Paredes</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Durán</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sin foto -->
-      <div class="review">
-        <div class="review-stars">★★★★☆</div>
-        <p class="review-text">"Muy buena experiencia. Tenían el procesador que buscaba a mejor precio que en otras tiendas de Guayaquil. Recomendados."</p>
-        <div class="review-user">
-          <div class="review-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="review-name">Steven Cabrera</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Samborondón</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Con foto (cuadrada) -->
-      <div class="review">
-        <div class="review-photo-box" style="aspect-ratio:1/1">
-          <img src="img/resena-3.jpg" alt="" onerror="this.parentElement.innerHTML='<div class=\'ph\'><i class=\'ti ti-photo\'></i>Foto del cliente</div>'">
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"Compré un combo de refrigeración líquida y gabinete. Todo original, con garantía y me ayudaron con la instalación."</p>
-        <div class="review-user">
-          <div class="review-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="review-name">Doménica Ruiz</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Guayaquil</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sin foto -->
-      <div class="review">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">"La mejor tienda de hardware de la zona. Atención personalizada de gente que de verdad sabe. Mi PC vuela."</p>
-        <div class="review-user">
-          <div class="review-avatar"><i class="ti ti-user"></i></div>
-          <div>
-            <div class="review-name">Mateo Salazar</div>
-            <div class="review-meta"><i class="ti ti-circle-check"></i> Verificada · Naranjito</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <div class="reviews-masonry" id="reviews-masonry"></div>
   </section>
 
   <!-- BUILD CTA -->
@@ -947,6 +858,45 @@ function observeReveal(){
 document.querySelectorAll('.trust, .cat-card, .build, .section-head, .review').forEach(el=>el.classList.add('reveal'));
 observeReveal();
 loadProducts();
+
+/* ===== RESEÑAS desde Supabase ===== */
+function starStr(n){
+  n = Math.round(Number(n)||5);
+  return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0, 5-n);
+}
+async function loadResenas(){
+  const cont = document.getElementById('reviews-masonry');
+  if(!cont) return;
+  try{
+    const url = SUPABASE_URL + '/rest/v1/resenas?select=*&activa=eq.true&order=orden.asc,creado_en.desc';
+    const res = await fetch(url, { headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY } });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    if(!data || !data.length){ document.getElementById('resenas-sec').style.display='none'; return; }
+    cont.innerHTML = data.map(r=>{
+      const foto = r.foto
+        ? `<div class="review-photo-box"><img src="${r.foto}" alt="" onerror="this.parentElement.style.display='none'"></div>`
+        : '';
+      const meta = (r.verificada ? '<i class="ti ti-circle-check"></i> Verificada' : '') +
+                   (r.ciudad ? (r.verificada?' · ':'') + r.ciudad : '');
+      return `<div class="review">
+        ${foto}
+        <div class="review-stars">${starStr(r.estrellas)}</div>
+        <p class="review-text">"${r.texto}"</p>
+        <div class="review-user">
+          <div class="review-avatar"><i class="ti ti-user"></i></div>
+          <div>
+            <div class="review-name">${r.nombre}</div>
+            <div class="review-meta">${meta}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    document.getElementById('resenas-sec').style.display='none';
+  }
+}
+loadResenas();
 
 /* ============================================================
    CARRUSEL DE DESTACADOS (scroll horizontal + arrastre)
