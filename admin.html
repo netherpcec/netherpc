@@ -306,6 +306,113 @@ a{color:var(--brand);text-decoration:none}
 
 <div class="a-toast" id="a-toast"><i class="ti ti-circle-check"></i> <span id="a-toast-msg"></span></div>
 
+<!-- MODAL DE RESEÑA -->
+<div class="modal-ov" id="resena-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="resena-title">Nueva reseña</h3>
+      <button class="modal-close" onclick="closeResenaModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="fg">
+          <label>Nombre del cliente <span class="opt">(obligatorio)</span></label>
+          <input type="text" id="r-nombre" placeholder="Ej: Carlos Mendoza">
+        </div>
+        <div class="fg">
+          <label>Ciudad <span class="opt">(opcional)</span></label>
+          <input type="text" id="r-ciudad" placeholder="Ej: Guayaquil">
+        </div>
+        <div class="fg full">
+          <label>Texto de la reseña <span class="opt">(obligatorio)</span></label>
+          <textarea id="r-texto" placeholder="Lo que dijo el cliente..."></textarea>
+        </div>
+        <div class="fg">
+          <label>Estrellas</label>
+          <input type="number" id="r-estrellas" step="0.5" min="1" max="5" placeholder="5">
+        </div>
+        <div class="fg">
+          <label>Orden <span class="opt">(0, 1, 2...)</span></label>
+          <input type="number" id="r-orden" placeholder="0">
+        </div>
+        <div class="fg">
+          <label>Foto del cliente <span class="opt">(URL opcional)</span></label>
+          <input type="text" id="r-foto" placeholder="https://... (vacío = sin foto)">
+        </div>
+        <div class="fg">
+          <label>Opciones</label>
+          <div style="display:flex;gap:16px;padding-top:10px">
+            <label style="font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="r-verificada" checked style="width:auto"> Verificada</label>
+            <label style="font-weight:400;display:flex;align-items:center;gap:6px;cursor:pointer"><input type="checkbox" id="r-activa" checked style="width:auto"> Activa (visible)</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeResenaModal()">Cancelar</button>
+      <button class="btn-save" id="btn-save-resena"><i class="ti ti-device-floppy"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE VARIANTE -->
+<div class="modal-ov" id="variante-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="variante-title">Nueva variante</h3>
+      <button class="modal-close" onclick="closeVarianteModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px" id="variante-producto-info"></p>
+      <div class="form-grid">
+        <div class="fg">
+          <label>Tipo <span class="opt">(obligatorio)</span></label>
+          <select id="v-tipo">
+            <option value="Color">Color</option>
+            <option value="Capacidad">Capacidad</option>
+            <option value="Modelo">Modelo</option>
+            <option value="Tamaño">Tamaño</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Valor <span class="opt">(obligatorio)</span></label>
+          <input type="text" id="v-valor" placeholder="Ej: Blanco, 32GB...">
+        </div>
+        <div class="fg">
+          <label>Precio <span class="opt">(vacío = hereda)</span></label>
+          <input type="number" id="v-precio" step="0.01" placeholder="Hereda del producto">
+        </div>
+        <div class="fg">
+          <label>Stock <span class="opt">(vacío = hereda)</span></label>
+          <input type="number" id="v-stock" placeholder="Hereda del producto">
+        </div>
+        <div class="fg">
+          <label>Orden</label>
+          <input type="number" id="v-orden" placeholder="0">
+        </div>
+        <div class="fg full">
+          <label>Imágenes de esta variante <span class="opt">(un URL por línea)</span></label>
+          <div class="dropzone" id="v-dropzone">
+            <input type="file" id="v-file-input" accept="image/*" multiple hidden>
+            <i class="ti ti-cloud-upload"></i>
+            <p><b>Arrastra imágenes aquí</b> o haz clic</p>
+            <span class="dz-hint">Fotos de este color/variante</span>
+          </div>
+          <div class="img-previews" id="v-img-previews"></div>
+          <details class="url-manual">
+            <summary>Editar URLs manualmente</summary>
+            <textarea id="v-imagenes" placeholder="https://...&#10;https://..."></textarea>
+          </details>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closeVarianteModal()">Cancelar</button>
+      <button class="btn-save" id="btn-save-variante"><i class="ti ti-device-floppy"></i> Guardar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL = 'https://nbvbjulnqczwweuqgebk.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bodORUr420PZJCi0l5VxTQ_kUa-Xi-I';
@@ -383,8 +490,8 @@ function irSeccion(sec){
   $('sec-title').textContent = SECCIONES[sec] || sec;
   $('sidebar').classList.remove('open');
   if(sec==='productos') renderProductosSec();
-  else if(sec==='variantes') renderPlaceholder('Variantes', 'La gestión de variantes llega en la Etapa 4.');
-  else if(sec==='resenas') renderPlaceholder('Reseñas', 'La gestión de reseñas llega en la Etapa 4.');
+  else if(sec==='variantes') renderVariantesSec();
+  else if(sec==='resenas') renderResenasSec();
 }
 
 function renderPlaceholder(titulo, msg){
@@ -664,8 +771,310 @@ $('mobile-toggle').addEventListener('click', ()=>$('sidebar').classList.toggle('
 $('btn-save-prod').addEventListener('click', guardarProducto);
 $('prod-modal').addEventListener('click', e=>{ if(e.target===$('prod-modal')) closeProdModal(); });
 
+/* ============================================================
+   SECCIÓN RESEÑAS
+   ============================================================ */
+let RESENAS = [];
+let EDIT_RESENA_ID = null;
+
+async function renderResenasSec(){
+  $('content').innerHTML =
+    '<div class="sec-toolbar">' +
+      '<div class="search-box"><i class="ti ti-search"></i><input type="text" id="resena-search" placeholder="Buscar reseña..."></div>' +
+      '<button class="btn-new" onclick="openResenaModal()"><i class="ti ti-plus"></i> Nueva reseña</button>' +
+    '</div>' +
+    '<div id="resena-list-wrap"><div class="empty-msg"><i class="ti ti-loader-2"></i> Cargando...</div></div>';
+  $('resena-search').addEventListener('input', e=>renderResenaList(e.target.value));
+  await cargarResenas();
+  renderResenaList('');
+}
+
+async function cargarResenas(){
+  const url = SUPABASE_URL + '/rest/v1/resenas?select=*&order=orden.asc,creado_en.desc';
+  const res = await fetch(url, { headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY } });
+  RESENAS = res.ok ? await res.json() : [];
+}
+
+function starMini(n){ n=Math.round(Number(n)||5); return '★'.repeat(n)+'☆'.repeat(5-n); }
+
+function renderResenaList(filtro){
+  const wrap = $('resena-list-wrap');
+  const f = (filtro||'').toLowerCase();
+  const list = RESENAS.filter(r => !f || (r.nombre||'').toLowerCase().includes(f) || (r.texto||'').toLowerCase().includes(f));
+  if(!list.length){
+    wrap.innerHTML = '<div class="empty-msg">'+(RESENAS.length?'Sin resultados.':'Aún no hay reseñas. Crea la primera.')+'</div>';
+    return;
+  }
+  let html = '<div class="prod-table">';
+  list.forEach(r=>{
+    const estado = r.activa ? '' : ' style="opacity:.5"';
+    html += '<div class="pt-row" style="grid-template-columns:1fr 100px 70px 90px"'+estado+'>' +
+      '<div style="min-width:0"><div class="pt-name">'+(r.nombre||'')+' <span style="color:#ffb400;font-size:12px">'+starMini(r.estrellas)+'</span></div>' +
+        '<div class="pt-cat" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">"'+(r.texto||'').slice(0,60)+'..."</div></div>' +
+      '<div class="pt-cat">'+(r.ciudad||'—')+'</div>' +
+      '<div class="pt-cat">'+(r.activa?'<span style="color:var(--ok)">Activa</span>':'<span style="color:var(--muted)">Oculta</span>')+'</div>' +
+      '<div class="pt-actions">' +
+        '<button class="pt-btn" onclick="editResena('+r.id+')"><i class="ti ti-pencil"></i></button>' +
+        '<button class="pt-btn del" onclick="delResena('+r.id+',\''+(r.nombre||'').replace(/'/g,"\\'")+'\')"><i class="ti ti-trash"></i></button>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+function openResenaModal(){
+  EDIT_RESENA_ID = null;
+  $('resena-title').textContent = 'Nueva reseña';
+  ['r-nombre','r-ciudad','r-texto','r-foto'].forEach(id=>$(id).value='');
+  $('r-estrellas').value = 5; $('r-orden').value = 0;
+  $('r-verificada').checked = true; $('r-activa').checked = true;
+  $('resena-modal').classList.add('show'); document.body.style.overflow='hidden';
+}
+
+function editResena(id){
+  const r = RESENAS.find(x=>x.id===id);
+  if(!r) return;
+  EDIT_RESENA_ID = id;
+  $('resena-title').textContent = 'Editar reseña';
+  $('r-nombre').value = r.nombre||''; $('r-ciudad').value = r.ciudad||'';
+  $('r-texto').value = r.texto||''; $('r-foto').value = r.foto||'';
+  $('r-estrellas').value = r.estrellas!=null?r.estrellas:5;
+  $('r-orden').value = r.orden!=null?r.orden:0;
+  $('r-verificada').checked = !!r.verificada; $('r-activa').checked = !!r.activa;
+  $('resena-modal').classList.add('show'); document.body.style.overflow='hidden';
+}
+
+function closeResenaModal(){ $('resena-modal').classList.remove('show'); document.body.style.overflow=''; }
+
+async function guardarResena(){
+  const nombre = $('r-nombre').value.trim();
+  const texto = $('r-texto').value.trim();
+  if(!nombre){ toast('Escribe el nombre del cliente','err'); return; }
+  if(!texto){ toast('Escribe el texto de la reseña','err'); return; }
+  const payload = {
+    nombre, texto,
+    ciudad: $('r-ciudad').value.trim() || null,
+    foto: $('r-foto').value.trim() || null,
+    estrellas: Number($('r-estrellas').value)||5,
+    orden: $('r-orden').value===''?0:parseInt($('r-orden').value),
+    verificada: $('r-verificada').checked,
+    activa: $('r-activa').checked
+  };
+  const btn = $('btn-save-resena');
+  btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2"></i> Guardando...';
+  const { data: sess } = await sb.auth.getSession();
+  const token = sess.session ? sess.session.access_token : SUPABASE_KEY;
+  const headers = { 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+token, 'Content-Type':'application/json', 'Prefer':'return=representation' };
+  let res;
+  if(EDIT_RESENA_ID){
+    res = await fetch(SUPABASE_URL+'/rest/v1/resenas?id=eq.'+EDIT_RESENA_ID, {method:'PATCH',headers,body:JSON.stringify(payload)});
+  } else {
+    res = await fetch(SUPABASE_URL+'/rest/v1/resenas', {method:'POST',headers,body:JSON.stringify(payload)});
+  }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar';
+  if(!res.ok){ toast('Error al guardar: '+res.status,'err'); console.error(await res.text()); return; }
+  closeResenaModal();
+  toast(EDIT_RESENA_ID?'Reseña actualizada':'Reseña creada','ok');
+  await cargarResenas(); renderResenaList($('resena-search')?$('resena-search').value:'');
+}
+
+async function delResena(id, nombre){
+  if(!confirm('¿Borrar la reseña de "'+nombre+'"?')) return;
+  const { data: sess } = await sb.auth.getSession();
+  const token = sess.session ? sess.session.access_token : SUPABASE_KEY;
+  const res = await fetch(SUPABASE_URL+'/rest/v1/resenas?id=eq.'+id, {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token}});
+  if(!res.ok){ toast('Error al borrar','err'); return; }
+  toast('Reseña borrada','ok');
+  await cargarResenas(); renderResenaList('');
+}
+
+/* ============================================================
+   SECCIÓN VARIANTES
+   ============================================================ */
+let VAR_PRODUCTOS = [];   // productos para el selector
+let VARIANTES_LIST = [];  // variantes del producto elegido
+let VAR_PRODUCTO_SEL = null;
+let EDIT_VARIANTE_ID = null;
+
+async function renderVariantesSec(){
+  $('content').innerHTML =
+    '<div class="sec-toolbar">' +
+      '<div class="search-box" style="flex:0 0 340px"><i class="ti ti-package"></i>' +
+        '<select id="var-producto-sel" style="width:100%;height:44px;border:1.5px solid var(--line-2);border-radius:10px;padding:0 14px 0 40px;font-size:14px;outline:none"><option value="">Elige un producto...</option></select>' +
+      '</div>' +
+      '<button class="btn-new" id="btn-new-variante" onclick="openVarianteModal()" style="display:none"><i class="ti ti-plus"></i> Nueva variante</button>' +
+    '</div>' +
+    '<div id="var-list-wrap"><div class="empty-msg">Elige un producto para ver y gestionar sus variantes.</div></div>';
+  if(!PRODUCTOS.length) await cargarProductos();
+  VAR_PRODUCTOS = PRODUCTOS;
+  const sel = $('var-producto-sel');
+  sel.innerHTML = '<option value="">Elige un producto...</option>' +
+    VAR_PRODUCTOS.map(p=>'<option value="'+p.id+'">'+p.nombre+'</option>').join('');
+  sel.addEventListener('change', ()=>{
+    VAR_PRODUCTO_SEL = sel.value ? VAR_PRODUCTOS.find(p=>String(p.id)===sel.value) : null;
+    $('btn-new-variante').style.display = VAR_PRODUCTO_SEL ? 'flex' : 'none';
+    if(VAR_PRODUCTO_SEL) cargarYRenderVariantes();
+    else $('var-list-wrap').innerHTML = '<div class="empty-msg">Elige un producto para ver sus variantes.</div>';
+  });
+}
+
+async function cargarYRenderVariantes(){
+  $('var-list-wrap').innerHTML = '<div class="empty-msg"><i class="ti ti-loader-2"></i> Cargando variantes...</div>';
+  const url = SUPABASE_URL + '/rest/v1/variantes?select=*&producto_id=eq.'+VAR_PRODUCTO_SEL.id+'&order=orden.asc,id.asc';
+  const res = await fetch(url, { headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY } });
+  VARIANTES_LIST = res.ok ? await res.json() : [];
+  renderVarList();
+}
+
+function renderVarList(){
+  const wrap = $('var-list-wrap');
+  if(!VARIANTES_LIST.length){
+    wrap.innerHTML = '<div class="empty-msg">Este producto no tiene variantes aún. Crea la primera con "Nueva variante".</div>';
+    return;
+  }
+  let html = '<div class="prod-table">' +
+    '<div class="pt-row head" style="grid-template-columns:110px 1fr 90px 80px 90px"><span>Tipo</span><span>Valor</span><span>Precio</span><span>Stock</span><span></span></div>';
+  VARIANTES_LIST.forEach(v=>{
+    const precio = v.precio!=null ? '$'+Number(v.precio).toLocaleString('en-US') : '<span style="color:var(--muted)">hereda</span>';
+    const stock = v.stock!=null ? v.stock+' u.' : '<span style="color:var(--muted)">hereda</span>';
+    html += '<div class="pt-row" style="grid-template-columns:110px 1fr 90px 80px 90px">' +
+      '<div class="pt-cat" style="font-weight:600;color:var(--ink)">'+(v.tipo||'')+'</div>' +
+      '<div class="pt-name">'+(v.valor||'')+'</div>' +
+      '<div class="pt-price" style="font-size:14px">'+precio+'</div>' +
+      '<div class="pt-stock">'+stock+'</div>' +
+      '<div class="pt-actions">' +
+        '<button class="pt-btn" onclick="editVariante('+v.id+')"><i class="ti ti-pencil"></i></button>' +
+        '<button class="pt-btn del" onclick="delVariante('+v.id+',\''+(v.valor||'').replace(/'/g,"\\'")+'\')"><i class="ti ti-trash"></i></button>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  wrap.innerHTML = html;
+}
+
+function openVarianteModal(){
+  if(!VAR_PRODUCTO_SEL){ toast('Elige un producto primero','err'); return; }
+  EDIT_VARIANTE_ID = null;
+  $('variante-title').textContent = 'Nueva variante';
+  $('variante-producto-info').textContent = 'Para: ' + VAR_PRODUCTO_SEL.nombre;
+  $('v-tipo').value = 'Color'; $('v-valor').value=''; $('v-precio').value=''; $('v-stock').value='';
+  $('v-orden').value = VARIANTES_LIST.length; $('v-imagenes').value='';
+  $('variante-modal').classList.add('show'); document.body.style.overflow='hidden';
+  initVarDropzone(); renderVarPreviews();
+}
+
+function editVariante(id){
+  const v = VARIANTES_LIST.find(x=>x.id===id);
+  if(!v) return;
+  EDIT_VARIANTE_ID = id;
+  $('variante-title').textContent = 'Editar variante';
+  $('variante-producto-info').textContent = 'Para: ' + VAR_PRODUCTO_SEL.nombre;
+  $('v-tipo').value = v.tipo||'Color'; $('v-valor').value = v.valor||'';
+  $('v-precio').value = v.precio!=null?v.precio:''; $('v-stock').value = v.stock!=null?v.stock:'';
+  $('v-orden').value = v.orden!=null?v.orden:0; $('v-imagenes').value = v.imagenes||'';
+  $('variante-modal').classList.add('show'); document.body.style.overflow='hidden';
+  initVarDropzone(); renderVarPreviews();
+}
+
+function closeVarianteModal(){ $('variante-modal').classList.remove('show'); document.body.style.overflow=''; }
+
+async function guardarVariante(){
+  const valor = $('v-valor').value.trim();
+  if(!valor){ toast('Escribe el valor de la variante','err'); return; }
+  const numOrNull = v => (v===''||v==null)?null:Number(v);
+  const payload = {
+    producto_id: VAR_PRODUCTO_SEL.id,
+    tipo: $('v-tipo').value,
+    valor,
+    precio: numOrNull($('v-precio').value),
+    stock: $('v-stock').value===''?null:parseInt($('v-stock').value),
+    imagenes: $('v-imagenes').value.trim() || null,
+    orden: $('v-orden').value===''?0:parseInt($('v-orden').value)
+  };
+  const btn = $('btn-save-variante');
+  btn.disabled=true; btn.innerHTML='<i class="ti ti-loader-2"></i> Guardando...';
+  const { data: sess } = await sb.auth.getSession();
+  const token = sess.session ? sess.session.access_token : SUPABASE_KEY;
+  const headers = { 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+token, 'Content-Type':'application/json', 'Prefer':'return=representation' };
+  let res;
+  if(EDIT_VARIANTE_ID){
+    res = await fetch(SUPABASE_URL+'/rest/v1/variantes?id=eq.'+EDIT_VARIANTE_ID, {method:'PATCH',headers,body:JSON.stringify(payload)});
+  } else {
+    res = await fetch(SUPABASE_URL+'/rest/v1/variantes', {method:'POST',headers,body:JSON.stringify(payload)});
+  }
+  btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar';
+  if(!res.ok){ toast('Error al guardar: '+res.status,'err'); console.error(await res.text()); return; }
+  closeVarianteModal();
+  toast(EDIT_VARIANTE_ID?'Variante actualizada':'Variante creada','ok');
+  cargarYRenderVariantes();
+}
+
+async function delVariante(id, valor){
+  if(!confirm('¿Borrar la variante "'+valor+'"?')) return;
+  const { data: sess } = await sb.auth.getSession();
+  const token = sess.session ? sess.session.access_token : SUPABASE_KEY;
+  const res = await fetch(SUPABASE_URL+'/rest/v1/variantes?id=eq.'+id, {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token}});
+  if(!res.ok){ toast('Error al borrar','err'); return; }
+  toast('Variante borrada','ok');
+  cargarYRenderVariantes();
+}
+
+/* Dropzone de variantes (reusa la lógica, carpeta por producto+variante) */
+function getVarImgUrls(){ return $('v-imagenes').value.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean); }
+function setVarImgUrls(arr){ $('v-imagenes').value = arr.join('\n'); renderVarPreviews(); }
+function renderVarPreviews(){
+  const cont = $('v-img-previews'); if(!cont) return;
+  const urls = getVarImgUrls();
+  cont.innerHTML = urls.map((u,i)=>
+    '<div class="img-prev"><span class="pos '+(i===0?'main':'')+'">'+(i===0?'Principal':i+1)+'</span>' +
+    '<button class="rm" onclick="quitarVarImg('+i+')"><i class="ti ti-x"></i></button>' +
+    '<img src="'+u+'" onerror="this.style.opacity=.3"></div>'
+  ).join('');
+}
+function quitarVarImg(i){ const u=getVarImgUrls(); u.splice(i,1); setVarImgUrls(u); }
+async function subirVarArchivos(files){
+  if(!files || !files.length) return;
+  if(!VAR_PRODUCTO_SEL){ toast('Elige un producto primero','err'); return; }
+  const valor = $('v-valor').value.trim() || 'variante';
+  const carpeta = slugify(VAR_PRODUCTO_SEL.nombre) + '/' + slugify(valor);
+  const { data: sess } = await sb.auth.getSession();
+  if(!sess.session){ toast('Sesión expirada','err'); return; }
+  const token = sess.session.access_token;
+  const cont = $('v-img-previews');
+  for(const file of files){
+    if(!file.type.startsWith('image/')) continue;
+    const ph=document.createElement('div'); ph.className='img-prev uploading'; cont.appendChild(ph);
+    const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+    const fname=Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
+    const path=carpeta+'/'+fname;
+    let ok=false;
+    try{
+      const res=await fetch(SUPABASE_URL+'/storage/v1/object/'+BUCKET+'/'+path,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token,'Content-Type':file.type},body:file});
+      ok=res.ok; if(!ok)console.error(await res.text());
+    }catch(e){console.error(e);}
+    ph.remove();
+    if(ok){ const u=getVarImgUrls(); u.push(SUPABASE_URL+'/storage/v1/object/public/'+BUCKET+'/'+path); setVarImgUrls(u); }
+    else toast('No se pudo subir '+file.name,'err');
+  }
+  toast('Imágenes subidas','ok');
+}
+function initVarDropzone(){
+  const dz=$('v-dropzone'), input=$('v-file-input');
+  if(!dz || dz.dataset.init) return;
+  dz.dataset.init='1';
+  dz.addEventListener('click',()=>input.click());
+  input.addEventListener('change',()=>{ subirVarArchivos(input.files); input.value=''; });
+  ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+  dz.addEventListener('drop',e=>{e.preventDefault();subirVarArchivos(e.dataTransfer.files);});
+}
+
+/* Listeners de guardar */
+$('btn-save-resena').addEventListener('click', guardarResena);
+$('btn-save-variante').addEventListener('click', guardarVariante);
+$('resena-modal').addEventListener('click', e=>{ if(e.target===$('resena-modal')) closeResenaModal(); });
+$('variante-modal').addEventListener('click', e=>{ if(e.target===$('variante-modal')) closeVarianteModal(); });
+
 /* Iniciar */
-checkSession();
-</script>
+checkSession();</script>
 </body>
 </html>
