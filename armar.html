@@ -63,6 +63,21 @@ button{font-family:inherit;cursor:pointer}
 .search input:focus{border-color:var(--brand)}
 .search input::placeholder{color:#a0a4b0}
 .search>i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#a0a4b0;font-size:19px}
+.search-results{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 40px rgba(20,30,60,.15);z-index:120;max-height:420px;overflow-y:auto;display:none}
+.search-results.show{display:block}
+.sr-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--line)}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover,.sr-item.active{background:var(--surface)}
+.sr-img{width:46px;height:46px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:#aeb6c8;font-size:20px;overflow:hidden;flex-shrink:0}
+.sr-img img{width:100%;height:100%;object-fit:contain;padding:3px}
+.sr-info{flex:1;min-width:0}
+.sr-name{font-size:13.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-cat{font-size:11.5px;color:var(--muted)}
+.sr-price{font-size:14px;font-weight:700;color:var(--ink);flex-shrink:0}
+.sr-price .old{font-size:11px;color:#b0b4be;text-decoration:line-through;font-weight:400;margin-right:4px}
+.sr-empty{padding:24px 16px;text-align:center;color:var(--muted);font-size:13px}
+.sr-all{padding:12px 14px;text-align:center;font-size:13px;font-weight:600;color:var(--brand);cursor:pointer;border-top:1px solid var(--line);background:var(--surface)}
+.sr-all:hover{background:#eef1f5}
 .nav-actions{display:flex;gap:6px;margin-left:auto}
 .nav-btn{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink-soft);border-radius:50%;position:relative;transition:all .15s}
 .nav-btn:hover{background:var(--surface);color:var(--brand)}
@@ -465,6 +480,7 @@ a.card-name:hover{color:var(--brand)}
     <div class="search">
       <i class="ti ti-search"></i>
       <input type="text" id="site-search" placeholder="Busca procesadores, tarjetas gráficas, RAM, gabinetes..." autocomplete="off">
+      <div class="search-results" id="search-results"></div>
     </div>
     <div class="nav-actions">
       <button class="nav-btn" aria-label="Mi cuenta"><i class="ti ti-user"></i></button>
@@ -1317,17 +1333,80 @@ function sendProforma(){
 
 updateCart();
 
-/* ===== BUSCADOR (redirige al catálogo) — SEARCH_INIT ===== */
+
+/* ===== AUTOCOMPLETADO DE BÚSQUEDA (universal) ===== */
 (function(){
   const inp = document.getElementById('site-search');
-  if(!inp) return;
-  inp.addEventListener('keydown', e=>{
-    if(e.key === 'Enter'){
-      const q = inp.value.trim();
-      if(q) location.href = 'catalogo.html?buscar=' + encodeURIComponent(q);
+  const panel = document.getElementById('search-results');
+  if(!inp || !panel) return;
+
+  function getProductos(){
+    try{
+      const raw = localStorage.getItem('netherpc_products');
+      if(raw){ const o = JSON.parse(raw); if(o && Array.isArray(o.data)) return o.data; }
+    }catch(e){}
+    return (typeof ALL!=='undefined' && ALL.length) ? ALL : (typeof FALLBACK!=='undefined' ? FALLBACK : []);
+  }
+  function imgOf(p){ return (p.imgs && p.imgs[0]) || p.img || ''; }
+  function idOf(p, i){ return p._id != null ? p._id : i; }
+
+  let activeIdx = -1, current = [];
+  function buscar(q){
+    q = q.toLowerCase().trim();
+    if(!q){ panel.classList.remove('show'); return; }
+    const prods = getProductos();
+    current = prods.filter(p=>
+      (p.name||p.nombre||'').toLowerCase().includes(q) ||
+      (p.cat||p.categoria||'').toLowerCase().includes(q) ||
+      (p.marca||'').toLowerCase().includes(q)
+    ).slice(0, 6);
+    render(q);
+  }
+  function render(q){
+    if(!current.length){
+      panel.innerHTML = '<div class="sr-empty">Sin resultados para "'+q+'"</div>';
+      panel.classList.add('show'); return;
     }
+    activeIdx = -1;
+    let html = current.map(function(p,i){
+      const name = p.name||p.nombre||'';
+      const cat = p.cat||p.categoria||'';
+      const price = Number(p.price!=null?p.price:p.precio)||0;
+      const old = p.old||p.precio_anterior;
+      const img = imgOf(p);
+      const imgHtml = img ? ('<img src="'+img+'" onerror="this.parentElement.innerHTML=&quot;<i class=\'ti ti-package\'></i>&quot;">') : '<i class="ti ti-package"></i>';
+      const oldHtml = old ? '<span class="old">$'+Number(old).toLocaleString('en-US')+'</span>' : '';
+      return '<div class="sr-item" data-id="'+idOf(p,i)+'">' +
+        '<div class="sr-img">'+imgHtml+'</div>' +
+        '<div class="sr-info"><div class="sr-name">'+name+'</div><div class="sr-cat">'+cat+'</div></div>' +
+        '<div class="sr-price">'+oldHtml+'$'+price.toLocaleString('en-US')+'</div>' +
+      '</div>';
+    }).join('');
+    html += '<div class="sr-all" data-all="1"><i class="ti ti-search"></i> Ver todos los resultados</div>';
+    panel.innerHTML = html;
+    panel.classList.add('show');
+    panel.querySelectorAll('.sr-item').forEach(function(el){
+      el.addEventListener('click', function(){ location.href = 'producto.html?id=' + el.getAttribute('data-id'); });
+    });
+    panel.querySelector('[data-all]').addEventListener('click', function(){
+      location.href = 'catalogo.html?buscar=' + encodeURIComponent(inp.value.trim());
+    });
+  }
+  let t;
+  inp.addEventListener('input', function(){ clearTimeout(t); t=setTimeout(function(){ buscar(inp.value); }, 180); });
+  inp.addEventListener('keydown', function(e){
+    const items = panel.querySelectorAll('.sr-item');
+    if(e.key==='ArrowDown'){ e.preventDefault(); activeIdx=Math.min(activeIdx+1,items.length-1); upd(items); }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); activeIdx=Math.max(activeIdx-1,0); upd(items); }
+    else if(e.key==='Enter'){
+      if(activeIdx>=0 && items[activeIdx]) items[activeIdx].click();
+      else if(inp.value.trim()) location.href='catalogo.html?buscar='+encodeURIComponent(inp.value.trim());
+    } else if(e.key==='Escape'){ panel.classList.remove('show'); inp.blur(); }
   });
+  function upd(items){ items.forEach(function(el,i){ el.classList.toggle('active', i===activeIdx); }); }
+  document.addEventListener('click', function(e){ if(!e.target.closest('.search')) panel.classList.remove('show'); });
 })();
+
 </script>
 
 </body>
