@@ -143,6 +143,26 @@ a{color:var(--brand);text-decoration:none}
 .a-toast i{font-size:18px}
 .a-toast.ok i{color:var(--ok)}
 .a-toast.err i{color:#ff8a8a}
+
+/* Zona de subida de imágenes */
+.dropzone{border:2px dashed var(--line-2);border-radius:12px;padding:26px 20px;text-align:center;cursor:pointer;transition:all .15s;background:var(--surface)}
+.dropzone:hover,.dropzone.drag{border-color:var(--brand);background:rgba(0,180,216,.04)}
+.dropzone i{font-size:38px;color:var(--brand);display:block;margin-bottom:8px}
+.dropzone p{font-size:14px;color:var(--ink-soft);margin-bottom:3px}
+.dropzone .dz-hint{font-size:12px;color:var(--muted)}
+.img-previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.img-previews:empty{margin-top:0}
+.img-prev{position:relative;width:88px;height:88px;border-radius:10px;overflow:hidden;border:1.5px solid var(--line-2);background:var(--surface)}
+.img-prev img{width:100%;height:100%;object-fit:contain;padding:4px}
+.img-prev .pos{position:absolute;top:3px;left:3px;background:rgba(14,19,32,.8);color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px}
+.img-prev .pos.main{background:var(--brand)}
+.img-prev .rm{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:6px;border:none;background:rgba(226,59,59,.9);color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.img-prev.uploading{display:flex;align-items:center;justify-content:center}
+.img-prev.uploading::after{content:'';width:22px;height:22px;border:2px solid var(--line-2);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite}
+.url-manual{margin-top:14px}
+.url-manual summary{font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.url-manual summary:hover{color:var(--brand)}
+.url-manual textarea{margin-top:10px}
 </style>
 </head>
 <body>
@@ -253,9 +273,19 @@ a{color:var(--brand);text-decoration:none}
           <input type="number" id="f-resenas" placeholder="0">
         </div>
         <div class="fg full">
-          <label>Imágenes <span class="opt">(un URL por línea)</span></label>
-          <textarea id="f-imagenes" placeholder="https://...supabase.co/.../1.jpg&#10;https://...supabase.co/.../2.jpg"></textarea>
-          <div class="hint">La primera es la principal; la segunda se muestra al pasar el mouse.</div>
+          <label>Imágenes</label>
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="file-input" accept="image/*" multiple hidden>
+            <i class="ti ti-cloud-upload"></i>
+            <p><b>Arrastra imágenes aquí</b> o haz clic para seleccionar</p>
+            <span class="dz-hint">JPG, PNG o WEBP · varias a la vez</span>
+          </div>
+          <div class="img-previews" id="img-previews"></div>
+          <details class="url-manual">
+            <summary>Editar URLs manualmente</summary>
+            <textarea id="f-imagenes" placeholder="https://...supabase.co/.../1.jpg&#10;https://...supabase.co/.../2.jpg"></textarea>
+            <div class="hint">La primera es la principal; la segunda se muestra al pasar el mouse.</div>
+          </details>
         </div>
         <div class="fg full">
           <label>Descripción <span class="opt">(opcional)</span></label>
@@ -427,6 +457,8 @@ function openProdModal(){
   $('f-stock').value = '';
   $('prod-modal').classList.add('show');
   document.body.style.overflow='hidden';
+  initDropzone();
+  renderPreviews();
 }
 
 function editProd(id){
@@ -449,6 +481,8 @@ function editProd(id){
   $('f-especificaciones').value = p.especificaciones || '';
   $('prod-modal').classList.add('show');
   document.body.style.overflow='hidden';
+  initDropzone();
+  renderPreviews();
 }
 
 function closeProdModal(){
@@ -534,6 +568,90 @@ function toast(msg, tipo){
   t.querySelector('i').className = tipo==='err' ? 'ti ti-alert-circle' : 'ti ti-circle-check';
   clearTimeout(toastT);
   toastT = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/* ===== SUBIDA DE IMÁGENES AL STORAGE ===== */
+const BUCKET = 'productos';
+
+function slugify(txt){
+  return (txt||'producto').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,50) || 'producto';
+}
+function getImgUrls(){
+  return $('f-imagenes').value.split(/[\n,]+/).map(s=>s.trim()).filter(Boolean);
+}
+function setImgUrls(arr){
+  $('f-imagenes').value = arr.join('\n');
+  renderPreviews();
+}
+function renderPreviews(){
+  const cont = $('img-previews');
+  if(!cont) return;
+  const urls = getImgUrls();
+  cont.innerHTML = urls.map((u,i)=>
+    '<div class="img-prev">' +
+      '<span class="pos '+(i===0?'main':'')+'">'+(i===0?'Principal':i+1)+'</span>' +
+      '<button class="rm" onclick="quitarImg('+i+')" title="Quitar"><i class="ti ti-x"></i></button>' +
+      '<img src="'+u+'" onerror="this.style.opacity=.3">' +
+    '</div>'
+  ).join('');
+}
+function quitarImg(i){
+  const urls = getImgUrls();
+  urls.splice(i,1);
+  setImgUrls(urls);
+}
+async function subirArchivos(files){
+  if(!files || !files.length) return;
+  const nombre = $('f-nombre').value.trim();
+  if(!nombre){ toast('Escribe primero el nombre del producto', 'err'); return; }
+  const carpeta = slugify(nombre);
+  const { data: sess } = await sb.auth.getSession();
+  if(!sess.session){ toast('Sesión expirada, entra de nuevo', 'err'); return; }
+  const token = sess.session.access_token;
+  const cont = $('img-previews');
+  for(const file of files){
+    if(!file.type.startsWith('image/')) continue;
+    const ph = document.createElement('div');
+    ph.className = 'img-prev uploading';
+    cont.appendChild(ph);
+    const ext = (file.name.split('.').pop()||'jpg').toLowerCase();
+    const fname = Date.now() + '-' + Math.random().toString(36).slice(2,7) + '.' + ext;
+    const path = carpeta + '/' + fname;
+    const upUrl = SUPABASE_URL + '/storage/v1/object/' + BUCKET + '/' + path;
+    let ok = false;
+    try{
+      const res = await fetch(upUrl, {
+        method:'POST',
+        headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+token, 'Content-Type':file.type },
+        body: file
+      });
+      ok = res.ok;
+      if(!ok) console.error(await res.text());
+    }catch(e){ console.error(e); }
+    ph.remove();
+    if(ok){
+      const publicUrl = SUPABASE_URL + '/storage/v1/object/public/' + BUCKET + '/' + path;
+      const urls = getImgUrls();
+      urls.push(publicUrl);
+      setImgUrls(urls);
+    } else {
+      toast('No se pudo subir '+file.name, 'err');
+    }
+  }
+  toast('Imágenes subidas', 'ok');
+}
+function initDropzone(){
+  const dz = $('dropzone');
+  const input = $('file-input');
+  if(!dz || dz.dataset.init) return;
+  dz.dataset.init = '1';
+  dz.addEventListener('click', ()=>input.click());
+  input.addEventListener('change', ()=>{ subirArchivos(input.files); input.value=''; });
+  ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev, e=>{ e.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev, e=>{ e.preventDefault(); dz.classList.remove('drag'); }));
+  dz.addEventListener('drop', e=>{ e.preventDefault(); subirArchivos(e.dataTransfer.files); });
 }
 
 /* ===== Eventos ===== */
