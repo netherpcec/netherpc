@@ -869,19 +869,19 @@ function applyFilters(){
   const min = parseFloat(document.getElementById('f-min').value) || 0;
   const max = parseFloat(document.getElementById('f-max').value) || Infinity;
   const sort = document.getElementById('sort').value;
-  const buscar = (window.BUSCAR_TERM || '').toLowerCase().trim();
+  const buscar = (window.BUSCAR_TERM || '').trim();
 
-  let list = ALL.filter(p=>{
+  // Si hay término de búsqueda, partir de los resultados inteligentes
+  let base = ALL;
+  if(buscar && typeof buscarProductos==='function'){
+    base = buscarProductos(ALL, buscar);
+  }
+
+  let list = base.filter(p=>{
     if(cat && p.cat !== cat) return false;
     if(onlyStock && Number(p.stock) <= 0) return false;
     const price = Number(p.price);
     if(price < min || price > max) return false;
-    if(buscar){
-      const hay = (p.name||'').toLowerCase().includes(buscar) ||
-                  (p.cat||'').toLowerCase().includes(buscar) ||
-                  (p.marca||'').toLowerCase().includes(buscar);
-      if(!hay) return false;
-    }
     return true;
   });
 
@@ -1161,6 +1161,65 @@ function sendProforma(){
 updateCart();
 
 
+/* Diccionario de sinónimos: palabra clave -> categoría */
+const SINONIMOS = {
+  // Procesadores
+  'procesador':'Procesadores','procesadores':'Procesadores','cpu':'Procesadores','micro':'Procesadores','microprocesador':'Procesadores','ryzen':'Procesadores','intel':'Procesadores','core':'Procesadores','amd':'Procesadores',
+  // Tarjetas gráficas
+  'tarjeta':'Tarjetas gráficas','grafica':'Tarjetas gráficas','graficas':'Tarjetas gráficas','gpu':'Tarjetas gráficas','video':'Tarjetas gráficas','rtx':'Tarjetas gráficas','gtx':'Tarjetas gráficas','radeon':'Tarjetas gráficas','nvidia':'Tarjetas gráficas','geforce':'Tarjetas gráficas',
+  // Memorias RAM
+  'ram':'Memorias RAM','memoria':'Memorias RAM','memorias':'Memorias RAM','ddr':'Memorias RAM','ddr4':'Memorias RAM','ddr5':'Memorias RAM',
+  // Placas base
+  'placa':'Placas base','placas':'Placas base','motherboard':'Placas base','mother':'Placas base','tarjeta madre':'Placas base','board':'Placas base','mobo':'Placas base',
+  // Almacenamiento
+  'disco':'Almacenamiento','almacenamiento':'Almacenamiento','ssd':'Almacenamiento','hdd':'Almacenamiento','nvme':'Almacenamiento','m2':'Almacenamiento','solido':'Almacenamiento','duro':'Almacenamiento','storage':'Almacenamiento',
+  // Refrigeración
+  'refrigeracion':'Refrigeración','cooler':'Refrigeración','ventilador':'Refrigeración','ventiladores':'Refrigeración','fan':'Refrigeración','aio':'Refrigeración','liquida':'Refrigeración','disipador':'Refrigeración','enfriamiento':'Refrigeración',
+  // Fuentes de poder
+  'fuente':'Fuentes de poder','fuentes':'Fuentes de poder','poder':'Fuentes de poder','psu':'Fuentes de poder','watts':'Fuentes de poder','vatios':'Fuentes de poder','alimentacion':'Fuentes de poder',
+  // Gabinetes
+  'gabinete':'Gabinetes','gabinetes':'Gabinetes','case':'Gabinetes','cases':'Gabinetes','torre':'Gabinetes','chasis':'Gabinetes','caja':'Gabinetes',
+  // Periféricos
+  'periferico':'Periféricos','perifericos':'Periféricos','mouse':'Periféricos','mause':'Periféricos','raton':'Periféricos','mice':'Periféricos','teclado':'Periféricos','teclados':'Periféricos','keyboard':'Periféricos','headset':'Periféricos','audifonos':'Periféricos','auriculares':'Periféricos',
+  // Sillas Gamer
+  'silla':'Sillas Gamer','sillas':'Sillas Gamer','gamer':'Sillas Gamer','ergonomica':'Sillas Gamer','chair':'Sillas Gamer',
+  // Laptops
+  'laptop':'Laptops','laptops':'Laptops','portatil':'Laptops','notebook':'Laptops','portatiles':'Laptops',
+  // PC Armada
+  'pc':'PC Armada','computador':'PC Armada','computadora':'PC Armada','armada':'PC Armada','torre gamer':'PC Armada'
+};
+
+/* Búsqueda inteligente: nombre/marca primero, luego categoría por sinónimo */
+function buscarProductos(prods, q){
+  q = (q||'').toLowerCase().trim();
+  if(!q) return [];
+  const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const qn = norm(q);
+
+  // 1. Coincidencias directas en nombre, marca o categoría
+  const directos = prods.filter(p=>{
+    const name = norm(p.name||p.nombre);
+    const cat = norm(p.cat||p.categoria);
+    const marca = norm(p.marca);
+    return name.includes(qn) || cat.includes(qn) || marca.includes(qn);
+  });
+
+  // 2. Categoría por sinónimo (respaldo)
+  const catSinonimo = SINONIMOS[qn] || SINONIMOS[q];
+  let porCategoria = [];
+  if(catSinonimo){
+    porCategoria = prods.filter(p => (p.cat||p.categoria) === catSinonimo);
+  }
+
+  // 3. Combinar sin duplicados (directos primero)
+  const vistos = new Set();
+  const resultado = [];
+  const idDe = p => (p._id != null ? p._id : (p.nombre||p.name));
+  directos.forEach(p=>{ const id=idDe(p); if(!vistos.has(id)){ vistos.add(id); resultado.push(p); } });
+  porCategoria.forEach(p=>{ const id=idDe(p); if(!vistos.has(id)){ vistos.add(id); resultado.push(p); } });
+  return resultado;
+}
+
 /* ===== AUTOCOMPLETADO DE BÚSQUEDA (universal) ===== */
 (function(){
   const inp = document.getElementById('site-search');
@@ -1170,6 +1229,15 @@ updateCart();
   // En el catálogo: si viene ?buscar= en la URL, filtrar la grilla al cargar
   window.BUSCAR_TERM = new URLSearchParams(location.search).get('buscar') || '';
   if(window.BUSCAR_TERM){ inp.value = window.BUSCAR_TERM; }
+
+  window.actualizarGrillaCatalogo = function(){
+    window.BUSCAR_TERM = inp.value.trim();
+    const url = new URL(location.href);
+    if(window.BUSCAR_TERM) url.searchParams.set('buscar', window.BUSCAR_TERM);
+    else url.searchParams.delete('buscar');
+    history.replaceState(null,'',url);
+    if(typeof applyFilters==='function') applyFilters();
+  };
 
   function getProductos(){
     try{
@@ -1186,11 +1254,7 @@ updateCart();
     q = q.toLowerCase().trim();
     if(!q){ panel.classList.remove('show'); return; }
     const prods = getProductos();
-    current = prods.filter(p=>
-      (p.name||p.nombre||'').toLowerCase().includes(q) ||
-      (p.cat||p.categoria||'').toLowerCase().includes(q) ||
-      (p.marca||'').toLowerCase().includes(q)
-    ).slice(0, 6);
+    current = buscarProductos(prods, q).slice(0, 6);
     render(q);
   }
   function render(q){
@@ -1224,7 +1288,7 @@ updateCart();
     });
   }
   let t;
-  inp.addEventListener('input', function(){ clearTimeout(t); t=setTimeout(function(){ buscar(inp.value); }, 180); });
+  inp.addEventListener('input', function(){ clearTimeout(t); t=setTimeout(function(){ buscar(inp.value); actualizarGrillaCatalogo(); }, 180); });
   inp.addEventListener('keydown', function(e){
     const items = panel.querySelectorAll('.sr-item');
     if(e.key==='ArrowDown'){ e.preventDefault(); activeIdx=Math.min(activeIdx+1,items.length-1); upd(items); }
