@@ -343,7 +343,7 @@ a.card-name:hover{color:var(--brand)}
 .drawer{position:fixed;top:0;left:0;width:330px;max-width:88vw;height:100%;background:#fff;z-index:100;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s ease;box-shadow:8px 0 30px rgba(14,19,32,.12);overflow-y:auto}
 .drawer.show{transform:none}
 .drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line)}
-.drawer-logo{height:80px;display:flex;align-items:center;overflow:hidden}
+.drawer-logo{height:80px;display:flex;align-items:center;overflow:hidden;text-decoration:none}
 .drawer-logo img{height:80px;width:auto;object-fit:contain}
 .drawer-close{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .drawer-close:hover{background:#eceef1;color:var(--ink)}
@@ -460,7 +460,7 @@ a.card-name:hover{color:var(--brand)}
 <header class="header">
   <div class="container">
     <button class="menu-btn" onclick="openDrawer()" aria-label="Abrir menú"><i class="ti ti-menu-2"></i></button>
-    <a href="#" class="logo" aria-label="NetherPC inicio">
+    <a href="index.html" class="logo" aria-label="NetherPC inicio">
       <img src="img/iso.png" alt="NetherPC" class="logo-img" onerror="this.classList.add('hide');this.nextElementSibling.classList.remove('hide')">
       <svg class="logo-svg hide" width="24" height="24" viewBox="0 0 22 22" fill="none">
         <path d="M11 2.5L4 6.5V15.5L11 19.5L18 15.5V6.5L11 2.5Z" stroke="#00b4d8" stroke-width="1.6" fill="rgba(0,180,216,.12)"/>
@@ -620,10 +620,9 @@ a.card-name:hover{color:var(--brand)}
 <!-- MENU DRAWER (IZQUIERDA) -->
 <aside class="drawer" id="drawer" aria-label="Menú de navegación">
   <div class="drawer-head">
-    <div class="drawer-logo">
-      <!-- Reemplaza por tu logo: pon el archivo en img/logo.png -->
+    <a href="index.html" class="drawer-logo" aria-label="NetherPC inicio">
       <img src="img/logo.png" alt="NetherPC EC" onerror="this.outerHTML='&lt;span style=&quot;font-weight:800;font-size:19px;letter-spacing:.5px&quot;&gt;NETHER&lt;span style=&quot;color:var(--brand)&quot;&gt;PC&lt;/span&gt;&lt;/span&gt;'">
-    </div>
+    </a>
     <button class="drawer-close" onclick="closeDrawer()" aria-label="Cerrar menú"><i class="ti ti-x"></i></button>
   </div>
 
