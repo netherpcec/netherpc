@@ -335,9 +335,19 @@ a{color:var(--brand);text-decoration:none}
           <label>Orden <span class="opt">(0, 1, 2...)</span></label>
           <input type="number" id="r-orden" placeholder="0">
         </div>
-        <div class="fg">
-          <label>Foto del cliente <span class="opt">(URL opcional)</span></label>
-          <input type="text" id="r-foto" placeholder="https://... (vacío = sin foto)">
+        <div class="fg full">
+          <label>Foto del cliente <span class="opt">(opcional)</span></label>
+          <div class="dropzone" id="r-dropzone">
+            <input type="file" id="r-file-input" accept="image/*" hidden>
+            <i class="ti ti-cloud-upload"></i>
+            <p><b>Arrastra una foto aquí</b> o haz clic</p>
+            <span class="dz-hint">Una imagen · JPG, PNG o WEBP</span>
+          </div>
+          <div class="img-previews" id="r-img-previews"></div>
+          <details class="url-manual">
+            <summary>Editar URL manualmente</summary>
+            <input type="text" id="r-foto" placeholder="https://... (vacío = sin foto)" style="margin-top:10px">
+          </details>
         </div>
         <div class="fg">
           <label>Opciones</label>
@@ -829,6 +839,7 @@ function openResenaModal(){
   $('r-estrellas').value = 5; $('r-orden').value = 0;
   $('r-verificada').checked = true; $('r-activa').checked = true;
   $('resena-modal').classList.add('show'); document.body.style.overflow='hidden';
+  initResenaDropzone(); renderResenaPreview();
 }
 
 function editResena(id){
@@ -842,6 +853,7 @@ function editResena(id){
   $('r-orden').value = r.orden!=null?r.orden:0;
   $('r-verificada').checked = !!r.verificada; $('r-activa').checked = !!r.activa;
   $('resena-modal').classList.add('show'); document.body.style.overflow='hidden';
+  initResenaDropzone(); renderResenaPreview();
 }
 
 function closeResenaModal(){ $('resena-modal').classList.remove('show'); document.body.style.overflow=''; }
@@ -1066,6 +1078,47 @@ function initVarDropzone(){
   ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
   ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
   dz.addEventListener('drop',e=>{e.preventDefault();subirVarArchivos(e.dataTransfer.files);});
+}
+
+/* Dropzone de foto de reseña (una sola imagen) */
+function renderResenaPreview(){
+  const cont = $('r-img-previews'); if(!cont) return;
+  const u = $('r-foto').value.trim();
+  cont.innerHTML = u
+    ? '<div class="img-prev"><button class="rm" onclick="quitarResenaFoto()"><i class="ti ti-x"></i></button><img src="'+u+'" onerror="this.style.opacity=.3"></div>'
+    : '';
+}
+function quitarResenaFoto(){ $('r-foto').value=''; renderResenaPreview(); }
+async function subirResenaFoto(files){
+  if(!files || !files.length) return;
+  const file = files[0];
+  if(!file.type.startsWith('image/')) return;
+  const nombre = $('r-nombre').value.trim() || 'cliente';
+  const carpeta = 'resenas/' + slugify(nombre);
+  const { data: sess } = await sb.auth.getSession();
+  if(!sess.session){ toast('Sesión expirada','err'); return; }
+  const token = sess.session.access_token;
+  const cont = $('r-img-previews');
+  const ph=document.createElement('div'); ph.className='img-prev uploading'; cont.innerHTML=''; cont.appendChild(ph);
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path=carpeta+'/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
+  let ok=false;
+  try{
+    const res=await fetch(SUPABASE_URL+'/storage/v1/object/'+BUCKET+'/'+path,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+token,'Content-Type':file.type},body:file});
+    ok=res.ok; if(!ok)console.error(await res.text());
+  }catch(e){console.error(e);}
+  if(ok){ $('r-foto').value = SUPABASE_URL+'/storage/v1/object/public/'+BUCKET+'/'+path; renderResenaPreview(); toast('Foto subida','ok'); }
+  else { ph.remove(); toast('No se pudo subir','err'); }
+}
+function initResenaDropzone(){
+  const dz=$('r-dropzone'), input=$('r-file-input');
+  if(!dz || dz.dataset.init) return;
+  dz.dataset.init='1';
+  dz.addEventListener('click',()=>input.click());
+  input.addEventListener('change',()=>{ subirResenaFoto(input.files); input.value=''; });
+  ['dragover','dragenter'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drag');}));
+  dz.addEventListener('drop',e=>{e.preventDefault();subirResenaFoto(e.dataTransfer.files);});
 }
 
 /* Listeners de guardar */
