@@ -409,7 +409,7 @@ a.card-name:hover{color:var(--brand)}
     </a>
     <div class="search">
       <i class="ti ti-search"></i>
-      <input type="text" placeholder="Busca procesadores, tarjetas gráficas, RAM, gabinetes...">
+      <input type="text" id="site-search" placeholder="Busca procesadores, tarjetas gráficas, RAM, gabinetes..." autocomplete="off">
     </div>
     <div class="nav-actions">
       <button class="nav-btn" aria-label="Mi cuenta"><i class="ti ti-user"></i></button>
@@ -853,12 +853,19 @@ function applyFilters(){
   const min = parseFloat(document.getElementById('f-min').value) || 0;
   const max = parseFloat(document.getElementById('f-max').value) || Infinity;
   const sort = document.getElementById('sort').value;
+  const buscar = (window.BUSCAR_TERM || '').toLowerCase().trim();
 
   let list = ALL.filter(p=>{
     if(cat && p.cat !== cat) return false;
     if(onlyStock && Number(p.stock) <= 0) return false;
     const price = Number(p.price);
     if(price < min || price > max) return false;
+    if(buscar){
+      const hay = (p.name||'').toLowerCase().includes(buscar) ||
+                  (p.cat||'').toLowerCase().includes(buscar) ||
+                  (p.marca||'').toLowerCase().includes(buscar);
+      if(!hay) return false;
+    }
     return true;
   });
 
@@ -1136,6 +1143,29 @@ function sendProforma(){
 }
 
 updateCart();
+
+/* ===== BUSCADOR DEL CATÁLOGO — SEARCH_INIT_CAT ===== */
+window.BUSCAR_TERM = getParam('buscar');
+(function(){
+  const inp = document.getElementById('site-search');
+  if(!inp) return;
+  // Si venía un término por URL, ponerlo en el input
+  if(window.BUSCAR_TERM) inp.value = window.BUSCAR_TERM;
+  let t;
+  inp.addEventListener('input', ()=>{
+    clearTimeout(t);
+    t = setTimeout(()=>{
+      window.BUSCAR_TERM = inp.value.trim();
+      // Actualizar la URL sin recargar
+      const url = new URL(location.href);
+      if(window.BUSCAR_TERM) url.searchParams.set('buscar', window.BUSCAR_TERM);
+      else url.searchParams.delete('buscar');
+      history.replaceState(null,'',url);
+      if(typeof applyFilters==='function') applyFilters();
+    }, 200);
+  });
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); inp.blur(); } });
+})();
 </script>
 
 </body>
