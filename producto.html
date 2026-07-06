@@ -454,7 +454,7 @@ a.card-name:hover{color:var(--brand)}
     </a>
     <div class="search">
       <i class="ti ti-search"></i>
-      <input type="text" placeholder="Busca procesadores, tarjetas gráficas, RAM, gabinetes...">
+      <input type="text" id="site-search" placeholder="Busca procesadores, tarjetas gráficas, RAM, gabinetes..." autocomplete="off">
     </div>
     <div class="nav-actions">
       <button class="nav-btn" aria-label="Mi cuenta"><i class="ti ti-user"></i></button>
@@ -1366,6 +1366,18 @@ function sendProforma(){
 }
 
 updateCart();
+
+/* ===== BUSCADOR (redirige al catálogo) — SEARCH_INIT ===== */
+(function(){
+  const inp = document.getElementById('site-search');
+  if(!inp) return;
+  inp.addEventListener('keydown', e=>{
+    if(e.key === 'Enter'){
+      const q = inp.value.trim();
+      if(q) location.href = 'catalogo.html?buscar=' + encodeURIComponent(q);
+    }
+  });
+})();
 </script>
 
 </body>
