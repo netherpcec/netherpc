@@ -369,15 +369,23 @@ a.card-name:hover{color:var(--brand)}
 .drawer-link.promo{color:#e2452f;font-weight:600}
 .drawer-link.promo:hover{color:#c0341f}
 
-/* ========== MARCAS ========== */
-.brands{padding:36px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface)}
-.brands-head{text-align:center;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:24px}
-.brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:40px}
-.brand-item{font-size:22px;font-weight:800;color:#b8bec9;letter-spacing:-.5px;transition:color .2s;user-select:none;display:flex;align-items:center;gap:7px}
-.brand-item i{font-size:24px}
-.brands-row:hover .brand-item{color:#cdd2db}
-.brand-item:hover{color:var(--ink)!important}
-@media(max-width:680px){.brands-row{gap:24px}.brand-item{font-size:17px}.brand-item i{font-size:19px}}
+/* ========== MARCAS (marquee doble) ========== */
+.brands{padding:38px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);overflow:hidden}
+.brands-head{text-align:center;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:26px}
+.marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee + .marquee{margin-top:14px}
+.marquee-track{display:flex;width:max-content;gap:26px}
+.marquee-left .marquee-track{animation:scroll-left 32s linear infinite}
+.marquee-right .marquee-track{animation:scroll-right 32s linear infinite}
+@keyframes scroll-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scroll-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.brand-item{flex-shrink:0;height:56px;min-width:150px;padding:0 26px;background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:19px;font-weight:800;color:#8b93a3;letter-spacing:-.4px;user-select:none;transition:all .2s}
+.brand-item i{font-size:22px;color:var(--brand)}
+.brand-item img{max-height:30px;max-width:110px;object-fit:contain;filter:grayscale(1);opacity:.75;transition:all .2s}
+.brand-item:hover{color:var(--ink);border-color:var(--brand)}
+.brand-item:hover img{filter:none;opacity:1}
+@media(prefers-reduced-motion:reduce){.marquee-track{animation:none!important}}
+@media(max-width:680px){.brand-item{height:48px;min-width:120px;font-size:16px;padding:0 18px}.brand-item i{font-size:18px}.brand-item img{max-height:24px;max-width:88px}}
 
 /* ========== BANNER ARMA TU PC (mejorado) ========== */
 .armar-banner{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(120deg,#0e1320 0%,#152033 55%,#0a2a3a 100%);padding:52px 48px;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;isolation:isolate}
@@ -490,17 +498,15 @@ a.card-name:hover{color:var(--brand)}
 
   <!-- MARCAS -->
   <section class="brands">
-    <div class="container">
-      <p class="brands-head">Trabajamos con las mejores marcas</p>
-      <div class="brands-row">
-        <span class="brand-item"><i class="ti ti-cpu"></i> AMD</span>
-        <span class="brand-item"><i class="ti ti-cpu"></i> Intel</span>
-        <span class="brand-item"><i class="ti ti-device-gamepad-2"></i> NVIDIA</span>
-        <span class="brand-item"><i class="ti ti-device-desktop"></i> ASUS</span>
-        <span class="brand-item"><i class="ti ti-bolt"></i> Corsair</span>
-        <span class="brand-item"><i class="ti ti-device-gamepad"></i> MSI</span>
-        <span class="brand-item"><i class="ti ti-mouse"></i> Logitech</span>
-      </div>
+    <p class="brands-head">Trabajamos con las mejores marcas</p>
+
+    <!-- Fila 1: hacia la izquierda -->
+    <div class="marquee marquee-left">
+      <div class="marquee-track" id="marca-fila-1"></div>
+    </div>
+    <!-- Fila 2: hacia la derecha -->
+    <div class="marquee marquee-right">
+      <div class="marquee-track" id="marca-fila-2"></div>
     </div>
   </section>
 
@@ -1069,6 +1075,52 @@ async function loadResenas(){
   }
 }
 loadResenas();
+
+/* ===== MARCAS (marquee) =====
+   Para añadir una marca nueva: agrégala al array MARCAS.
+   - Si tienes el PNG: usa {img:'img/marcas/nombre.png', nombre:'Nombre'}
+     (sube el PNG a la carpeta img/marcas/ en GitHub)
+   - Si aún no tienes el PNG: usa {icon:'ti-cpu', nombre:'Nombre'}
+   Se reparten automáticamente en las dos filas. */
+const MARCAS = [
+  { img:'img/marcas/gigabyte.webp', nombre:'Gigabyte' }
+  { icon:'ti-cpu', nombre:'AMD' },
+  { icon:'ti-cpu', nombre:'Intel' },
+  { icon:'ti-device-gamepad-2', nombre:'NVIDIA' },
+  { icon:'ti-device-desktop', nombre:'ASUS' },
+  { icon:'ti-bolt', nombre:'Corsair' },
+  { icon:'ti-device-gamepad', nombre:'MSI' },
+  { icon:'ti-mouse', nombre:'Logitech' }
+  // Ejemplo con PNG:
+  // ,{ img:'img/marcas/gigabyte.png', nombre:'Gigabyte' }
+];
+
+function marcaHTML(m){
+  const inner = m.img
+    ? '<img src="'+m.img+'" alt="'+m.nombre+'" onerror="this.outerHTML=\'<i class=&quot;ti '+(m.icon||'ti-cpu')+'&quot;></i> '+m.nombre+'\'">'
+    : '<i class="ti '+(m.icon||'ti-cpu')+'"></i> '+m.nombre;
+  return '<div class="brand-item">'+inner+'</div>';
+}
+
+function renderMarcas(){
+  const f1 = document.getElementById('marca-fila-1');
+  const f2 = document.getElementById('marca-fila-2');
+  if(!f1 || !f2) return;
+  // Fila 1: todas en orden. Fila 2: todas en orden inverso (para variar).
+  const fila1 = MARCAS;
+  const fila2 = MARCAS.slice().reverse();
+  // Repetir la lista base hasta tener al menos 12 items (llena pantallas anchas),
+  // luego duplicar todo x2 para que la animación 0 → -50% haga bucle continuo.
+  function armarFila(lista){
+    let base = lista.slice();
+    while(base.length < 12) base = base.concat(lista);
+    const html = base.map(marcaHTML).join('');
+    return html + html; // duplicado para el bucle
+  }
+  f1.innerHTML = armarFila(fila1);
+  f2.innerHTML = armarFila(fila2);
+}
+renderMarcas();
 
 /* ============================================================
    CARRUSEL DE DESTACADOS (scroll horizontal + arrastre)
