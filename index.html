@@ -369,25 +369,46 @@ a.card-name:hover{color:var(--brand)}
 .drawer-link.promo{color:#e2452f;font-weight:600}
 .drawer-link.promo:hover{color:#c0341f}
 
-/* ========== MARCAS (marquee doble) ========== */
-.brands{padding:38px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);overflow:hidden}
-.brands-head{text-align:center;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:26px}
-.brands-head-img{max-width:420px;width:60%;height:auto;opacity:.85;display:block;margin:0 auto}
-@media(max-width:680px){.brands-head-img{width:80%;max-width:300px}}
-.marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.marquee + .marquee{margin-top:14px}
-.marquee-track{display:flex;width:max-content;gap:26px}
-.marquee-left .marquee-track{animation:scroll-left 32s linear infinite}
-.marquee-right .marquee-track{animation:scroll-right 32s linear infinite}
+/* ========== MARCAS (vitrina tech premium) ========== */
+.brands{position:relative;padding:52px 0 56px;overflow:hidden;isolation:isolate;background:linear-gradient(160deg,#0b101c 0%,#101a2e 45%,#0a1f2e 100%)}
+/* Cuadrícula tipo circuito */
+.brands::before{content:'';position:absolute;inset:0;z-index:-2;background-image:linear-gradient(rgba(0,180,216,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,216,.07) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 75% 90% at 50% 50%,#000 30%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 75% 90% at 50% 50%,#000 30%,transparent 100%)}
+/* Resplandores de color */
+.brands::after{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(560px 240px at 18% 0%,rgba(0,180,216,.16),transparent 65%),radial-gradient(520px 260px at 85% 100%,rgba(125,60,255,.14),transparent 65%);pointer-events:none}
+/* Título */
+.brands-head{position:relative;display:flex;align-items:center;justify-content:center;gap:22px;margin:0 auto 10px;padding:0 20px;max-width:900px}
+.brands-head::before,.brands-head::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(0,180,216,.5));max-width:180px}
+.brands-head::after{background:linear-gradient(90deg,rgba(0,180,216,.5),transparent)}
+.brands-head-img{max-width:400px;width:52%;height:auto;display:block;filter:drop-shadow(0 0 14px rgba(0,180,216,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+.brands-sub{text-align:center;font-size:12.5px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#5f80a5;margin-bottom:32px}
+.brands-sub b{color:var(--brand);font-weight:700}
+/* Marquee */
+.marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee + .marquee{margin-top:16px}
+.marquee-track{display:flex;width:max-content;gap:22px}
+.marquee-left .marquee-track{animation:scroll-left 34s linear infinite}
+.marquee-right .marquee-track{animation:scroll-right 34s linear infinite}
 @keyframes scroll-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes scroll-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-.brand-item{flex-shrink:0;height:56px;min-width:150px;padding:0 26px;background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:19px;font-weight:800;color:#8b93a3;letter-spacing:-.4px;user-select:none;transition:all .2s}
+/* Tarjetas de logos */
+.brand-item{position:relative;flex-shrink:0;height:62px;min-width:160px;padding:0 28px;background:rgba(255,255,255,.97);border:1px solid rgba(255,255,255,.12);border-radius:14px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:19px;font-weight:800;color:#5a6377;letter-spacing:-.4px;user-select:none;transition:transform .25s,box-shadow .25s,border-color .25s;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+.brand-item::after{content:'';position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,rgba(0,180,216,.55),rgba(125,60,255,.45));opacity:0;transition:opacity .25s;z-index:-1;filter:blur(10px)}
+.brand-item:hover{transform:translateY(-4px);border-color:rgba(0,180,216,.7);box-shadow:0 10px 30px rgba(0,180,216,.28)}
+.brand-item:hover::after{opacity:1}
 .brand-item i{font-size:22px;color:var(--brand)}
-.brand-item img{max-height:32px;max-width:120px;object-fit:contain;transition:transform .2s}
-.brand-item:hover{color:var(--ink);border-color:var(--brand)}
-.brand-item:hover img{transform:scale(1.05)}
+.brand-item img{max-height:34px;max-width:124px;object-fit:contain;transition:transform .25s}
+.brand-item:hover img{transform:scale(1.07)}
 @media(prefers-reduced-motion:reduce){.marquee-track{animation:none!important}}
-@media(max-width:680px){.brand-item{height:48px;min-width:120px;font-size:16px;padding:0 18px}.brand-item i{font-size:18px}.brand-item img{max-height:24px;max-width:88px}}
+@media(max-width:680px){
+  .brands{padding:38px 0 42px}
+  .brands-head{gap:12px}
+  .brands-head::before,.brands-head::after{max-width:60px}
+  .brands-head-img{width:72%;max-width:300px}
+  .brands-sub{font-size:11px;letter-spacing:1.8px;margin-bottom:24px;padding:0 16px}
+  .brand-item{height:52px;min-width:126px;font-size:16px;padding:0 20px}
+  .brand-item i{font-size:18px}
+  .brand-item img{max-height:26px;max-width:92px}
+}
 
 /* ========== BANNER ARMA TU PC (mejorado) ========== */
 .armar-banner{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(120deg,#0e1320 0%,#152033 55%,#0a2a3a 100%);padding:52px 48px;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;isolation:isolate}
@@ -500,7 +521,8 @@ a.card-name:hover{color:var(--brand)}
 
   <!-- MARCAS -->
   <section class="brands">
-    <p class="brands-head"><img src="img/marcas-titulo.webp" alt="Trabajamos con las mejores marcas" class="brands-head-img" onerror="this.outerHTML='Trabajamos con las mejores marcas'"></p>
+    <p class="brands-head"><img src="img/marcas-titulo.webp" alt="Trabajamos con las mejores marcas" class="brands-head-img" onerror="this.parentElement.style.color='#dfe6f0';this.parentElement.style.fontSize='16px';this.parentElement.style.letterSpacing='2px';this.outerHTML='TRABAJAMOS CON LAS MEJORES MARCAS'"></p>
+    <p class="brands-sub"><b>+12 marcas oficiales</b> · componentes 100% originales</p>
 
     <!-- Fila 1: hacia la izquierda -->
     <div class="marquee marquee-left">
