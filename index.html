@@ -368,6 +368,61 @@ a.card-name:hover{color:var(--brand)}
 .drawer-link:hover i{color:var(--brand)}
 .drawer-link.promo{color:#e2452f;font-weight:600}
 .drawer-link.promo:hover{color:#c0341f}
+
+/* ========== MARCAS ========== */
+.brands{padding:36px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface)}
+.brands-head{text-align:center;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:24px}
+.brands-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:40px}
+.brand-item{font-size:22px;font-weight:800;color:#b8bec9;letter-spacing:-.5px;transition:color .2s;user-select:none;display:flex;align-items:center;gap:7px}
+.brand-item i{font-size:24px}
+.brands-row:hover .brand-item{color:#cdd2db}
+.brand-item:hover{color:var(--ink)!important}
+@media(max-width:680px){.brands-row{gap:24px}.brand-item{font-size:17px}.brand-item i{font-size:19px}}
+
+/* ========== BANNER ARMA TU PC (mejorado) ========== */
+.armar-banner{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(120deg,#0e1320 0%,#152033 55%,#0a2a3a 100%);padding:52px 48px;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;isolation:isolate}
+.armar-banner::before{content:'';position:absolute;top:-40%;right:-5%;width:420px;height:420px;background:radial-gradient(circle,rgba(0,180,216,.35),transparent 65%);z-index:-1}
+.armar-banner::after{content:'';position:absolute;bottom:-50%;left:10%;width:360px;height:360px;background:radial-gradient(circle,rgba(125,60,255,.22),transparent 65%);z-index:-1}
+.ab-content{color:#fff}
+.ab-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,180,216,.15);color:#4fd6f5;font-size:12px;font-weight:700;padding:6px 14px;border-radius:30px;margin-bottom:16px;text-transform:uppercase;letter-spacing:.5px}
+.armar-banner h2{font-size:32px;font-weight:800;line-height:1.15;margin-bottom:12px;letter-spacing:-.5px}
+.armar-banner h2 span{color:var(--brand)}
+.armar-banner p{font-size:15px;color:#aeb8c8;line-height:1.6;margin-bottom:24px;max-width:440px}
+.ab-actions{display:flex;gap:12px;flex-wrap:wrap}
+.ab-btn{display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:11px;font-size:15px;font-weight:600;transition:all .18s}
+.ab-btn.primary{background:var(--brand);color:#fff}
+.ab-btn.primary:hover{background:var(--brand-dark);transform:translateY(-2px)}
+.ab-btn.ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)}
+.ab-btn.ghost:hover{background:rgba(255,255,255,.14)}
+.ab-visual{display:flex;align-items:center;justify-content:center}
+.ab-icon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:260px}
+.ab-chip{aspect-ratio:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;color:#5ec5e0;font-size:26px;transition:all .2s}
+.ab-chip:hover{background:rgba(0,180,216,.15);color:#fff;transform:scale(1.06)}
+@media(max-width:820px){.armar-banner{grid-template-columns:1fr;padding:38px 28px}.ab-visual{display:none}.armar-banner h2{font-size:26px}}
+
+/* ========== CÓMO COMPRAR ========== */
+.pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:paso}
+.paso{position:relative;text-align:center;padding:28px 18px;border:1px solid var(--line);border-radius:16px;background:#fff;transition:all .18s}
+.paso:hover{border-color:var(--brand);box-shadow:var(--shadow);transform:translateY(-3px)}
+.paso-num{width:44px;height:44px;margin:0 auto 16px;background:var(--brand);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800}
+.paso-ico{font-size:30px;color:var(--brand);margin-bottom:10px}
+.paso h4{font-size:16px;font-weight:700;margin-bottom:7px}
+.paso p{font-size:13.5px;color:var(--muted);line-height:1.5}
+.paso:not(:last-child)::after{content:'';position:absolute;top:48px;right:-12px;width:24px;height:2px;background:var(--line-2);z-index:1}
+@media(max-width:860px){.pasos{grid-template-columns:repeat(2,1fr)}.paso:not(:last-child)::after{display:none}}
+@media(max-width:460px){.pasos{grid-template-columns:1fr}}
+
+/* ========== FAQ ========== */
+.faq-wrap{max-width:820px;margin:0 auto}
+.faq-item{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;background:#fff;transition:border-color .15s}
+.faq-item[open]{border-color:var(--brand)}
+.faq-item summary{padding:18px 22px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary i{font-size:20px;color:var(--brand);transition:transform .2s;flex-shrink:0}
+.faq-item[open] summary i{transform:rotate(45deg)}
+.faq-item .faq-body{padding:0 22px 20px;font-size:14px;color:var(--ink-soft);line-height:1.65}
+.faq-item .faq-body a{color:var(--brand);font-weight:600}
+
 </style>
 </head>
 <body>
@@ -433,6 +488,22 @@ a.card-name:hover{color:var(--brand)}
     <div class="trust"><i class="ti ti-tool"></i><div><b>Armamos tu PC</b><span>Ensamblaje incluido</span></div></div>
   </section>
 
+  <!-- MARCAS -->
+  <section class="brands">
+    <div class="container">
+      <p class="brands-head">Trabajamos con las mejores marcas</p>
+      <div class="brands-row">
+        <span class="brand-item"><i class="ti ti-cpu"></i> AMD</span>
+        <span class="brand-item"><i class="ti ti-cpu"></i> Intel</span>
+        <span class="brand-item"><i class="ti ti-device-gamepad-2"></i> NVIDIA</span>
+        <span class="brand-item"><i class="ti ti-device-desktop"></i> ASUS</span>
+        <span class="brand-item"><i class="ti ti-bolt"></i> Corsair</span>
+        <span class="brand-item"><i class="ti ti-device-gamepad"></i> MSI</span>
+        <span class="brand-item"><i class="ti ti-mouse"></i> Logitech</span>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURED PRODUCTS -->
   <section class="section" id="destacados">
     <div class="section-head">
@@ -471,15 +542,89 @@ a.card-name:hover{color:var(--brand)}
     <div class="reviews-masonry" id="reviews-masonry"></div>
   </section>
 
-  <!-- BUILD CTA -->
-  <section class="section" id="armar">
-    <div class="build">
-      <div class="build-glow"></div>
-      <div class="build-txt">
-        <h3>¿No sabes qué componentes elegir?</h3>
-        <p>Cuéntanos tu presupuesto y para qué usarás tu PC. Te armamos una configuración compatible y lista para llevar.</p>
+  <!-- CÓMO COMPRAR -->
+  <section class="section">
+    <div class="section-head"><h2>Comprar es muy fácil</h2></div>
+    <div class="pasos">
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <div class="paso-ico"><i class="ti ti-search"></i></div>
+        <h4>Explora</h4>
+        <p>Busca en el catálogo o arma tu PC con el configurador.</p>
       </div>
-      <a href="https://wa.me/593978602972" target="_blank" class="btn btn-primary"><i class="ti ti-brand-whatsapp"></i> Pedir asesoría</a>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <div class="paso-ico"><i class="ti ti-shopping-cart-plus"></i></div>
+        <h4>Agrega</h4>
+        <p>Suma los productos que quieras a tu carrito.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-ico"><i class="ti ti-brand-whatsapp"></i></div>
+        <h4>Confirma</h4>
+        <p>Envíanos tu pedido por WhatsApp y coordinamos el pago.</p>
+      </div>
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <div class="paso-ico"><i class="ti ti-truck-delivery"></i></div>
+        <h4>Recibe</h4>
+        <p>Te lo enviamos a todo el Ecuador o lo retiras en tienda.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNER ARMA TU PC -->
+  <section class="section" id="armar">
+    <div class="armar-banner">
+      <div class="ab-content">
+        <span class="ab-badge"><i class="ti ti-sparkles"></i> Herramienta exclusiva</span>
+        <h2>Arma la PC de tus <span>sueños</span>, pieza por pieza</h2>
+        <p>Usa nuestro configurador visual: elige cada componente y te recomendamos opciones según tu presupuesto. Nosotros nos encargamos de que todo sea compatible.</p>
+        <div class="ab-actions">
+          <a href="armar.html" class="ab-btn primary"><i class="ti ti-tool"></i> Empezar a armar</a>
+          <a href="https://wa.me/593978602972" target="_blank" class="ab-btn ghost"><i class="ti ti-brand-whatsapp"></i> Pedir asesoría</a>
+        </div>
+      </div>
+      <div class="ab-visual">
+        <div class="ab-icon-grid">
+          <div class="ab-chip"><i class="ti ti-cpu"></i></div>
+          <div class="ab-chip"><i class="ti ti-device-gamepad-2"></i></div>
+          <div class="ab-chip"><i class="ti ti-server-2"></i></div>
+          <div class="ab-chip"><i class="ti ti-cpu-2"></i></div>
+          <div class="ab-chip"><i class="ti ti-database"></i></div>
+          <div class="ab-chip"><i class="ti ti-snowflake"></i></div>
+          <div class="ab-chip"><i class="ti ti-plug"></i></div>
+          <div class="ab-chip"><i class="ti ti-box"></i></div>
+          <div class="ab-chip"><i class="ti ti-bolt"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="section-head"><h2>Preguntas frecuentes</h2></div>
+    <div class="faq-wrap">
+      <details class="faq-item">
+        <summary>¿Hacen envíos a todo el Ecuador? <i class="ti ti-plus"></i></summary>
+        <div class="faq-body">Sí, enviamos a todo el país a través de servicios de encomienda. Los tiempos suelen ser de 2 a 4 días hábiles según tu ciudad. Coordinamos los detalles del envío por WhatsApp al confirmar tu pedido.</div>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué formas de pago aceptan? <i class="ti ti-plus"></i></summary>
+        <div class="faq-body">Aceptamos transferencia bancaria y efectivo. Al enviarnos tu pedido por WhatsApp te indicamos los datos para coordinar el pago de la forma que más te convenga.</div>
+      </details>
+      <details class="faq-item">
+        <summary>¿Los productos tienen garantía? <i class="ti ti-plus"></i></summary>
+        <div class="faq-body">Sí, todos nuestros productos son originales y cuentan con garantía. El tiempo de garantía depende de cada producto y marca; te damos todos los detalles antes de tu compra.</div>
+      </details>
+      <details class="faq-item">
+        <summary>¿Puedo armar mi PC con ustedes? <i class="ti ti-plus"></i></summary>
+        <div class="faq-body">¡Claro! Puedes usar nuestro configurador <a href="armar.html">Arma tu PC</a> para elegir cada componente, o escribirnos por WhatsApp y te asesoramos según tu presupuesto y para qué usarás el equipo. También ofrecemos el ensamblaje.</div>
+      </details>
+      <details class="faq-item">
+        <summary>¿Ofrecen asesoría antes de comprar? <i class="ti ti-plus"></i></summary>
+        <div class="faq-body">Por supuesto. Si no estás seguro de qué componentes necesitas o si son compatibles, escríbenos por WhatsApp y con gusto te ayudamos a elegir la mejor opción para ti.</div>
+      </details>
     </div>
   </section>
 
