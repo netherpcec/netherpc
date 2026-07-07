@@ -372,6 +372,8 @@ a.card-name:hover{color:var(--brand)}
 /* ========== MARCAS (marquee doble) ========== */
 .brands{padding:38px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface);overflow:hidden}
 .brands-head{text-align:center;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:26px}
+.brands-head-img{max-width:420px;width:60%;height:auto;opacity:.85}
+@media(max-width:680px){.brands-head-img{width:80%;max-width:300px}}
 .marquee{position:relative;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .marquee + .marquee{margin-top:14px}
 .marquee-track{display:flex;width:max-content;gap:26px}
@@ -498,7 +500,7 @@ a.card-name:hover{color:var(--brand)}
 
   <!-- MARCAS -->
   <section class="brands">
-    <p class="brands-head">Trabajamos con las mejores marcas</p>
+    <p class="brands-head"><img src="img/marcas-titulo.webp" alt="Trabajamos con las mejores marcas" class="brands-head-img" onerror="this.outerHTML='Trabajamos con las mejores marcas'"></p>
 
     <!-- Fila 1: hacia la izquierda -->
     <div class="marquee marquee-left">
@@ -1095,8 +1097,6 @@ const MARCAS = [
   { img:'img/marcas/aorus.png', nombre:'Aorus' },
   { img:'img/marcas/kingston.png', nombre:'Kingston' },
   { img:'img/marcas/meetion.png', nombre:'Meetion' }
-  // Ejemplo con PNG:
-  // ,{ img:'img/marcas/gigabyte.png', nombre:'Gigabyte' }
 ];
 
 function marcaHTML(m){
