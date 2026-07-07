@@ -381,9 +381,9 @@ a.card-name:hover{color:var(--brand)}
 @keyframes scroll-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 .brand-item{flex-shrink:0;height:56px;min-width:150px;padding:0 26px;background:#fff;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:9px;font-size:19px;font-weight:800;color:#8b93a3;letter-spacing:-.4px;user-select:none;transition:all .2s}
 .brand-item i{font-size:22px;color:var(--brand)}
-.brand-item img{max-height:30px;max-width:110px;object-fit:contain;filter:grayscale(1);opacity:.75;transition:all .2s}
+.brand-item img{max-height:32px;max-width:120px;object-fit:contain;transition:transform .2s}
 .brand-item:hover{color:var(--ink);border-color:var(--brand)}
-.brand-item:hover img{filter:none;opacity:1}
+.brand-item:hover img{transform:scale(1.05)}
 @media(prefers-reduced-motion:reduce){.marquee-track{animation:none!important}}
 @media(max-width:680px){.brand-item{height:48px;min-width:120px;font-size:16px;padding:0 18px}.brand-item i{font-size:18px}.brand-item img{max-height:24px;max-width:88px}}
 
@@ -1090,16 +1090,20 @@ const MARCAS = [
   { icon:'ti-bolt', nombre:'Corsair' },
   { icon:'ti-device-gamepad', nombre:'MSI' },
   { icon:'ti-mouse', nombre:'Logitech' }
-  { img:'img/marcas/gigabyte.webp', nombre:'Gigabyte' }
   // Ejemplo con PNG:
   // ,{ img:'img/marcas/gigabyte.png', nombre:'Gigabyte' }
 ];
 
 function marcaHTML(m){
-  const inner = m.img
-    ? '<img src="'+m.img+'" alt="'+m.nombre+'" onerror="this.outerHTML=\'<i class=&quot;ti '+(m.icon||'ti-cpu')+'&quot;></i> '+m.nombre+'\'">'
-    : '<i class="ti '+(m.icon||'ti-cpu')+'"></i> '+m.nombre;
-  return '<div class="brand-item">'+inner+'</div>';
+  if(m.img){
+    // Con imagen: si falla la carga, muestra ícono + nombre de respaldo
+    const fallbackIcon = m.icon || 'ti-cpu';
+    return '<div class="brand-item">' +
+      '<img src="' + m.img + '" alt="' + m.nombre + '" ' +
+      'onerror="this.style.display=\'none\';this.insertAdjacentHTML(\'afterend\',\'<i class=\\\'ti ' + fallbackIcon + '\\\'></i> ' + m.nombre + '\')">' +
+      '</div>';
+  }
+  return '<div class="brand-item"><i class="ti ' + (m.icon||'ti-cpu') + '"></i> ' + m.nombre + '</div>';
 }
 
 function renderMarcas(){
